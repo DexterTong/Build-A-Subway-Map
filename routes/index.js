@@ -7,7 +7,7 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/map', function (req, res, next) {
-    res.render('map', {title: 'Fantasy Map'});
+    res.render('map', {title: 'Build A Map'});
 });
 
 module.exports = router;
