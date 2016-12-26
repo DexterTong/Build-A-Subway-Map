@@ -210,27 +210,51 @@
     },
     "26": {
       "id": 26,
+      "shortName": "T",
+      "longName": "T",
+      "express": false,
+      "color": "#1E9DBF",
+      "type": "subway"
+    },
+    "27": {
+      "id": 27,
       "shortName": "W",
       "longName": "W",
       "express": false,
       "color": "#FCCC0A",
       "type": "subway"
     },
-    "27": {
-      "id": 27,
+    "28": {
+      "id": 28,
       "shortName": "Z",
       "longName": "Z",
       "express": false,
       "color": "#996633",
       "type": "subway"
     },
-    "28": {
-      "id": 28,
+    "29": {
+      "id": 29,
       "shortName": "SIR",
       "longName": "SIR",
       "express": false,
       "color": "#0039A6",
       "type": "subway"
-    }
+    },
+    "30": {
+      "id": 30,
+      "shortName": "9",
+      "longName": "9",
+      "express": false,
+      "color": "#EE352E",
+      "type": "subway"
+    },
+    "31": {
+      "id": 31,
+      "shortName": "V",
+      "longName": "V",
+      "express": false,
+      "color": "#FF6319",
+      "type": "subway"
+    },
   }
 }
