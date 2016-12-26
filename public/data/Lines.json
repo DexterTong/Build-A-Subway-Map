@@ -1,0 +1,236 @@
+{
+  "lines": {
+    "0": {
+      "id": 0,
+      "shortName": "1",
+      "longName": "1",
+      "express": false,
+      "color": "#EE352E",
+      "type": "subway"
+    },
+    "1": {
+      "id": 1,
+      "shortName": "2",
+      "longName": "2",
+      "express": false,
+      "color": "#EE352E",
+      "type": "subway"
+    },
+    "2": {
+      "id": 2,
+      "shortName": "3",
+      "longName": "3",
+      "express": false,
+      "color": "#EE352E",
+      "type": "subway"
+    },
+    "3": {
+      "id": 3,
+      "shortName": "4",
+      "longName": "4",
+      "express": false,
+      "color": "#00933C",
+      "type": "subway"
+    },
+    "4": {
+      "id": 4,
+      "shortName": "5",
+      "longName": "5",
+      "express": false,
+      "color": "#00933C",
+      "type": "subway"
+    },
+    "5": {
+      "id": 5,
+      "shortName": "5",
+      "longName": "5 Express",
+      "express": true,
+      "color": "#00933C",
+      "type": "subway"
+    },
+    "6": {
+      "id": 6,
+      "shortName": "6",
+      "longName": "6",
+      "express": false,
+      "color": "#00933C",
+      "type": "subway"
+    },
+    "7": {
+      "id": 7,
+      "shortName": "6",
+      "longName": "6 Express",
+      "express": true,
+      "color": "#00933C",
+      "type": "subway"
+    },
+    "8": {
+      "id": 8,
+      "shortName": "7",
+      "longName": "7",
+      "express": false,
+      "color": "#B933AD",
+      "type": "subway"
+    },
+    "9": {
+      "id": 9,
+      "shortName": "7",
+      "longName": "7 Express",
+      "express": true,
+      "color": "#B933AD",
+      "type": "subway"
+    },
+    "10": {
+      "id": 10,
+      "shortName": "A",
+      "longName": "A",
+      "express": false,
+      "color": "#0039A6",
+      "type": "subway"
+    },
+    "11": {
+      "id": 11,
+      "shortName": "B",
+      "longName": "B",
+      "express": false,
+      "color": "#FF6319",
+      "type": "subway"
+    },
+    "12": {
+      "id": 12,
+      "shortName": "C",
+      "longName": "C",
+      "express": false,
+      "color": "#0039A6",
+      "type": "subway"
+    },
+    "13": {
+      "id": 13,
+      "shortName": "D",
+      "longName": "D",
+      "express": false,
+      "color": "#FF6319",
+      "type": "subway"
+    },
+    "14": {
+      "id": 14,
+      "shortName": "E",
+      "longName": "E",
+      "express": false,
+      "color": "#0039A6",
+      "type": "subway"
+    },
+    "15": {
+      "id": 15,
+      "shortName": "F",
+      "longName": "F",
+      "express": false,
+      "color": "#FF6319",
+      "type": "subway"
+    },
+    "16": {
+      "id": 16,
+      "shortName": "G",
+      "longName": "G",
+      "express": false,
+      "color": "#6CBE45",
+      "type": "subway"
+    },
+    "17": {
+      "id": 17,
+      "shortName": "J",
+      "longName": "J",
+      "express": false,
+      "color": "#996633",
+      "type": "subway"
+    },
+    "18": {
+      "id": 18,
+      "shortName": "L",
+      "longName": "L",
+      "express": false,
+      "color": "#A7A9AC",
+      "type": "subway"
+    },
+    "19": {
+      "id": 19,
+      "shortName": "M",
+      "longName": "M",
+      "express": false,
+      "color": "#FF6319",
+      "type": "subway"
+    },
+    "20": {
+      "id": 20,
+      "shortName": "N",
+      "longName": "N",
+      "express": false,
+      "color": "#FCCC0A",
+      "type": "subway"
+    },
+    "21": {
+      "id": 21,
+      "shortName": "Q",
+      "longName": "Q",
+      "express": false,
+      "color": "#FCCC0A",
+      "type": "subway"
+    },
+    "22": {
+      "id": 22,
+      "shortName": "R",
+      "longName": "R",
+      "express": false,
+      "color": "#FCCC0A",
+      "type": "subway"
+    },
+    "23": {
+      "id": 23,
+      "shortName": "S",
+      "longName": "S - Times Square",
+      "express": false,
+      "color": "#808183",
+      "type": "subway"
+    },
+    "24": {
+      "id": 24,
+      "shortName": "S",
+      "longName": "S - Franklin Avenue",
+      "express": false,
+      "color": "#808183",
+      "type": "subway"
+    },
+    "25": {
+      "id": 25,
+      "shortName": "S",
+      "longName": "S - Rockaway Park",
+      "express": false,
+      "color": "#808183",
+      "type": "subway"
+    },
+    "26": {
+      "id": 26,
+      "shortName": "W",
+      "longName": "W",
+      "express": false,
+      "color": "#FCCC0A",
+      "type": "subway"
+    },
+    "27": {
+      "id": 27,
+      "shortName": "Z",
+      "longName": "Z",
+      "express": false,
+      "color": "#996633",
+      "type": "subway"
+    },
+    "28": {
+      "id": 28,
+      "shortName": "SIR",
+      "longName": "SIR",
+      "express": false,
+      "color": "#0039A6",
+      "type": "subway"
+    }
+  }
+}
