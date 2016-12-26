@@ -25,7 +25,14 @@ function initMap() {
         id: 'build.a.subway.map'
     };
     L.tileLayer(tileURL, tileLayerOptions).addTo(map);
-    map.on('click', addStation);
+    //map.on('click', addStation);
+    map.on('click', function(event){
+        L.popup()
+            .setLatLng(event.latlng)
+            .setContent(event.latlng.toString())
+            .openOn(map);
+    });
+    loadStations();
 }
 
 function addStation(event) {
@@ -40,4 +47,26 @@ function addStation(event) {
 
 function stationOnClick(event) {
     this.remove();
+}
+
+function loadStations() {
+    const req = new XMLHttpRequest();
+    req.open('GET', '/data/stations.json', true);
+    req.addEventListener('load', function() {
+        if(this.status < 200 && this.status > 400){
+            console.log('Could not retrieve data');
+            return;
+        }
+        const stations = JSON.parse(this.response);
+        stations.forEach(function(station) {
+            let popupText = '<b>' + station.name + ' ' + station.id + '</b><br>';
+            for(let i = 0; i < station.lines.length; i++){
+                popupText = popupText + station.lines[i] + ' ';
+            }
+            L.marker(station.latLng, {icon: stationLocalIcon})
+                .addTo(map)
+                .bindPopup(popupText);
+        });
+    });
+    req.send();
 }
