@@ -1,5 +1,364 @@
 {
-  "lines": {},
+  "lines": {
+    "0": {
+      "id": 0,
+      "color": "#ee352e",
+      "name": "1",
+      "category": "subway",
+      "branches": [
+        {
+          "longName": "1",
+          "express": false,
+          "stations": []
+        }
+      ]
+    },
+    "1": {
+      "id": 1,
+      "color": "#ee352e",
+      "name": "2",
+      "category": "subway",
+      "branches": [
+        {
+          "longName": "2",
+          "express": false,
+          "stations": []
+        }
+      ]
+    },
+    "2": {
+      "id": 2,
+      "color": "#ee352e",
+      "name": "3",
+      "category": "subway",
+      "branches": [
+        {
+          "longName": "3",
+          "express": false,
+          "stations": []
+        }
+      ]
+    },
+    "3": {
+      "id": 3,
+      "color": "#00933c",
+      "name": "4",
+      "category": "subway",
+      "branches": [
+        {
+          "longName": "4",
+          "express": false,
+          "stations": []
+        }
+      ]
+    },
+    "4": {
+      "id": 4,
+      "color": "#00933c",
+      "name": "5",
+      "category": "subway",
+      "branches": [
+        {
+          "longName": "5 (Nereid Av)",
+          "express": false,
+          "stations": []
+        },
+        {
+          "longName": "5 (Eastchester)",
+          "express": false,
+          "stations": []
+        },
+        {
+          "longName": "5 Express",
+          "express": true,
+          "stations": []
+        }
+      ]
+    },
+    "5": {
+      "id": 5,
+      "color": "#00933c",
+      "name": "6",
+      "category": "subway",
+      "branches": [
+        {
+          "longName": "6",
+          "express": false,
+          "stations": []
+        },
+        {
+          "longName": "6 Express",
+          "express": true,
+          "stations": []
+        }
+      ]
+    },
+    "6": {
+      "id": 6,
+      "color": "#b933ad",
+      "name": "7",
+      "category": "subway",
+      "branches": [
+        {
+          "longName": "7",
+          "express": false,
+          "stations": []
+        },
+        {
+          "longName": "7 Express",
+          "express": true,
+          "stations": []
+        }
+      ]
+    },
+    "7": {
+      "id": 7,
+      "color": "#2850ad",
+      "name": "A",
+      "category": "subway",
+      "branches": [
+        {
+          "longName": "A",
+          "express": false,
+          "stations": []
+        }
+      ]
+    },
+    "8": {
+      "id": 8,
+      "color": "#2850ad",
+      "name": "C",
+      "category": "subway",
+      "branches": [
+        {
+          "longName": "C",
+          "express": false,
+          "stations": []
+        }
+      ]
+    },
+    "9": {
+      "id": 9,
+      "color": "#2850ad",
+      "name": "E",
+      "category": "subway",
+      "branches": [
+        {
+          "longName": "E",
+          "express": false,
+          "stations": []
+        }
+      ]
+    },
+    "10": {
+      "id": 10,
+      "color": "#ff6319",
+      "name": "B",
+      "category": "subway",
+      "branches": [
+        {
+          "longName": "B",
+          "express": false,
+          "stations": []
+        }
+      ]
+    },
+    "11": {
+      "id": 11,
+      "color": "#ff6319",
+      "name": "D",
+      "category": "subway",
+      "branches": [
+        {
+          "longName": "D",
+          "express": false,
+          "stations": []
+        }
+      ]
+    },
+    "12": {
+      "id": 12,
+      "color": "#ff6319",
+      "name": "F",
+      "category": "subway",
+      "branches": [
+        {
+          "longName": "F",
+          "express": false,
+          "stations": []
+        }
+      ]
+    },
+    "13": {
+      "id": 13,
+      "color": "#ff6319",
+      "name": "M",
+      "category": "subway",
+      "branches": [
+        {
+          "longName": "M",
+          "express": false,
+          "stations": []
+        }
+      ]
+    },
+    "14": {
+      "id": 14,
+      "color": "#6cbe45",
+      "name": "G",
+      "category": "subway",
+      "branches": [
+        {
+          "longName": "G",
+          "express": false,
+          "stations": []
+        }
+      ]
+    },
+    "15": {
+      "id": 15,
+      "color": "#a7a9ac",
+      "name": "L",
+      "category": "subway",
+      "branches": [
+        {
+          "longName": "L",
+          "express": false,
+          "stations": []
+        }
+      ]
+    },
+    "16": {
+      "id": 16,
+      "color": "#996633",
+      "name": "J",
+      "category": "subway",
+      "branches": [
+        {
+          "longName": "J",
+          "express": false,
+          "stations": []
+        }
+      ]
+    },
+    "17": {
+      "id": 17,
+      "color": "#996633",
+      "name": "Z",
+      "category": "subway",
+      "branches": [
+        {
+          "longName": "Z",
+          "express": false,
+          "stations": []
+        }
+      ]
+    },
+    "18": {
+      "id": 18,
+      "color": "#fccc0a",
+      "name": "N",
+      "category": "subway",
+      "branches": [
+        {
+          "longName": "N",
+          "express": false,
+          "stations": []
+        }
+      ]
+    },
+    "19": {
+      "id": 19,
+      "color": "#fccc0a",
+      "name": "Q",
+      "category": "subway",
+      "branches": [
+        {
+          "longName": "Q",
+          "express": false,
+          "stations": []
+        }
+      ]
+    },
+    "20": {
+      "id": 20,
+      "color": "#fccc0a",
+      "name": "R",
+      "category": "subway",
+      "branches": [
+        {
+          "longName": "R",
+          "express": false,
+          "stations": []
+        }
+      ]
+    },
+    "21": {
+      "id": 21,
+      "color": "#fccc0a",
+      "name": "W",
+      "category": "subway",
+      "branches": [
+        {
+          "longName": "W",
+          "express": false,
+          "stations": []
+        }
+      ]
+    },
+    "22": {
+      "id": 22,
+      "color": "#1e9dbf",
+      "name": "T",
+      "category": "subway",
+      "branches": [
+        {
+          "longName": "T",
+          "express": false,
+          "stations": []
+        }
+      ]
+    },
+    "23": {
+      "id": 23,
+      "color": "#808183",
+      "name": "S_1",
+      "category": "subway",
+      "branches": [
+        {
+          "longName": "S (42 St)",
+          "express": false,
+          "stations": []
+        }
+      ]
+    },
+    "24": {
+      "id": 24,
+      "color": "#808183",
+      "name": "S_2",
+      "category": "subway",
+      "branches": [
+        {
+          "longName": "S (Franklin Av)",
+          "express": false,
+          "stations": []
+        }
+      ]
+    },
+    "25": {
+      "id": 25,
+      "color": "#808183",
+      "name": "S_3",
+      "category": "subway",
+      "branches": [
+        {
+          "longName": "S (Rockaway Park)",
+          "express": false,
+          "stations": []
+        }
+      ]
+    }
+  },
   "stations": {
     "0": {
       "id": 0,

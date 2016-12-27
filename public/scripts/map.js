@@ -57,13 +57,16 @@ function loadStations() {
             console.log('Could not retrieve data');
             return;
         }
-        const stations = JSON.parse(this.response);
-        stations.forEach(function(station) {
-            let popupText = '<b>' + station.name + ' ' + station.id + '</b><br>';
-            for(let i = 0; i < station.lines.length; i++){
-                popupText = popupText + station.lines[i] + ' ';
+        const data = JSON.parse(this.response);
+        const stations = data.stations;
+        const lines = data.lines;
+        const stationIds = Object.getOwnPropertyNames(stations);
+        stationIds.forEach(function(id) {
+            let popupText = '<b>' + stations[id].name + ' ' + stations[id].id + '</b><br>';
+            for(let i = 0; i < stations[id].lines.length; i++){
+                popupText = popupText + stations[id].lines[i] + ' ';
             }
-            L.marker(station.latLng, {icon: stationLocalIcon})
+            L.marker(stations[id].latLng, {icon: stationLocalIcon})
                 .addTo(map)
                 .bindPopup(popupText);
         });
