@@ -44,7 +44,7 @@ function addStation(event) {
      .openOn(map);*/
     L.marker(event.latlng, {icon: stationLocalIcon})
         .addTo(map)
-        .on('click', stationOnClick)
+        .on('click', stationOnClick);
 }
 
 function stationOnClick(event) {
@@ -92,7 +92,7 @@ function drawStations() {
         L.marker(stations[stationId].latLng, {icon: stationLocalIcon})
             .addTo(map)
             .bindPopup(popupText);
-    })
+    });
 }
 
 function drawLines() {
