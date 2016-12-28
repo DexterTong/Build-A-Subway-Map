@@ -12,7 +12,10 @@ const stationExpressIcon = L.divIcon({
     iconSize: [8, 8]
 });
 
+let save;
 initMap();
+loadGame('nyc2016')
+    .then(populateMap);
 
 function initMap() {
     const defaultLocation = L.latLng(40.7128, -74.0061);
@@ -32,7 +35,6 @@ function initMap() {
             .setContent(event.latlng.toString())
             .openOn(map);
     });
-    loadData();
 }
 
 function addStation(event) {
@@ -49,27 +51,54 @@ function stationOnClick(event) {
     this.remove();
 }
 
-function loadData() {
-    const req = new XMLHttpRequest();
-    req.open('GET', '/data/nyc2016.json', true);
-    req.addEventListener('load', function() {
-        if(this.status < 200 && this.status > 400){
-            console.log('Could not retrieve data');
-            return;
-        }
-        const data = JSON.parse(this.response);
-        const stations = data.stations;
-        const lines = data.lines;
-        const stationIds = Object.getOwnPropertyNames(stations);
-        stationIds.forEach(function(id) {
-            let popupText = '<b>' + stations[id].name + ' ' + stations[id].id + '</b><br>';
-            for(let i = 0; i < stations[id].lines.length; i++){
-                popupText = popupText + stations[id].lines[i] + ' ';
+function loadGame(name) {
+    let fileName = name + '.json';
+    return new Promise(function(resolve, reject) {
+        const req = new XMLHttpRequest();
+        req.open('GET', '/data/' + fileName, true);
+        req.addEventListener('load', function() {
+            if(this.status < 200 && this.status > 400){
+                //TODO: Handle load failure gracefully... or not
+                reject(Error('Could not load the requested game: ' + req.statusText));
             }
-            L.marker(stations[id].latLng, {icon: stationLocalIcon})
-                .addTo(map)
-                .bindPopup(popupText);
+            else
+                save = JSON.parse(this.response);
+                resolve();
         });
-    });
     req.send();
+    });
+}
+
+function populateMap() {
+    drawStations();
+    drawLines();
+    drawTransfers();
+}
+
+function drawStations() {
+    const stations = save.stations;
+    const lines = save.lines;
+    const stationIds = Object.getOwnPropertyNames(stations);
+    stationIds.forEach(function(stationId) {
+        let popupText = '<b>' + stations[stationId].name + ' ' + stations[stationId].id + '</b><br>';
+        //TODO: display both local and express route bullets where necessary, like '61 St-Woodside'
+        const linesAtStation = new Set();
+        stations[stationId].lines.forEach(lineId => {
+           linesAtStation.add(lines[lineId].name);
+        });
+        linesAtStation.forEach(lineName => {
+           popupText += lineName + ' ';
+        });
+        L.marker(stations[stationId].latLng, {icon: stationLocalIcon})
+            .addTo(map)
+            .bindPopup(popupText);
+    })
+}
+
+function drawLines() {
+
+}
+
+function drawTransfers() {
+
 }
