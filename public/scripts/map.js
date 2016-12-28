@@ -95,8 +95,21 @@ function drawStations() {
     });
 }
 
+//TODO: re-order station listing in lines
 function drawLines() {
-
+    const stations = save.stations;
+    const lines = save.lines;
+    const lineIds = Object.getOwnPropertyNames(lines);
+    lineIds.forEach(lineId => {
+       const lineStations = lines[lineId].stations;
+       const points = [];
+       lineStations.forEach(stationId => {
+           points.push(stations[stationId].latLng);
+       });
+       const linePath = L.polyline(points, {color: lines[lineId].color});
+       console.log('drawing', lines[lineId].name, 'in', lines[lineId].color);
+       linePath.addTo(map);
+    });
 }
 
 function drawTransfers() {
