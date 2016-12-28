@@ -32,7 +32,7 @@ function initMap() {
             .setContent(event.latlng.toString())
             .openOn(map);
     });
-    loadStations();
+    loadData();
 }
 
 function addStation(event) {
@@ -49,9 +49,9 @@ function stationOnClick(event) {
     this.remove();
 }
 
-function loadStations() {
+function loadData() {
     const req = new XMLHttpRequest();
-    req.open('GET', '/data/stations.json', true);
+    req.open('GET', '/data/nyc2016.json', true);
     req.addEventListener('load', function() {
         if(this.status < 200 && this.status > 400){
             console.log('Could not retrieve data');
