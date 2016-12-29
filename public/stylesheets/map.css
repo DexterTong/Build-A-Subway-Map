@@ -38,13 +38,11 @@ html, body, #map {
 
 #pane {
     top: 0;
-    right: 0;
+    left: 0;
     position: fixed;
     height: 100%;
     width: 25%;
-}
-
-.overlay {
-    background-color: rgba(0, 0, 0, .5);
     z-index: 1;
+    padding: 1%;
+    background-color: #FFFFFF;
 }

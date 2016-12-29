@@ -1,24 +1,32 @@
-const map = L.map('map');
-
 const stationLocalIcon = L.divIcon({
     className: 'station local',
-    bgPos: [0, 0],
     iconSize: [8, 8]
 });
 
 const stationExpressIcon = L.divIcon({
     className: 'station express',
-    bgPos: [0, 0],
     iconSize: [8, 8]
 });
 
+let map;
 let save;
+moveHeaderToPane();
 initMap();
 loadGame('nyc2016')
     .then(populateMap);
 
+function moveHeaderToPane() {
+    const common = document.getElementById('common');
+    const pane = document.getElementById('pane');
+    common.parentNode.removeChild(common);
+    pane.appendChild(common);
+}
+
 function initMap() {
-    const defaultLocation = L.latLng(40.7128, -74.0061);
+    map = L.map('map', {
+        zoomControl: false
+    });
+    const defaultLocation = L.latLng(40.7128, -74.0061); //City Hall, NYC
     map.setView(defaultLocation, 13);
     //TODO: Move off of OSM server, possibly to local storage?
     const tileURL = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -27,6 +35,9 @@ function initMap() {
         maxZoom: 18,
         id: 'build.a.subway.map'
     };
+    L.control.zoom({
+        position: 'topright'
+    }).addTo(map);
     L.tileLayer(tileURL, tileLayerOptions).addTo(map);
     //map.on('click', addStation);
     map.on('click', function(event){
