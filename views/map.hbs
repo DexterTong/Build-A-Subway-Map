@@ -5,10 +5,23 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css"/>
     <link rel="stylesheet" href="/stylesheets/map.css"/>
     <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+    <script src="/scripts/line.js"></script>
+    <script src="/scripts/station.js"></script>
+    <script src="/scripts/mapDrawer.js"></script>
     <script src="/scripts/map.js" defer></script>
 </head>
 <body>
     <div id="map"></div>
-    <div id="pane"></div>
+    <div id="sidebar">
+        <div id="options">
+            <button type="button" name="save" id="button-save">Save</button>
+            <button type="button" name="load" id="button-load" disabled>Load</button>
+            <button type="button" name="undo" id="button-undo" disabled>Undo</button>
+            <button type="button" name="redo" id="button-redo" disabled>Redo</button>
+        </div>
+        <div id="line-editor"></div>
+        <div id="line-menu"></div>
+        <div id="line-map"></div>
+    </div>
 </body>
 </html>
