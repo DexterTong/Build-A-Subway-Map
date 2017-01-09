@@ -15,19 +15,11 @@ const gameState = {
     transfers: []
 };
 
-moveHeaderToSidebar();
 initMap();
 loadGame('nyc2016')
     .then(createGameState)
+    .then(loadSidebarMenu)
     .then(drawAll);
-    //.then(populateMap);
-
-function moveHeaderToSidebar() {
-    const common = document.getElementById('common');
-    const sidebar = document.getElementById('sidebar');
-    common.parentNode.removeChild(common);
-    sidebar.insertBefore(common, sidebar.firstChild);
-}
 
 function initMap() {
     gameMap = L.map('map', {
@@ -98,48 +90,39 @@ function createGameState(data) {
     });*/
 }
 
-/*function populateMap() {
-    drawStations();
-    drawLines();
-    drawTransfers();
-}
-
-function drawStations() {
-    const stations = save.stations;
-    const lines = save.lines;
-    const stationIds = Object.keys(stations);
-    stationIds.forEach(function (stationId) {
-        let popupText = '<b>' + stations[stationId].name + ' ' + stations[stationId].id + '</b><br>';
-        //TODO: display both local and express route bullets where necessary, like '61 St-Woodside'
-        const linesAtStation = new Set();
-        stations[stationId].lines.forEach(lineId => {
-            linesAtStation.add(lines[lineId].name);
+function loadSidebarMenu() {
+    const lineMenu = document.getElementById('line-menu');
+    const lineGroupsObject = gameState.lines.reduce((groups, line) => {
+        if(groups[line.color])
+            groups[line.color].push(line);
+        else
+            groups[line.color] = [line];
+        return groups;
+    }, {});
+    const lineGroupsKeys = Object.keys(lineGroupsObject);
+    const lineGroups = [];
+    lineGroupsKeys.forEach(key => lineGroups.push(lineGroupsObject[key]));
+    lineGroups.forEach(lineGroup => lineGroup.sort((A, B) => {
+        const res = A.name.localeCompare(B.name);
+        if(res !== 0)
+            return res;
+        if(B.express)
+            return -1;
+        return 1;
+    }));
+    lineGroups.sort((A, B) => {return A[0].name.localeCompare(B[0].name)});
+    lineGroups.forEach(lineGroup => {
+        const lineGroupDiv = document.createElement('div');
+        lineGroupDiv.id = lineGroup[0].color;
+        lineGroupDiv.classList.add('line-group');
+        lineGroup.forEach(line => {
+            const lineDiv = document.createElement('div');
+            lineDiv.id = line.fullName;
+            lineDiv.classList.add('line-single');
+            lineDiv.appendChild(document.createTextNode(line.name));
+            lineDiv.style.backgroundColor = line.color;
+            lineGroupDiv.appendChild(lineDiv);
         });
-        linesAtStation.forEach(lineName => {
-            popupText += lineName + ' ';
-        });
-        L.marker(stations[stationId].latLng, {icon: stationLocalIcon})
-            .addTo(gameMap)
-            .bindPopup(popupText);
+        lineMenu.appendChild(lineGroupDiv);
     });
 }
-
-function drawLines() {
-    const stations = save.stations;
-    const lines = save.lines;
-    const lineIds = Object.keys(lines);
-    lineIds.forEach(lineId => {
-        gameState.lines[lineId] = new Line(lines[lineId]);
-        const lineStations = lines[lineId].stations;
-        const points = [];
-        lineStations.forEach(stationId => {
-            points.push(stations[stationId].latLng);
-        });
-        const linePath = L.polyline(points, {color: lines[lineId].color});
-        linePath.addTo(gameMap);
-    });
-}
-
-function drawTransfers() {
-
-}*/

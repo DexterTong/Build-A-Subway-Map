@@ -16,10 +16,6 @@ class Station {
         }
     }
 
-    doSomething() {
-        console.log('Hello World!', this.name);
-    }
-
     addLine() {
 
     }

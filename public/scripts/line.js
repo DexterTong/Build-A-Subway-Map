@@ -20,10 +20,6 @@ class Line {
         }
     }
 
-    doSomething() {
-        console.log('Hello World!', this.fullName);
-    }
-
     addStation() {
 
     }
