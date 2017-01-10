@@ -91,7 +91,7 @@ function createGameState(data) {
 }
 
 function loadSidebarMenu() {
-    const lineMenu = document.getElementById('line-menu');
+    const lineMenu = document.getElementById('sidebar-line-menu');
     const lineGroupsObject = gameState.lines.reduce((groups, line) => {
         if(groups[line.color])
             groups[line.color].push(line);
@@ -118,7 +118,8 @@ function loadSidebarMenu() {
         lineGroup.forEach(line => {
             const lineDiv = document.createElement('div');
             lineDiv.id = line.fullName;
-            lineDiv.classList.add('line-single');
+            lineDiv.classList.add('line');
+            lineDiv.classList.add(line.express ? 'express' : 'local');
             lineDiv.appendChild(document.createTextNode(line.name));
             lineDiv.style.backgroundColor = line.color;
             lineGroupDiv.appendChild(lineDiv);
