@@ -111,19 +111,31 @@ function loadSidebarMenu() {
         return 1;
     }));
     lineGroups.sort((A, B) => {return A[0].name.localeCompare(B[0].name)});
-    lineGroups.forEach(lineGroup => {
-        const lineGroupDiv = document.createElement('div');
-        lineGroupDiv.id = lineGroup[0].color;
-        lineGroupDiv.classList.add('line-group');
-        lineGroup.forEach(line => {
-            const lineDiv = document.createElement('div');
-            lineDiv.id = line.fullName;
-            lineDiv.classList.add('line');
-            lineDiv.classList.add(line.express ? 'express' : 'local');
-            lineDiv.appendChild(document.createTextNode(line.name));
-            lineDiv.style.backgroundColor = line.color;
-            lineGroupDiv.appendChild(lineDiv);
-        });
-        lineMenu.appendChild(lineGroupDiv);
-    });
+    lineGroups.forEach(lineGroup => {lineMenu.appendChild(createLineGroupDiv(lineGroup))});
+}
+
+function createLineGroupDiv(lineGroup) {
+    const lineGroupDiv = document.createElement('div');
+    lineGroupDiv.id = lineGroup[0].color;
+    lineGroupDiv.classList.add('line-group');
+    lineGroup.forEach(line => {lineGroupDiv.appendChild(createLineDiv(line))});
+    return lineGroupDiv;
+}
+
+function createLineDiv(line) {
+    const lineDiv = document.createElement('div');
+    lineDiv.id = idify(line.fullName);
+    lineDiv.title = line.fullName;
+    lineDiv.classList.add('line', line.express ? 'express' : 'local');
+    lineDiv.appendChild(document.createTextNode(line.name));
+    lineDiv.style.backgroundColor = line.color;
+    lineDiv.onclick = event => {
+
+    };
+    return lineDiv;
+}
+
+//replace all spaces in str for html-compliant id's
+function idify(str) {
+    return str.trim().replace(/ /g, '-');
 }
