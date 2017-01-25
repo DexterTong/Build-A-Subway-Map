@@ -14,11 +14,13 @@ const gameState = {
     stations: [],
     transfers: []
 };
+let currentStation;
+let currentLine;
 
 initMap();
 loadGame('nyc2016')
     .then(createGameState)
-    .then(loadSidebarMenu)
+    .then(createSidebarMenu)
     .then(drawAll);
 
 function initMap() {
@@ -90,8 +92,18 @@ function createGameState(data) {
     });*/
 }
 
-function loadSidebarMenu() {
-    const lineMenu = document.getElementById('sidebar-line-menu');
+function createSidebarMenu() {
+    document.getElementById('stations-menu').style.display = 'none';
+    //TODO: visual indication as to which tab is selected
+    document.getElementById('stations-tab').addEventListener('click', function() {
+        document.getElementById('stations-menu').style.display = '';
+        document.getElementById('lines-menu').style.display = 'none';
+    });
+    document.getElementById('lines-tab').addEventListener('click', function() {
+        document.getElementById('lines-menu').style.display = '';
+        document.getElementById('stations-menu').style.display = 'none';
+    });
+    const lineMenu = document.getElementById('lines-list');
     const lineGroupsObject = gameState.lines.reduce((groups, line) => {
         if(groups[line.color])
             groups[line.color].push(line);
@@ -130,7 +142,23 @@ function createLineDiv(line) {
     lineDiv.appendChild(document.createTextNode(line.name));
     lineDiv.style.backgroundColor = line.color;
     lineDiv.onclick = event => {
-
+        currentLine = line;
+        let lineIconContainer = document.getElementById('line-icon-container');
+        if(lineIconContainer.firstChild !== null)
+            lineIconContainer.removeChild(lineIconContainer.firstChild);
+        lineIconContainer.appendChild(lineDiv.cloneNode(true));
+        let term1 = document.getElementById('terminus-1');
+        if(term1.firstChild !== null)
+            term1.removeChild(term1.firstChild);
+        term1.appendChild(document.createTextNode(gameState.stations[line.stations[0]].name));
+        let term2 = document.getElementById('terminus-2');
+        if(term2.firstChild !== null)
+            term2.removeChild(term2.firstChild);
+        term2.appendChild(document.createTextNode(gameState.stations[line.stations[line.stations.length - 1]].name));
+        let numStations = document.getElementById('number-stations');
+        if(numStations.firstChild !== null)
+            numStations.removeChild(numStations.firstChild);
+        numStations.appendChild(document.createTextNode('Stations: ' + line.stations.length));
     };
     return lineDiv;
 }

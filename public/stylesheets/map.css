@@ -55,7 +55,11 @@ html, body, #map {
 
 }
 
-#sidebar-line-menu {
+#lines-menu {
+    display: block;
+}
+
+#lines-list {
     display: flex;
     flex-direction: column;
 }
@@ -88,4 +92,14 @@ html, body, #map {
     -webkit-transform: rotate(0deg);
     -moz-transform: rotate(0deg);
     transform: rotate(0deg);
+}
+
+#tab-menu {
+    list-style-type: none;
+}
+
+#tab-menu li {
+    border: 1px solid #000000;
+    float:left;
+    padding: 5px;
 }

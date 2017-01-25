@@ -20,12 +20,41 @@
             <button type="button" name="undo" id="button-undo" disabled>Undo</button>
             <button type="button" name="redo" id="button-redo" disabled>Redo</button>
         </div>
-        <div id="sidebar-line-editor">
-            <button type="button" name="add station" id="button-add-station">Add Station</button>
-            <div id="sidebar-line-editor-icon"></div>
+        <div id="current-action"></div>
+        <div>
+        <ul id="tab-menu">
+            <li id="stations-tab">Stations</li>
+            <li id="lines-tab">Lines</li>
+        </ul>
+        </div><br><br>
+        <div id="stations-menu">
+            <button type="button" name="add-station" id="button-station-add">New Station</button>
+            <button type="button" name="delete-station" id="button-station-delete">Delete Station</button>
+            <button type="button" name="add-transfer" id="button-transfer-add">New Transfer</button>
+            <button type="button" name="delete-transfer" id="button-transfer-delete">Delete Transfer</button>
+            <div id="station-info" class="info-box">
+                <div id="station-name"></div>
+                <!--<div id="station-borough"></div>
+                <div id="station-neighborhood"></div>-->
+                <div id="station-residents"></div>
+                <div id="station-jobs"></div>
+                <div id="station-lines"></div>
+            </div>
         </div>
-        <div id="sidebar-line-menu"></div>
-        <div id="sidebar-line-map"></div>
+        <div id="lines-menu">
+            <button type="button" name="new-line" id="button-line-add">New Line</button>
+            <button type="button" name="delete-line" id="button-line-delete">Delete Line</button>
+            <button type="button" name="add-station" id="button-line-add-station">Add Station</button>
+            <button type="button" name="delete-station" id="button-line-delete-station">Remove Station</button>
+            <div id="line-info" class="info-box">
+                <div id="line-icon-container"></div>
+                <div id="terminus-1"></div>
+                <div id="terminus-2"></div>
+                <div id="ridership"></div>
+                <div id="number-stations"></div>
+            </div>
+            <div id="lines-list"></div>
+        </div>
     </div>
 </body>
 </html>
