@@ -136,34 +136,73 @@ function createLineGroupDiv(lineGroup) {
 
 function createLineDiv(line) {
     const lineDiv = document.createElement('div');
-    lineDiv.id = idify(line.fullName);
+    lineDiv.id = line.id;
     lineDiv.title = line.fullName;
     lineDiv.classList.add('line', line.express ? 'express' : 'local');
     lineDiv.appendChild(document.createTextNode(line.name));
     lineDiv.style.backgroundColor = line.color;
-    lineDiv.onclick = event => {
-        currentLine = line;
-        let lineIconContainer = document.getElementById('line-icon-container');
-        if(lineIconContainer.firstChild !== null)
-            lineIconContainer.removeChild(lineIconContainer.firstChild);
-        lineIconContainer.appendChild(lineDiv.cloneNode(true));
-        let term1 = document.getElementById('terminus-1');
-        if(term1.firstChild !== null)
-            term1.removeChild(term1.firstChild);
-        term1.appendChild(document.createTextNode(gameState.stations[line.stations[0]].name));
-        let term2 = document.getElementById('terminus-2');
-        if(term2.firstChild !== null)
-            term2.removeChild(term2.firstChild);
-        term2.appendChild(document.createTextNode(gameState.stations[line.stations[line.stations.length - 1]].name));
-        let numStations = document.getElementById('number-stations');
-        if(numStations.firstChild !== null)
-            numStations.removeChild(numStations.firstChild);
-        numStations.appendChild(document.createTextNode('Stations: ' + line.stations.length));
-    };
+    lineDiv.onclick = event => updateLineInfo(event);
     return lineDiv;
+}
+
+function updateLineInfo(event) {
+    let lineId = event.srcElement.id;
+    let lineDiv = document.getElementById(lineId);
+    let line = gameState.lines[lineId];
+    currentLine = line;
+    let lineIconContainer = document.getElementById('line-icon-container');
+    if(lineIconContainer.firstChild !== null)
+        lineIconContainer.removeChild(lineIconContainer.firstChild);
+    let clonedLineDiv = lineDiv.cloneNode(true);
+    clonedLineDiv.removeAttribute('id');
+    lineIconContainer.appendChild(clonedLineDiv);
+    let term1 = document.getElementById('terminus-1');
+    if(term1.firstChild !== null)
+        term1.removeChild(term1.firstChild);
+    if(line.stations.length > 0)
+        term1.appendChild(document.createTextNode(gameState.stations[line.stations[0]].name));
+    let term2 = document.getElementById('terminus-2');
+    if(term2.firstChild !== null)
+        term2.removeChild(term2.firstChild);
+    if(line.stations.length > 0)
+        term2.appendChild(document.createTextNode(gameState.stations[line.stations[line.stations.length - 1]].name));
+    let numStations = document.getElementById('number-stations');
+    if(numStations.firstChild !== null)
+        numStations.removeChild(numStations.firstChild);
+    numStations.appendChild(document.createTextNode('' + line.stations.length));
+    let stationList = document.getElementById('station-list');
+    while(stationList.firstChild !== null) {
+        stationList.removeChild(stationList.firstChild);
+    }
+    populateDOMList(stationList, createStationList(line));
 }
 
 //replace all spaces in str for html-compliant id's
 function idify(str) {
     return str.trim().replace(/ /g, '-');
+}
+
+function createStationList(line) {
+    let stationList = [];
+    if(line === undefined) {
+        let sortedStations = gameState.stations.sort((A, B) => A.name.localeCompare(B.name));
+        sortedStations.forEach(station => {
+            let stationElement = document.createElement('li');
+            stationElement.appendChild(document.createTextNode(station.name));
+            stationList.push(stationElement);
+        });
+    }
+    else {
+        line.stations.forEach(stationId => {
+            let stationElement = document.createElement('li');
+            let station = gameState.stations[stationId];
+            stationElement.appendChild(document.createTextNode(station.name));
+            stationList.push(stationElement);
+        });
+    }
+    return stationList;
+}
+
+function populateDOMList(listNode, arr) {
+    arr.forEach(element => listNode.appendChild(element));
 }

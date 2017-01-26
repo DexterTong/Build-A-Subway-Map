@@ -103,3 +103,10 @@ html, body, #map {
     float:left;
     padding: 5px;
 }
+
+#station-list {
+    border: 1px solid #999999;
+    list-style-type: none;
+    height: 100px;
+    overflow: auto;
+}
