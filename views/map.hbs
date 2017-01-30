@@ -1,7 +1,4 @@
-<!DOCTYPE html>
-<html>
 <head>
-    <link rel='stylesheet' href='/stylesheets/base.css'/>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css"/>
     <link rel="stylesheet" href="/stylesheets/map.css"/>
     <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
@@ -12,51 +9,55 @@
     <script src="/scripts/map.js" defer></script>
 </head>
 <body>
-    <div id="map"></div>
-    <div id="sidebar">
-        <div id="options">
-            <button type="button" name="save" id="button-save" disabled>Save</button>
-            <button type="button" name="load" id="button-load" disabled>Load</button>
-            <button type="button" name="undo" id="button-undo" disabled>Undo</button>
-            <button type="button" name="redo" id="button-redo" disabled>Redo</button>
-        </div>
-        <div id="current-action"></div>
-        <div>
-        <ul id="tab-menu">
-            <li id="stations-tab">Stations</li>
-            <li id="lines-tab">Lines</li>
-        </ul>
-        </div><br><br>
-        <div id="stations-menu">
-            <button type="button" name="add-station" id="button-station-add">New Station</button>
-            <button type="button" name="delete-station" id="button-station-delete">Delete Station</button>
-            <button type="button" name="add-transfer" id="button-transfer-add">New Transfer</button>
-            <button type="button" name="delete-transfer" id="button-transfer-delete">Delete Transfer</button>
-            <div id="station-info" class="info-box">
-                <div id="station-name"></div>
-                <!--<div id="station-borough"></div>
-                <div id="station-neighborhood"></div>-->
-                <div id="station-residents"></div>
-                <div id="station-jobs"></div>
-                <div id="station-lines"></div>
-            </div>
-        </div>
-        <div id="lines-menu">
-            <button type="button" name="new-line" id="button-line-add">New Line</button>
-            <button type="button" name="delete-line" id="button-line-delete">Delete Line</button>
-            <button type="button" name="add-station" id="button-line-add-station">Add Station</button>
-            <button type="button" name="delete-station" id="button-line-delete-station">Remove Station</button>
-            <div id="line-info" class="info-box">
-                <div id="line-icon-container"></div>
-                <div id="terminus-1"></div>
-                <div id="terminus-2"></div>
-                <div id="ridership"></div>
-                <p>Station Count: <span id="number-stations"></span></p>
-                    <ul id="station-list">
-                    </ul>
-                </div>
-            <div id="lines-list"></div>
-        </div>
+<div id="map"></div>
+<section id="sidebar">
+    <div id="options">
+        <button type="button" name="save" id="button-save" disabled>Save</button>
+        <button type="button" name="load" id="button-load" disabled>Load</button>
+        <button type="button" name="undo" id="button-undo" disabled>Undo</button>
+        <button type="button" name="redo" id="button-redo" disabled>Redo</button>
     </div>
+    <p id="current-action"></p>
+    <div>
+        <ul class="tab-menu">
+            <li class="tab-link">Lines</li>
+            <li class="tab-link">Stations</li>
+            <li class="tab-link">Transfers</li>
+        </ul>
+    </div>
+    <br><br>
+    <section id="lines-content" class="tab-content">
+        <button type="button" name="new-line" id="button-line-add" disabled>New Line</button>
+        <button type="button" name="delete-line" id="button-line-delete" disabled>Delete Line</button>
+        <button type="button" name="add-station" id="button-line-add-station" disabled>Add Station</button>
+        <button type="button" name="delete-station" id="button-line-delete-station" disabled>Remove Station</button>
+        <div id="line-info" class="info-box">
+            <div id="line-icon-container"></div>
+            <div id="terminus-1"></div>
+            <div id="terminus-2"></div>
+            <div id="ridership"></div>
+            <p>Station Count: <span id="number-stations"></span></p>
+            <ul id="station-list">
+            </ul>
+        </div>
+        <div id="lines-list"></div>
+    </section>
+    <section id="stations-content" class="tab-content">
+        <button type="button" name="add-station" id="button-station-add" disabled>New Station</button>
+        <button type="button" name="delete-station" id="button-station-delete" disabled>Delete Station</button>
+        <button type="button" name="add-transfer" id="button-transfer-add" disabled>New Transfer</button>
+        <button type="button" name="delete-transfer" id="button-transfer-delete" disabled>Delete Transfer</button>
+        <div id="station-info" class="info-box">
+            <div id="station-name"></div>
+            <!--<div id="station-borough"></div>
+            <div id="station-neighborhood"></div>-->
+            <div id="station-residents"></div>
+            <div id="station-jobs"></div>
+            <div id="station-lines"></div>
+        </div>
+    </section>
+    <section id="transfers-content" class="tab-content">
+        <p>This is the transfers tab.</p>
+    </section>
+</section>
 </body>
-</html>

@@ -93,16 +93,6 @@ function createGameState(data) {
 }
 
 function createSidebarMenu() {
-    document.getElementById('stations-menu').style.display = 'none';
-    //TODO: visual indication as to which tab is selected
-    document.getElementById('stations-tab').addEventListener('click', function() {
-        document.getElementById('stations-menu').style.display = '';
-        document.getElementById('lines-menu').style.display = 'none';
-    });
-    document.getElementById('lines-tab').addEventListener('click', function() {
-        document.getElementById('lines-menu').style.display = '';
-        document.getElementById('stations-menu').style.display = 'none';
-    });
     const lineMenu = document.getElementById('lines-list');
     const lineGroupsObject = gameState.lines.reduce((groups, line) => {
         if(groups[line.color])

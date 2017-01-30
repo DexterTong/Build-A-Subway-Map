@@ -94,14 +94,18 @@ html, body, #map {
     transform: rotate(0deg);
 }
 
-#tab-menu {
+.tab-menu {
     list-style-type: none;
 }
 
-#tab-menu li {
+.tab-link {
     border: 1px solid #000000;
     float:left;
     padding: 5px;
+}
+
+.active {
+    background-color: #00B7FF;
 }
 
 #station-list {
