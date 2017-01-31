@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     moveHeaderToSidebar();
     addListeners();
-    setDefaults();
 });
 
 function moveHeaderToSidebar() {
@@ -32,7 +31,6 @@ function addTabListeners() {
                 break;
             case 'Transfers':
                 tabContentId = 'transfers-content';
-                break;
         }
         tabLinks[i].addEventListener('click', function(event){
            switchTab(event.target, tabContentId);
@@ -57,6 +55,8 @@ function switchTab(tabLinkElement, tabContentId) {
     }
 }
 
+//called by map.js
 function setDefaults() {
     document.getElementsByClassName('tab-link')[0].click();
+    document.getElementsByClassName('line')[0].click();
 }

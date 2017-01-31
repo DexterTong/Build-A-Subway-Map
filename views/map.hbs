@@ -9,14 +9,22 @@
     <script src="/scripts/map.js" defer></script>
 </head>
 <body>
-<div id="map"></div>
+<main id="map"></main>
 <section id="sidebar">
-    <div id="options">
-        <button type="button" name="save" id="button-save" disabled>Save</button>
-        <button type="button" name="load" id="button-load" disabled>Load</button>
-        <button type="button" name="undo" id="button-undo" disabled>Undo</button>
-        <button type="button" name="redo" id="button-redo" disabled>Redo</button>
-    </div>
+    <ul id="options" class="horizontal">
+        <li>
+            <button type="button" name="save" id="button-save" disabled>Save</button>
+        </li>
+        <li>
+            <button type="button" name="load" id="button-load" disabled>Load</button>
+        </li>
+        <li>
+            <button type="button" name="undo" id="button-undo" disabled>Undo</button>
+        </li>
+        <li>
+            <button type="button" name="redo" id="button-redo" disabled>Redo</button>
+        </li>
+    </ul>
     <p id="current-action"></p>
     <div>
         <ul class="tab-menu">
@@ -27,36 +35,70 @@
     </div>
     <br><br>
     <section id="lines-content" class="tab-content">
-        <button type="button" name="new-line" id="button-line-add" disabled>New Line</button>
-        <button type="button" name="delete-line" id="button-line-delete" disabled>Delete Line</button>
-        <button type="button" name="add-station" id="button-line-add-station" disabled>Add Station</button>
-        <button type="button" name="delete-station" id="button-line-delete-station" disabled>Remove Station</button>
+        <ul class="horizontal">
+            <li>
+                <button type="button" name="new-line" id="button-line-add" disabled>New Line</button>
+            </li>
+            <li>
+                <button type="button" name="delete-line" id="button-line-delete" disabled>Delete Line</button>
+            </li>
+            <li>
+                <button type="button" name="add-station" id="button-line-add-station" disabled>Add Station</button>
+            </li>
+            <li>
+                <button type="button" name="delete-station" id="button-line-delete-station" disabled>Remove Station
+                </button>
+            </li>
+        </ul>
         <div id="line-info" class="info-box">
             <div id="line-icon-container"></div>
-            <div id="terminus-1"></div>
-            <div id="terminus-2"></div>
+            <p>
+                <span id="terminus-1"></span>
+                <br>
+                <span id="terminus-2"></span>
+            </p>
             <div id="ridership"></div>
             <p>Station Count: <span id="number-stations"></span></p>
-            <ul id="station-list">
-            </ul>
+            <ul id="line-station-list"></ul>
         </div>
         <div id="lines-list"></div>
     </section>
     <section id="stations-content" class="tab-content">
-        <button type="button" name="add-station" id="button-station-add" disabled>New Station</button>
-        <button type="button" name="delete-station" id="button-station-delete" disabled>Delete Station</button>
-        <button type="button" name="add-transfer" id="button-transfer-add" disabled>New Transfer</button>
-        <button type="button" name="delete-transfer" id="button-transfer-delete" disabled>Delete Transfer</button>
+        <ul class="horizontal">
+            <li>
+                <button type="button" name="add-station" id="button-station-add" disabled>New Station</button>
+            </li>
+            <li>
+                <button type="button" name="delete-station" id="button-station-delete" disabled>Delete Station</button>
+            </li>
+            <li>
+                <button type="button" name="add-transfer" id="button-transfer-add" disabled>New Transfer</button>
+            </li>
+            <li>
+                <button type="button" name="delete-transfer" id="button-transfer-delete" disabled>Delete Transfer
+                </button>
+            </li>
+        </ul>
         <div id="station-info" class="info-box">
-            <div id="station-name"></div>
-            <!--<div id="station-borough"></div>
-            <div id="station-neighborhood"></div>-->
-            <div id="station-residents"></div>
-            <div id="station-jobs"></div>
+            <p id="station-name"></p>
+            <!--
+            <p>
+                <span id="station-borough"></span>
+                <br>
+                <span id="station-neighborhood"></span>
+            </p>
+            -->
+            <p>
+                <span id="station-residents"></span>
+                <span id="station-jobs"></span>
+            </p>
             <div id="station-lines"></div>
         </div>
+        <ul id="station-list"></ul>
     </section>
     <section id="transfers-content" class="tab-content">
+        <div id="transfer-info" class="info-box">
+        </div>
         <p>This is the transfers tab.</p>
     </section>
 </section>

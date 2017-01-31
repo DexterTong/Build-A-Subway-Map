@@ -17,5 +17,6 @@ function drawStation(station) {
     linesAtStation.forEach(lineName => {popupText += lineName + ' '});
     L.marker(station.latLng, {icon:stationLocalIcon})
         .addTo(gameMap)
-        .bindPopup(popupText);
+        .bindPopup(popupText)
+        .addEventListener('click', updateStationInfo.bind(this, station.id));
 }

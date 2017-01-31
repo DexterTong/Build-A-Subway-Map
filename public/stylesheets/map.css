@@ -95,7 +95,6 @@ html, body, #map {
 }
 
 .tab-menu {
-    list-style-type: none;
 }
 
 .tab-link {
@@ -110,7 +109,20 @@ html, body, #map {
 
 #station-list {
     border: 1px solid #999999;
-    list-style-type: none;
     height: 100px;
     overflow: auto;
+}
+
+.info-box {
+    border: 1px solid #999999;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.horizontal li{
+    display: inline;
 }
