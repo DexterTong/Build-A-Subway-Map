@@ -56,7 +56,10 @@ function switchTab(tabLinkElement, tabContentId) {
 }
 
 //called by map.js
-function setDefaults() {
+function initDefaults() {
     document.getElementsByClassName('tab-link')[0].click();
     document.getElementsByClassName('line')[0].click();
+    document.getElementsByClassName('leaflet-marker-pane')[0].firstChild.click();
+    const stationList = document.getElementById('station-list');
+    createStationArray(undefined, true).forEach(stationElement => {stationList.appendChild(stationElement)});
 }

@@ -107,10 +107,16 @@ html, body, #map {
     background-color: #00B7FF;
 }
 
-#station-list {
+#line-station-list {
     border: 1px solid #999999;
     height: 100px;
     overflow: auto;
+}
+
+#station-list {
+    border: 1px solid #999999;
+    overflow: auto;
+    height: 300px;
 }
 
 .info-box {

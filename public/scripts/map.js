@@ -22,7 +22,7 @@ loadGame('nyc2016')
     .then(createGameState)
     .then(createSidebarMenu)
     .then(drawAll)
-    .then(setDefaults);
+    .then(initDefaults);
 
 function initMap() {
     gameMap = L.map('map', {
@@ -104,18 +104,20 @@ function createSidebarMenu() {
     }, {});
     const lineGroupsKeys = Object.keys(lineGroupsObject);
     const lineGroups = [];
-    lineGroupsKeys.forEach(key => lineGroups.push(lineGroupsObject[key]));
-    lineGroups.forEach(lineGroup => lineGroup.sort((A, B) => {
-        const res = A.name.localeCompare(B.name);
-        if (res !== 0)
-            return res;
-        if (B.express)
-            return -1;
-        return 1;
-    }));
-    lineGroups.sort((A, B) => {
-        return A[0].name.localeCompare(B[0].name)
+    lineGroupsKeys.forEach(key => {
+        lineGroups.push(lineGroupsObject[key])
     });
+    lineGroups.forEach(lineGroup => {
+        lineGroup.sort((A, B) => {
+            const res = A.name.localeCompare(B.name);
+            if (res !== 0)
+                return res;
+            if (B.express)
+                return -1;
+            return 1;
+        })
+    });
+    lineGroups.sort((A, B) => A[0].name.localeCompare(B[0].name));
     lineGroups.forEach(lineGroup => {
         lineMenu.appendChild(createLineGroupDiv(lineGroup))
     });
@@ -138,7 +140,9 @@ function createLineDiv(line) {
     lineDiv.classList.add('line', line.express ? 'express' : 'local');
     lineDiv.appendChild(document.createTextNode(line.name));
     lineDiv.style.backgroundColor = line.color;
-    lineDiv.onclick = event => updateLineInfo(event);
+    lineDiv.onclick = event => {
+        updateLineInfo(event)
+    };
     return lineDiv;
 }
 
@@ -171,10 +175,11 @@ function updateLineInfo(event) {
     while (stationList.firstChild !== null) {
         stationList.removeChild(stationList.firstChild);
     }
-    populateDOMList(stationList, createStationList(line));
+    populateDOMList(stationList, createStationArray(line, true));
 }
 
 function updateStationInfo(stationId) {
+    console.log(stationId);
     const station = currentStation = gameState.stations[stationId];
     replaceChildren(document.getElementById('station-name'), document.createTextNode(station.name));
     replaceChildren(document.getElementById('station-lines'), makeLineSpanArray(station.lines));
@@ -209,27 +214,35 @@ function idify(str) {
     return str.trim().replace(/ /g, '-');
 }
 
-function createStationList(line) {
+function createStationArray(line, addLink) {
     const stationList = [];
+    const addStation = station => {
+        const stationElement = document.createElement('li');
+        stationElement.appendChild(document.createTextNode(station.name + ' | '));
+        makeLineSpanArray(station.lines).forEach(lineSpan => {
+            stationElement.appendChild(lineSpan)
+        });
+        if(addLink)
+            stationElement.addEventListener('click', updateStationInfo.bind(this, station.id));
+        stationList.push(stationElement);
+    };
     if (line === undefined) {
-        const sortedStations = gameState.stations.sort((A, B) => A.name.localeCompare(B.name));
+        const sortedStations = gameState.stations.slice().sort((A, B) => A.name.localeCompare(B.name));
         sortedStations.forEach(station => {
-            const stationElement = document.createElement('li');
-            stationElement.appendChild(document.createTextNode(station.name));
-            stationList.push(stationElement);
+            addStation(station);
         });
     }
     else {
         line.stations.forEach(stationId => {
-            const stationElement = document.createElement('li');
             const station = gameState.stations[stationId];
-            stationElement.appendChild(document.createTextNode(station.name));
-            stationList.push(stationElement);
+            addStation(station);
         });
     }
     return stationList;
 }
 
 function populateDOMList(listNode, arr) {
-    arr.forEach(element => listNode.appendChild(element));
+    arr.forEach(element => {
+        listNode.appendChild(element)
+    });
 }
