@@ -14,7 +14,7 @@ function drawStation(station) {
     //TODO: display both local and express route bullets where necessary, like '61 St-Woodside'
     const linesAtStation = new Set();
     station.lines.forEach(lineId => linesAtStation.add(gameState.lines[lineId].name));
-    linesAtStation.forEach(lineName => {popupText += lineName + ' '});
+    linesAtStation.forEach(lineName => {popupText += lineName + ' ';});
     L.marker(station.latLng, {icon:stationLocalIcon})
         .addTo(gameMap)
         .bindPopup(popupText)

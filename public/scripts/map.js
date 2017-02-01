@@ -42,12 +42,12 @@ function initMap() {
     }).addTo(gameMap);
     L.tileLayer(tileURL, tileLayerOptions).addTo(gameMap);
     //gameMap.on('click', addStation);
-    gameMap.on('click', function (event) {
+    /*gameMap.on('click', function (event) {
         L.popup()
             .setLatLng(event.latlng)
             .setContent(event.latlng.toString())
             .openOn(gameMap);
-    });
+    });*/
 }
 
 function addStation(event) {
@@ -105,7 +105,7 @@ function createSidebarMenu() {
     const lineGroupsKeys = Object.keys(lineGroupsObject);
     const lineGroups = [];
     lineGroupsKeys.forEach(key => {
-        lineGroups.push(lineGroupsObject[key])
+        lineGroups.push(lineGroupsObject[key]);
     });
     lineGroups.forEach(lineGroup => {
         lineGroup.sort((A, B) => {
@@ -115,21 +115,17 @@ function createSidebarMenu() {
             if (B.express)
                 return -1;
             return 1;
-        })
+        });
     });
     lineGroups.sort((A, B) => A[0].name.localeCompare(B[0].name));
-    lineGroups.forEach(lineGroup => {
-        lineMenu.appendChild(createLineGroupDiv(lineGroup))
-    });
+    lineGroups.forEach(lineGroup => {lineMenu.appendChild(createLineGroupDiv(lineGroup));});
 }
 
 function createLineGroupDiv(lineGroup) {
     const lineGroupDiv = document.createElement('div');
     lineGroupDiv.id = lineGroup[0].color;
     lineGroupDiv.classList.add('line-group');
-    lineGroup.forEach(line => {
-        lineGroupDiv.appendChild(createLineDiv(line))
-    });
+    lineGroup.forEach(line => {lineGroupDiv.appendChild(createLineDiv(line));});
     return lineGroupDiv;
 }
 
@@ -140,9 +136,7 @@ function createLineDiv(line) {
     lineDiv.classList.add('line', line.express ? 'express' : 'local');
     lineDiv.appendChild(document.createTextNode(line.name));
     lineDiv.style.backgroundColor = line.color;
-    lineDiv.onclick = event => {
-        updateLineInfo(event)
-    };
+    lineDiv.onclick = event => {updateLineInfo(event);};
     return lineDiv;
 }
 
@@ -157,16 +151,8 @@ function updateLineInfo(event) {
     const clonedLineDiv = lineDiv.cloneNode(true);
     clonedLineDiv.removeAttribute('id');
     lineIconContainer.appendChild(clonedLineDiv);
-    const term1 = document.getElementById('terminus-1');
-    if (term1.firstChild !== null)
-        term1.removeChild(term1.firstChild);
-    if (line.stations.length > 0)
-        term1.appendChild(document.createTextNode(gameState.stations[line.stations[0]].name));
-    const term2 = document.getElementById('terminus-2');
-    if (term2.firstChild !== null)
-        term2.removeChild(term2.firstChild);
-    if (line.stations.length > 0)
-        term2.appendChild(document.createTextNode(gameState.stations[line.stations[line.stations.length - 1]].name));
+    replaceChildren(document.getElementById('terminus-1'), document.createTextNode(gameState.stations[line.stations[0]].name));
+    replaceChildren(document.getElementById('terminus-2'), document.createTextNode(gameState.stations[line.stations[line.stations.length - 1]].name));
     const numStations = document.getElementById('number-stations');
     if (numStations.firstChild !== null)
         numStations.removeChild(numStations.firstChild);
@@ -180,7 +166,8 @@ function updateLineInfo(event) {
 
 function updateStationInfo(stationId) {
     console.log(stationId);
-    const station = currentStation = gameState.stations[stationId];
+    const station = gameState.stations[stationId];
+    currentStation = station;
     replaceChildren(document.getElementById('station-name'), document.createTextNode(station.name));
     replaceChildren(document.getElementById('station-lines'), makeLineSpanArray(station.lines));
 }
@@ -202,7 +189,10 @@ function makeLineSpanArray(lineIds) {
         const lineSpan = document.createElement('span');
         lineSpan.appendChild(document.createTextNode(line.name));
         lineSpan.classList.add('line');
-        line.express ? lineSpan.classList.add('express') : lineSpan.classList.add('local');
+        if(line.express)
+            lineSpan.classList.add('express');
+        else
+            lineSpan.classList.add('local');
         lineSpan.style.backgroundColor = line.color;
         lineSpans.push(lineSpan);
     });
@@ -219,18 +209,14 @@ function createStationArray(line, addLink) {
     const addStation = station => {
         const stationElement = document.createElement('li');
         stationElement.appendChild(document.createTextNode(station.name + ' | '));
-        makeLineSpanArray(station.lines).forEach(lineSpan => {
-            stationElement.appendChild(lineSpan)
-        });
+        makeLineSpanArray(station.lines).forEach(lineSpan => {stationElement.appendChild(lineSpan);});
         if(addLink)
             stationElement.addEventListener('click', updateStationInfo.bind(this, station.id));
         stationList.push(stationElement);
     };
     if (line === undefined) {
         const sortedStations = gameState.stations.slice().sort((A, B) => A.name.localeCompare(B.name));
-        sortedStations.forEach(station => {
-            addStation(station);
-        });
+        sortedStations.forEach(station => {addStation(station);});
     }
     else {
         line.stations.forEach(stationId => {
@@ -242,7 +228,5 @@ function createStationArray(line, addLink) {
 }
 
 function populateDOMList(listNode, arr) {
-    arr.forEach(element => {
-        listNode.appendChild(element)
-    });
+    arr.forEach(element => {listNode.appendChild(element);});
 }
