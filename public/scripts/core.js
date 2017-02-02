@@ -12,13 +12,12 @@ const core = (function () {
 
     document.addEventListener('DOMContentLoaded', () => {
         Map.initialize();
+        UI.initialize();
         fileIO.loadFromServer('nyc2016')
-            .then(data => {
-                createGameState(data)
-            })
-            .then(function () {
-                Map.draw(state);
-                UI.initialize(state);
+            .then(data => {createGameState(data);})
+            .then(() => {
+                Map.update();
+                UI.update();
             });
     });
 
@@ -46,8 +45,16 @@ const core = (function () {
     function getTransfer(transferId) {
     }
 
+    function getAllLines() {
+        return state.lines.slice();
+    }
+
     function getAllStations() {
         return state.stations.slice();
+    }
+
+    function getAllTransfers() {
+        return state.transfers.slice();
     }
 
     function setActiveLine(lineId) {
@@ -69,7 +76,9 @@ const core = (function () {
         getLine: getLine,
         getStation: getStation,
         getTransfer: getTransfer,
+        getAllLines: getAllLines,
         getAllStations: getAllStations,
+        getAllTransfers: getAllTransfers,
         setActiveLine: setActiveLine,
         setActiveStation: setActiveStation,
         setActiveTransfer: setActiveTransfer

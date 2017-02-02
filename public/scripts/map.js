@@ -1,8 +1,12 @@
 const Map = (function () {
 
+    let map;
     const LATLNG_NYC = L.latLng(40.7128, -74.0061); //City Hall, New York City
-
-    let gameMap;
+    const markers = {
+        lines: [],
+        stations: [],
+        transfers: []
+    };
 
     const stationLocalIcon = L.divIcon({
         className: 'station local',
@@ -15,29 +19,37 @@ const Map = (function () {
     });
 
     function initialize() {
-        gameMap = L.map(UI.getMap(), {zoomControl: false});
+        map = L.map(UI.getMap(), {zoomControl: false});
         const defaultLocation = LATLNG_NYC;
-        gameMap.setView(defaultLocation, 13);
+        map.setView(defaultLocation, 13);
         const tileURL = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
         const tileLayerOptions = {
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
             maxZoom: 18,
             id: 'build.a.subway.map'
         };
-        L.control.zoom({position: 'topright'}).addTo(gameMap);
-        L.tileLayer(tileURL, tileLayerOptions).addTo(gameMap);
+        L.control.zoom({position: 'topright'}).addTo(map);
+        L.tileLayer(tileURL, tileLayerOptions).addTo(map);
     }
 
-    function draw(state) {
-        state.lines.forEach(drawLine);
-        state.stations.forEach(drawStation);
-        //state.transfers.forEach(drawTransfer);
+    function update() {
+        deleteAllMarkers();
+        core.getAllLines().forEach(drawLine);
+        core.getAllStations().forEach(drawStation);
+        core.getAllTransfers().forEach(drawTransfer);
+    }
+
+    function deleteAllMarkers() {
+        markers.lines.forEach(linePoly => map.removeLayer(linePoly));
+        markers.stations.forEach(stationMarker => map.removeLayer(stationMarker));
+        markers.transfers.forEach(transferPoly => map.removeLayer(transferPoly));
     }
 
     function drawLine(line) {
         const pointsToDraw = line.stations.map(stationId => core.getStation(stationId).latLng);
-        L.polyline(pointsToDraw, {color: line.color})
-            .addTo(gameMap);
+        const linePoly = L.polyline(pointsToDraw, {color: line.color});
+        markers.lines.push(linePoly);
+        linePoly.addTo(map);
     }
 
     function drawStation(station) {
@@ -45,10 +57,13 @@ const Map = (function () {
         const linesAtStation = new Set();
         station.lines.forEach(lineId => linesAtStation.add(core.getLine(lineId).name));
         linesAtStation.forEach(lineName => {popupText += lineName + ' ';});
-        L.marker(station.latLng, {icon:stationLocalIcon})
-            .addTo(gameMap)
-            .bindPopup(popupText)
+        const stationMarker = L.marker(station.latLng, {icon:stationLocalIcon});
+        markers.stations.push(stationMarker);
+        stationMarker.addTo(map).bindPopup(popupText)
             .addEventListener('click', core.setActiveStation.bind(this, station.id));
+    }
+
+    function drawTransfer(transfer) {
     }
 
     function setActiveLine(lineId) {
@@ -56,7 +71,7 @@ const Map = (function () {
 
     return {
         initialize: initialize,
-        draw: draw,
+        update: update,
         setActiveLine: setActiveLine
     };
 })();

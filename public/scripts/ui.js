@@ -4,14 +4,13 @@ const UI = (function () {
         return document.getElementById('map');
     }
 
-    function initialize(state) {
+    function initialize() {
         const header = document.getElementById('main-header');
         const sidebar = document.getElementById('sidebar');
         header.parentNode.removeChild(header);
         sidebar.insertBefore(header, sidebar.firstChild);
         document.getElementById('button-save').onclick = core.saveGame;
         addMenuSwitchers();
-        update(state);
     }
 
     function addMenuSwitchers() {
@@ -55,9 +54,9 @@ const UI = (function () {
         }
     }
 
-    function update(state) {
+    function update() {
         const lineMenu = document.getElementById('lines-list');
-        const lineGroupsObject = state.lines.reduce((groups, line) => {
+        const lineGroupsObject = core.getAllLines().reduce((groups, line) => {
             if (groups[line.color])
                 groups[line.color].push(line);
             else
@@ -157,7 +156,6 @@ const UI = (function () {
         return lineSpans;
     }
 
-//replace all spaces in str for html-compliant id's
     function idify(str) {
         return str.trim().replace(/ /g, '-');
     }
@@ -189,22 +187,18 @@ const UI = (function () {
         arr.forEach(element => {listNode.appendChild(element);});
     }
 
-    function downloadSave(data) {
-        const save = document.createElement('a');
-        save.href = 'data:' + data;
-        save.download = generateSaveName();
-        save.click();
-        save.remove();
-    }
-
-    function generateSaveName() {
-        // Generate a unique-enough filename
-        return 'basm-' + Math.random().toString(36).substr(2, 6) + '.json';
+    function downloadSave(save) {
+        const saveLink = document.createElement('a');
+        saveLink.href = 'data:' + save.data;
+        saveLink.download = save.name;
+        saveLink.click();
+        saveLink.remove();
     }
 
     return {
         getMap: getMap,
         initialize: initialize,
+        update: update,
         setActiveLine: setActiveLine,
         setActiveStation: setActiveStation,
         downloadSave: downloadSave

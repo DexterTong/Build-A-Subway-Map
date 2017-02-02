@@ -1,7 +1,10 @@
 const fileIO = (function() {
 
     function generateSave(state) {
-        return 'text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(state, null, 4));
+        return {
+            name: 'basm-' + Math.random().toString(36).substr(2, 6) + '.json',
+            data: 'text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(state, null, 4))
+        };
     }
 
     function loadFromLocal(name) {
