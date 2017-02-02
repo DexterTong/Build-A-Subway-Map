@@ -1,6 +1,20 @@
 const UI = (function () {
 
-    function _addMenuSwitchers() {
+    function getMap() {
+        return document.getElementById('map');
+    }
+
+    function initialize(state) {
+        const header = document.getElementById('main-header');
+        const sidebar = document.getElementById('sidebar');
+        header.parentNode.removeChild(header);
+        sidebar.insertBefore(header, sidebar.firstChild);
+        document.getElementById('button-save').onclick = core.saveGame;
+        addMenuSwitchers();
+        update(state);
+    }
+
+    function addMenuSwitchers() {
         const tabContents = document.getElementsByClassName('tab-content');
         for(let i = 0; i < tabContents.length; i++) {
             tabContents[i].style.display = 'none';
@@ -19,12 +33,12 @@ const UI = (function () {
                     tabContentId = 'transfers-content';
             }
             tabLinks[i].addEventListener('click', function(event){
-                _switchMenu(event.target, tabContentId);
+                switchMenu(event.target, tabContentId);
             });
         }
     }
 
-    function _switchMenu(tabLinkElement, tabContentId) {
+    function switchMenu(tabLinkElement, tabContentId) {
         const menuLinks = document.getElementsByClassName('tab-link');
         for(let i = 0; i < menuLinks.length; i++) {
             if(menuLinks[i] === tabLinkElement)
@@ -41,7 +55,7 @@ const UI = (function () {
         }
     }
 
-    function _update(state) {
+    function update(state) {
         const lineMenu = document.getElementById('lines-list');
         const lineGroupsObject = state.lines.reduce((groups, line) => {
             if (groups[line.color])
@@ -68,7 +82,7 @@ const UI = (function () {
         lineGroups.sort((A, B) => A[0].name.localeCompare(B[0].name));
         lineGroups.forEach(lineGroup => {lineMenu.appendChild(createLineGroupDiv(lineGroup));});
         const stationList = document.getElementById('station-list');
-        createStationArray(undefined, true).forEach(stationElement => {stationList.appendChild(stationElement)});
+        createStationArray(undefined, true).forEach(stationElement => {stationList.appendChild(stationElement);});
     }
 
     function createLineGroupDiv(lineGroup) {
@@ -86,11 +100,11 @@ const UI = (function () {
         lineDiv.classList.add('line', line.express ? 'express' : 'local');
         lineDiv.appendChild(document.createTextNode(line.name));
         lineDiv.style.backgroundColor = line.color;
-        lineDiv.onclick = event => {updateActiveLine(event.srcElement.id);};
+        lineDiv.onclick = event => {core.setActiveLine(event.srcElement.id);};
         return lineDiv;
     }
 
-    function _updateActiveLine(line) {
+    function setActiveLine(line) {
         const lineDiv = document.getElementById(line.id);
         const lineIconContainer = document.getElementById('line-icon-container');
         if (lineIconContainer.firstChild !== null)
@@ -98,8 +112,8 @@ const UI = (function () {
         const clonedLineDiv = lineDiv.cloneNode(true);
         clonedLineDiv.removeAttribute('id');
         lineIconContainer.appendChild(clonedLineDiv);
-        replaceChildren(document.getElementById('terminus-1'), document.createTextNode(getStation(line.stations[0]).name));
-        replaceChildren(document.getElementById('terminus-2'), document.createTextNode(getStation(line.stations[line.stations.length - 1]).name));
+        replaceChildren(document.getElementById('terminus-1'), document.createTextNode(core.getStation(line.stations[0]).name));
+        replaceChildren(document.getElementById('terminus-2'), document.createTextNode(core.getStation(line.stations[line.stations.length - 1]).name));
         const numStations = document.getElementById('number-stations');
         if (numStations.firstChild !== null)
             numStations.removeChild(numStations.firstChild);
@@ -111,7 +125,7 @@ const UI = (function () {
         populateDOMList(stationList, createStationArray(line, true));
     }
 
-    function _updateActiveStation(station) {
+    function setActiveStation(station) {
         replaceChildren(document.getElementById('station-name'), document.createTextNode(station.name));
         replaceChildren(document.getElementById('station-lines'), makeLineSpanArray(station.lines));
     }
@@ -129,7 +143,7 @@ const UI = (function () {
     function makeLineSpanArray(lineIds) {
         const lineSpans = [];
         lineIds.forEach(lineId => {
-            const line = state.lines[lineId];
+            const line = core.getLine(lineId);
             const lineSpan = document.createElement('span');
             lineSpan.appendChild(document.createTextNode(line.name));
             lineSpan.classList.add('line');
@@ -155,16 +169,16 @@ const UI = (function () {
             stationElement.appendChild(document.createTextNode(station.name + ' | '));
             makeLineSpanArray(station.lines).forEach(lineSpan => {stationElement.appendChild(lineSpan);});
             if(addLink)
-                stationElement.addEventListener('click', updateActiveStation.bind(this, station.id));
+                stationElement.addEventListener('click', core.setActiveStation.bind(this, station.id));
             stationList.push(stationElement);
         };
         if (line === undefined) {
-            const sortedStations = state.stations.slice().sort((A, B) => A.name.localeCompare(B.name));
+            const sortedStations = core.getAllStations().sort((A, B) => A.name.localeCompare(B.name));
             sortedStations.forEach(station => {addStation(station);});
         }
         else {
             line.stations.forEach(stationId => {
-                const station = state.stations[stationId];
+                const station = core.getStation(stationId);
                 addStation(station);
             });
         }
@@ -175,24 +189,24 @@ const UI = (function () {
         arr.forEach(element => {listNode.appendChild(element);});
     }
 
+    function downloadSave(data) {
+        const save = document.createElement('a');
+        save.href = 'data:' + data;
+        save.download = generateSaveName();
+        save.click();
+        save.remove();
+    }
+
+    function generateSaveName() {
+        // Generate a unique-enough filename
+        return 'basm-' + Math.random().toString(36).substr(2, 6) + '.json';
+    }
+
     return {
-
-        getMap: function () {
-            return document.getElementById('map')
-        },
-
-        initialize: function (state) {
-            const header = document.getElementById('main-header');
-            const sidebar = document.getElementById('sidebar');
-            header.parentNode.removeChild(header);
-            sidebar.insertBefore(header, sidebar.firstChild);
-
-            _addMenuSwitchers();
-            _update(state);
-        },
-
-        updateActiveLine: _updateActiveLine,
-
-        updateActiveStation: _updateActiveStation
+        getMap: getMap,
+        initialize: initialize,
+        setActiveLine: setActiveLine,
+        setActiveStation: setActiveStation,
+        downloadSave: downloadSave
     };
 })();
