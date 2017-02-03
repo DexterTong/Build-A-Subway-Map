@@ -9,15 +9,17 @@ const UI = (function () {
         const sidebar = document.getElementById('sidebar');
         header.parentNode.removeChild(header);
         sidebar.insertBefore(header, sidebar.firstChild);
+
+        const tabContents = document.getElementsByClassName('tab-content');
+        for(let i = 0; i < tabContents.length; i++) {
+            tabContents[i].style.display = 'none';
+        }
+
         document.getElementById('button-save').onclick = core.saveGame;
         addMenuSwitchers();
     }
 
     function addMenuSwitchers() {
-        const tabContents = document.getElementsByClassName('tab-content');
-        for(let i = 0; i < tabContents.length; i++) {
-            tabContents[i].style.display = 'none';
-        }
         const tabLinks = document.getElementsByClassName('tab-link');
         for(let i = 0; i < tabLinks.length; i++) {
             let tabContentId;
@@ -79,20 +81,20 @@ const UI = (function () {
             });
         });
         lineGroups.sort((A, B) => A[0].name.localeCompare(B[0].name));
-        lineGroups.forEach(lineGroup => {lineMenu.appendChild(createLineGroupDiv(lineGroup));});
+        lineGroups.forEach(lineGroup => {lineMenu.appendChild(createLineGroup(lineGroup));});
         const stationList = document.getElementById('station-list');
         createStationArray(undefined, true).forEach(stationElement => {stationList.appendChild(stationElement);});
     }
 
-    function createLineGroupDiv(lineGroup) {
+    function createLineGroup(lineGroup) {
         const lineGroupDiv = document.createElement('div');
         lineGroupDiv.id = lineGroup[0].color;
         lineGroupDiv.classList.add('line-group');
-        lineGroup.forEach(line => {lineGroupDiv.appendChild(createLineDiv(line));});
+        lineGroup.forEach(line => {lineGroupDiv.appendChild(createLine(line));});
         return lineGroupDiv;
     }
 
-    function createLineDiv(line) {
+    function createLine(line) {
         const lineDiv = document.createElement('div');
         lineDiv.id = line.id;
         lineDiv.title = line.fullName;
@@ -121,12 +123,12 @@ const UI = (function () {
         while (stationList.firstChild !== null) {
             stationList.removeChild(stationList.firstChild);
         }
-        populateDOMList(stationList, createStationArray(line, true));
+        createStationArray(line, true).forEach(station => {stationList.appendChild(station)});
     }
 
     function setActiveStation(station) {
         replaceChildren(document.getElementById('station-name'), document.createTextNode(station.name));
-        replaceChildren(document.getElementById('station-lines'), makeLineSpanArray(station.lines));
+        replaceChildren(document.getElementById('station-lines'), createLineArray(station.lines));
     }
 
     function replaceChildren(node, newChildren) {
@@ -139,21 +141,21 @@ const UI = (function () {
             node.appendChild(newChildren);
     }
 
-    function makeLineSpanArray(lineIds) {
-        const lineSpans = [];
+    function createLineArray(lineIds) {
+        const lineElements = [];
         lineIds.forEach(lineId => {
             const line = core.getLine(lineId);
-            const lineSpan = document.createElement('span');
-            lineSpan.appendChild(document.createTextNode(line.name));
-            lineSpan.classList.add('line');
+            const lineElement = document.createElement('span');
+            lineElement.appendChild(document.createTextNode(line.name));
+            lineElement.classList.add('line');
             if(line.express)
-                lineSpan.classList.add('express');
+                lineElement.classList.add('express');
             else
-                lineSpan.classList.add('local');
-            lineSpan.style.backgroundColor = line.color;
-            lineSpans.push(lineSpan);
+                lineElement.classList.add('local');
+            lineElement.style.backgroundColor = line.color;
+            lineElements.push(lineElement);
         });
-        return lineSpans;
+        return lineElements;
     }
 
     function idify(str) {
@@ -161,14 +163,14 @@ const UI = (function () {
     }
 
     function createStationArray(line, addLink) {
-        const stationList = [];
+        const stationArray = [];
         const addStation = station => {
             const stationElement = document.createElement('li');
             stationElement.appendChild(document.createTextNode(station.name + ' | '));
-            makeLineSpanArray(station.lines).forEach(lineSpan => {stationElement.appendChild(lineSpan);});
+            createLineArray(station.lines).forEach(lineSpan => {stationElement.appendChild(lineSpan);});
             if(addLink)
                 stationElement.addEventListener('click', core.setActiveStation.bind(this, station.id));
-            stationList.push(stationElement);
+            stationArray.push(stationElement);
         };
         if (line === undefined) {
             const sortedStations = core.getAllStations().sort((A, B) => A.name.localeCompare(B.name));
@@ -180,11 +182,7 @@ const UI = (function () {
                 addStation(station);
             });
         }
-        return stationList;
-    }
-
-    function populateDOMList(listNode, arr) {
-        arr.forEach(element => {listNode.appendChild(element);});
+        return stationArray;
     }
 
     function downloadSave(save) {
