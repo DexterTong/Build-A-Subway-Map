@@ -1,10 +1,6 @@
 const core = (function () {
 
-    const state = {
-        lines: [],
-        stations: [],
-        transfers: []
-    };
+    let state = createEmptyState();
 
     let activeLine;
     let activeStation;
@@ -15,23 +11,50 @@ const core = (function () {
         UI.initialize();
         fileIO.loadFromServer('nyc2016')
             .then(data => {createGameState(data);})
-            .then(() => {
-                Map.update();
-                UI.update();
-            });
+            .then(() => {update();});
     });
 
+    function createEmptyState() {
+        return {
+            lines: [],
+            stations: [],
+            transfers: []
+        }
+    }
+
     function createGameState(data) {
+        state = createEmptyState();
+        //TODO: validate data
         data.lines.forEach(line => {
             state.lines[line.id] = new Line(line);
         });
         data.stations.forEach(station => {
             state.stations[station.id] = new Station(station);
         });
+        update();
+    }
+
+    function update() {
+        Map.update();
+        UI.update();
     }
 
     function saveGame() {
-        UI.downloadSave(fileIO.generateSave(state));
+        UI.downloadGame(fileIO.generateSave(state));
+    }
+
+    function loadGame() {
+        UI.uploadGame();
+    }
+
+    function loadHandler(loadForm) {
+        fileIO.loadFromLocal(loadForm).then((data) => {
+            if(data.error !== undefined){
+                console.log(data.error);
+                return;
+            }
+            createGameState(data);
+        });
     }
 
     function getLine(lineId) {
@@ -73,6 +96,8 @@ const core = (function () {
 
     return {
         saveGame: saveGame,
+        loadGame: loadGame,
+        loadHandler: loadHandler,
         getLine: getLine,
         getStation: getStation,
         getTransfer: getTransfer,
@@ -81,6 +106,7 @@ const core = (function () {
         getAllTransfers: getAllTransfers,
         setActiveLine: setActiveLine,
         setActiveStation: setActiveStation,
-        setActiveTransfer: setActiveTransfer
+        setActiveTransfer: setActiveTransfer,
+        createGameState: createGameState
     }
 })();

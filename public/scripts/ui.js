@@ -16,6 +16,7 @@ const UI = (function () {
         }
 
         document.getElementById('button-save').onclick = core.saveGame;
+        document.getElementById('button-load').onclick = core.loadGame;
         addMenuSwitchers();
     }
 
@@ -57,6 +58,7 @@ const UI = (function () {
     }
 
     function update() {
+        //TODO: clear sidebar before adding things
         const lineMenu = document.getElementById('lines-list');
         const lineGroupsObject = core.getAllLines().reduce((groups, line) => {
             if (groups[line.color])
@@ -185,12 +187,18 @@ const UI = (function () {
         return stationArray;
     }
 
-    function downloadSave(save) {
+    function downloadGame(save) {
         const saveLink = document.createElement('a');
         saveLink.href = 'data:' + save.data;
         saveLink.download = save.name;
         saveLink.click();
-        saveLink.remove();
+    }
+
+    function uploadGame() {
+        const loadForm = document.createElement('input');
+        loadForm.setAttribute('type', 'file');
+        loadForm.onchange = core.loadHandler.bind(this, loadForm);
+        loadForm.click();
     }
 
     return {
@@ -199,6 +207,7 @@ const UI = (function () {
         update: update,
         setActiveLine: setActiveLine,
         setActiveStation: setActiveStation,
-        downloadSave: downloadSave
+        downloadGame: downloadGame,
+        uploadGame: uploadGame
     };
 })();

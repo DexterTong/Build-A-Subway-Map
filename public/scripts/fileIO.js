@@ -7,13 +7,26 @@ const fileIO = (function() {
         };
     }
 
-    function loadFromLocal(name) {
-
+    function loadFromLocal(loadForm) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                let state;
+                try {
+                    state = JSON.parse(event.target.result);
+                }
+                catch (err) {
+                    reject({error: 'Invalid JSON file'});
+                }
+                resolve(state);
+            };
+            reader.readAsText(loadForm.files[0]);
+        });
     }
 
     function loadFromServer(name) {
         const fileName = name + '.json';
-        return new Promise(function (resolve, reject) {
+        return new Promise((resolve, reject) => {
             const req = new XMLHttpRequest();
             req.open('GET', '/data/' + fileName, true);
             req.addEventListener('load', function () {
