@@ -16,7 +16,7 @@ const fileIO = (function() {
                     state = JSON.parse(event.target.result);
                 }
                 catch (err) {
-                    reject({error: 'Invalid JSON file'});
+                    reject({error: 'Not a (valid) JSON file.'});
                 }
                 resolve(state);
             };

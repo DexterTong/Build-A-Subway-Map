@@ -36,19 +36,15 @@ html, body, #map {
     border-color: #000000;
 }
 
-#sidebar {
+#ui {
     top: 0;
     left: 0;
     position: fixed;
-    height: 100%;
+    height: 98%;
     width: 25%;
     z-index: 1;
     padding: 1%;
     background-color: #FFFFFF;
-}
-
-#options {
-
 }
 
 #sidebar-line-editor {
@@ -72,7 +68,7 @@ html, body, #map {
     display: inline-flex;
 }
 
-#sidebar .line {
+#ui .line {
     text-align: center;
     vertical-align: middle;
     width: 2em;
@@ -81,13 +77,13 @@ html, body, #map {
     margin: .1em;
 }
 
-#sidebar .line.local {
+#ui .line.local {
     border-radius: 50%;
     -moz-border-radius: 50%;
     -webkit-border-radius: 50%;
 }
 
-#sidebar .line.express {
+#ui .line.express {
     /* TODO: figure out how to make a proper diamond*/
     -webkit-transform: rotate(0deg);
     -moz-transform: rotate(0deg);
@@ -116,7 +112,7 @@ html, body, #map {
 #station-list {
     border: 1px solid #999999;
     overflow: auto;
-    height: 300px;
+    height: 30%;
 }
 
 .info-box {
@@ -129,6 +125,15 @@ ul {
     padding: 0;
 }
 
-.horizontal li{
+.tool-menu li {
     display: inline;
+}
+
+.line-list li {
+    display: inline;
+}
+
+#line-group-list {
+    overflow: auto;
+    height: 350px;
 }

@@ -11,8 +11,8 @@
 </head>
 <body>
 <main id="map"></main>
-<section id="sidebar">
-    <ul id="options" class="horizontal">
+<section id="ui">
+    <ul class="tool-menu">
         <li>
             <button type="button" name="save" id="button-save">Save</button>
         </li>
@@ -27,16 +27,14 @@
         </li>
     </ul>
     <p id="current-action"></p>
-    <div>
-        <ul class="tab-menu">
-            <li class="tab-link">Lines</li>
-            <li class="tab-link">Stations</li>
-            <li class="tab-link">Transfers</li>
-        </ul>
-    </div>
+    <ul class="tab-menu">
+        <li class="tab-link">Lines</li>
+        <li class="tab-link">Stations</li>
+        <li class="tab-link">Transfers</li>
+    </ul>
     <br><br>
     <section id="lines-content" class="tab-content">
-        <ul class="horizontal">
+        <ul class="tool-menu">
             <li>
                 <button type="button" name="new-line" id="button-line-add" disabled>New Line</button>
             </li>
@@ -44,28 +42,28 @@
                 <button type="button" name="delete-line" id="button-line-delete" disabled>Delete Line</button>
             </li>
             <li>
-                <button type="button" name="add-station" id="button-line-add-station" disabled>Add Station</button>
+                <button type="button" name="add-station" id="button-line-station-add" disabled>Add Station</button>
             </li>
             <li>
-                <button type="button" name="delete-station" id="button-line-delete-station" disabled>Remove Station
-                </button>
+                <button type="button" name="delete-station" id="button-line-station-delete" disabled>Remove
+                    Station</button>
             </li>
         </ul>
-        <div id="line-info" class="info-box">
-            <div id="line-icon-container"></div>
-            <p>
-                <span id="terminus-1"></span>
-                <br>
-                <span id="terminus-2"></span>
-            </p>
-            <div id="ridership"></div>
-            <p>Station Count: <span id="number-stations"></span></p>
-            <ul id="line-station-list"></ul>
-        </div>
-        <div id="lines-list"></div>
+        <section id="info-box-line" class="info-box">
+            <header>
+                <div id="line-element-container"></div>
+                <h1 class="name"></h1>
+            </header>
+            <p id="terminal-1"></p>
+            <p id="terminal-2"></p>
+            <!-- <p id="ridership"></p> -->
+            <p>Station Count: <span id="station-count"></span></p>
+            <ul id="line-station-list" class="station-list"></ul>
+        </section>
+        <ul id="line-group-list"></ul> <!--TODO: change to ul -->
     </section>
     <section id="stations-content" class="tab-content">
-        <ul class="horizontal">
+        <ul class="tool-menu">
             <li>
                 <button type="button" name="add-station" id="button-station-add" disabled>New Station</button>
             </li>
@@ -76,12 +74,13 @@
                 <button type="button" name="add-transfer" id="button-transfer-add" disabled>New Transfer</button>
             </li>
             <li>
-                <button type="button" name="delete-transfer" id="button-transfer-delete" disabled>Delete Transfer
-                </button>
+                <button type="button" name="delete-transfer" id="button-transfer-delete" disabled>Delete Transfer</button>
             </li>
         </ul>
-        <div id="station-info" class="info-box">
-            <p id="station-name"></p>
+        <section id="info-box-station" class="info-box">
+            <header>
+                <h1 id="station-name" class="name"></h1>
+            </header>
             <!--
             <p>
                 <span id="station-borough"></span>
@@ -89,17 +88,15 @@
                 <span id="station-neighborhood"></span>
             </p>
             -->
-            <p>
-                <span id="station-residents"></span>
-                <span id="station-jobs"></span>
-            </p>
-            <div id="station-lines"></div>
-        </div>
-        <ul id="station-list"></ul>
+            <p id="station-residents"></p>
+            <p id="station-jobs"></p>
+            <ul id="station-lines" class="line-list"></ul>
+        </section>
+        <ul id="station-list" class="station-list"></ul>
     </section>
     <section id="transfers-content" class="tab-content">
-        <div id="transfer-info" class="info-box">
-        </div>
+        <section id="info-box-transfer" class="info-box">
+        </section>
         <p>This is the transfers tab.</p>
     </section>
 </section>

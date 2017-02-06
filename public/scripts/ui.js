@@ -6,7 +6,7 @@ const UI = (function () {
 
     function initialize() {
         const header = document.getElementById('main-header');
-        const sidebar = document.getElementById('sidebar');
+        const sidebar = document.getElementById('ui');
         header.parentNode.removeChild(header);
         sidebar.insertBefore(header, sidebar.firstChild);
 
@@ -58,8 +58,6 @@ const UI = (function () {
     }
 
     function update() {
-        //TODO: clear sidebar before adding things
-        const lineMenu = document.getElementById('lines-list');
         const lineGroupsObject = core.getAllLines().reduce((groups, line) => {
             if (groups[line.color])
                 groups[line.color].push(line);
@@ -83,108 +81,81 @@ const UI = (function () {
             });
         });
         lineGroups.sort((A, B) => A[0].name.localeCompare(B[0].name));
-        lineGroups.forEach(lineGroup => {lineMenu.appendChild(createLineGroup(lineGroup));});
-        const stationList = document.getElementById('station-list');
-        createStationArray(undefined, true).forEach(stationElement => {stationList.appendChild(stationElement);});
+        replaceList(document.getElementById('line-group-list'),
+            lineGroups.map(lineGroup => createLineGroupElement(lineGroup))
+        );
+        replaceList(document.getElementById('station-list'),
+            core.getAllStations()
+                .sort((A, B) => A.name.localeCompare(B.name))
+                .map(station => createStationElement(station))
+        );
     }
 
-    function createLineGroup(lineGroup) {
-        const lineGroupDiv = document.createElement('div');
-        lineGroupDiv.id = lineGroup[0].color;
-        lineGroupDiv.classList.add('line-group');
-        lineGroup.forEach(line => {lineGroupDiv.appendChild(createLine(line));});
-        return lineGroupDiv;
+    function createLineElement(line) {
+        const lineElement = document.createElement('span');
+        lineElement.title = line.fullName;
+        lineElement.classList.add('line', line.express ? 'express' : 'local');
+        lineElement.appendChild(document.createTextNode(line.name));
+        lineElement.style.backgroundColor = line.color;
+        lineElement.onclick = core.setActiveLine.bind(null, line.id);
+        return lineElement;
     }
 
-    function createLine(line) {
-        const lineDiv = document.createElement('div');
-        lineDiv.id = line.id;
-        lineDiv.title = line.fullName;
-        lineDiv.classList.add('line', line.express ? 'express' : 'local');
-        lineDiv.appendChild(document.createTextNode(line.name));
-        lineDiv.style.backgroundColor = line.color;
-        lineDiv.onclick = event => {core.setActiveLine(event.srcElement.id);};
-        return lineDiv;
+    function createLineGroupElement(lineGroup) {
+        const lineGroupElement = document.createElement('li');
+        lineGroupElement.classList.add('line-group');
+        lineGroup.forEach(line => {lineGroupElement.appendChild(createLineElement(line));});
+        return lineGroupElement;
     }
 
     function setActiveLine(line) {
-        const lineDiv = document.getElementById(line.id);
-        const lineIconContainer = document.getElementById('line-icon-container');
-        if (lineIconContainer.firstChild !== null)
-            lineIconContainer.removeChild(lineIconContainer.firstChild);
-        const clonedLineDiv = lineDiv.cloneNode(true);
-        clonedLineDiv.removeAttribute('id');
-        lineIconContainer.appendChild(clonedLineDiv);
-        replaceChildren(document.getElementById('terminus-1'), document.createTextNode(core.getStation(line.stations[0]).name));
-        replaceChildren(document.getElementById('terminus-2'), document.createTextNode(core.getStation(line.stations[line.stations.length - 1]).name));
-        const numStations = document.getElementById('number-stations');
-        if (numStations.firstChild !== null)
-            numStations.removeChild(numStations.firstChild);
-        numStations.appendChild(document.createTextNode('' + line.stations.length));
-        const stationList = document.getElementById('line-station-list');
-        while (stationList.firstChild !== null) {
-            stationList.removeChild(stationList.firstChild);
-        }
-        createStationArray(line, true).forEach(station => {stationList.appendChild(station)});
+        replaceChild(document.getElementById('line-element-container'), createLineElement(line));
+        replaceChild(document.getElementById('terminal-1'), document.createTextNode(core.getStation(line.stations[0]).name));
+        replaceChild(document.getElementById('terminal-2'), document.createTextNode(core.getStation(line.stations[line.stations.length - 1]).name));
+        replaceChild(document.getElementById('station-count'), document.createTextNode('' + line.stations.length));
+        replaceList(document.getElementById('line-station-list'), line.stations.map(stationId => createStationElement(core.getStation(stationId))));
     }
 
     function setActiveStation(station) {
-        replaceChildren(document.getElementById('station-name'), document.createTextNode(station.name));
-        replaceChildren(document.getElementById('station-lines'), createLineArray(station.lines));
+        replaceChild(document.getElementById('station-name'), document.createTextNode(station.name));
+        const lineElements = station.lines.map(lineId => createLineElement(core.getLine(lineId)));
+        replaceList(document.getElementById('station-lines'), lineElements);
     }
 
-    function replaceChildren(node, newChildren) {
-        while (node.firstChild !== null)
-            node.removeChild(node.firstChild);
-        if (Array.isArray(newChildren))
-            while (newChildren.length > 0)
-                node.appendChild(newChildren.shift());
-        else
-            node.appendChild(newChildren);
+    function replaceChild(parentNode, newChild) {
+        if(parentNode.firstChild !== null)
+            parentNode.removeChild(parentNode.firstChild);
+        parentNode.appendChild(newChild);
     }
 
-    function createLineArray(lineIds) {
-        const lineElements = [];
-        lineIds.forEach(lineId => {
-            const line = core.getLine(lineId);
-            const lineElement = document.createElement('span');
-            lineElement.appendChild(document.createTextNode(line.name));
-            lineElement.classList.add('line');
-            if(line.express)
-                lineElement.classList.add('express');
-            else
-                lineElement.classList.add('local');
-            lineElement.style.backgroundColor = line.color;
-            lineElements.push(lineElement);
-        });
-        return lineElements;
+    function replaceList(listNode, newListElementArray) {
+        while (listNode.firstChild !== null)
+            listNode.removeChild(listNode.firstChild);
+        const elementsToAdd = newListElementArray.slice();
+        while (elementsToAdd.length > 0) {
+            const listElement = document.createElement('li');
+            listElement.appendChild(elementsToAdd.shift());
+            listNode.appendChild(listElement);
+        }
     }
 
     function idify(str) {
         return str.trim().replace(/ /g, '-');
     }
 
-    function createStationArray(line, addLink) {
-        const stationArray = [];
-        const addStation = station => {
-            const stationElement = document.createElement('li');
-            stationElement.appendChild(document.createTextNode(station.name + ' | '));
-            createLineArray(station.lines).forEach(lineSpan => {stationElement.appendChild(lineSpan);});
-            if(addLink)
-                stationElement.addEventListener('click', core.setActiveStation.bind(this, station.id));
-            stationArray.push(stationElement);
-        };
-        if (line === undefined) {
-            const sortedStations = core.getAllStations().sort((A, B) => A.name.localeCompare(B.name));
-            sortedStations.forEach(station => {addStation(station);});
-        }
-        else {
-            line.stations.forEach(stationId => {
-                const station = core.getStation(stationId);
-                addStation(station);
-            });
-        }
-        return stationArray;
+    function createStationElement(station) {
+        const stationElement = document.createElement('span');
+        const stationName = document.createElement('span'); //change to p and make in-line
+        stationName.appendChild(document.createTextNode(station.name));
+        stationName.onclick = core.setActiveStation.bind(null, station.id);
+        stationElement.appendChild(stationName);
+        station.lines.forEach(lineId => {
+            const line = core.getLine(lineId);
+            const lineElement = createLineElement(line);
+            lineElement.onclick = core.setActiveLine.bind(null, line);
+            stationElement.appendChild(lineElement);
+        });
+        return stationElement;
     }
 
     function downloadGame(save) {
@@ -197,7 +168,7 @@ const UI = (function () {
     function uploadGame() {
         const loadForm = document.createElement('input');
         loadForm.setAttribute('type', 'file');
-        loadForm.onchange = core.loadHandler.bind(this, loadForm);
+        loadForm.onchange = core.loadHandler.bind(null, loadForm);
         loadForm.click();
     }
 
