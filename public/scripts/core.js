@@ -1,4 +1,4 @@
-const core = (function () {
+const Core = (function () {
 
     let state = createEmptyState();
 
@@ -7,9 +7,9 @@ const core = (function () {
     let activeTransfer;
 
     document.addEventListener('DOMContentLoaded', () => {
-        Map.initialize();
+        CityMap.initialize();
         UI.initialize();
-        fileIO.loadFromServer('nyc2016')
+        Files.loadFromServer('nyc2016')
             .then(data => {createGameState(data);})
             .then(() => {update();});
     });
@@ -19,7 +19,7 @@ const core = (function () {
             lines: [],
             stations: [],
             transfers: []
-        }
+        };
     }
 
     function createGameState(data) {
@@ -31,16 +31,15 @@ const core = (function () {
         data.stations.forEach(station => {
             state.stations[station.id] = new Station(station);
         });
-        update();
     }
 
     function update() {
-        Map.update();
+        CityMap.update();
         UI.update();
     }
 
     function saveGame() {
-        UI.downloadGame(fileIO.generateSave(state));
+        UI.downloadGame(Files.generateSave(state));
     }
 
     function loadGame() {
@@ -48,7 +47,7 @@ const core = (function () {
     }
 
     function loadHandler(loadForm) {
-        fileIO.loadFromLocal(loadForm).then((data) => {
+        Files.loadFromLocal(loadForm).then((data) => {
             if(data.error !== undefined){
                 console.log(data.error);
                 return;
@@ -66,6 +65,7 @@ const core = (function () {
     }
 
     function getTransfer(transferId) {
+        return state.transfers[transferId];
     }
 
     function getAllLines() {
@@ -83,30 +83,34 @@ const core = (function () {
     function setActiveLine(lineId) {
         activeLine = getLine(lineId);
         UI.setActiveLine(activeLine);
-        //Map.setActiveLine(line);
+        CityMap.setActiveLine(activeLine);
     }
 
     function setActiveStation(stationId) {
         activeStation = getStation(stationId);
         UI.setActiveStation(activeStation);
+        CityMap.setActiveStation(activeStation);
     }
 
     function setActiveTransfer(transferId) {
+        activeTransfer = getTransfer(transferId);
+        UI.setActiveStation(activeTransfer);
+        CityMap.setActiveStation(activeTransfer);
     }
 
     return {
-        saveGame: saveGame,
-        loadGame: loadGame,
-        loadHandler: loadHandler,
-        getLine: getLine,
-        getStation: getStation,
-        getTransfer: getTransfer,
-        getAllLines: getAllLines,
-        getAllStations: getAllStations,
-        getAllTransfers: getAllTransfers,
-        setActiveLine: setActiveLine,
-        setActiveStation: setActiveStation,
-        setActiveTransfer: setActiveTransfer,
-        createGameState: createGameState
-    }
+        saveGame,
+        loadGame,
+        loadHandler,
+        getLine,
+        getStation,
+        getTransfer,
+        getAllLines,
+        getAllStations,
+        getAllTransfers,
+        setActiveLine,
+        setActiveStation,
+        setActiveTransfer,
+        createGameState
+    };
 })();

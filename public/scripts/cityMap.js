@@ -1,4 +1,4 @@
-const Map = (function () {
+const CityMap = (function () {
 
     let map;
     const LATLNG_NYC = L.latLng(40.7128, -74.0061); //City Hall, New York City
@@ -34,19 +34,25 @@ const Map = (function () {
 
     function update() {
         deleteAllMarkers();
-        core.getAllLines().forEach(drawLine);
-        core.getAllStations().forEach(drawStation);
-        core.getAllTransfers().forEach(drawTransfer);
+        Core.getAllLines().forEach(drawLine);
+        Core.getAllStations().forEach(drawStation);
+        Core.getAllTransfers().forEach(drawTransfer);
     }
 
     function deleteAllMarkers() {
-        markers.lines.forEach(linePoly => map.removeLayer(linePoly));
-        markers.stations.forEach(stationMarker => map.removeLayer(stationMarker));
-        markers.transfers.forEach(transferPoly => map.removeLayer(transferPoly));
+        while(markers.lines.length > 0) {
+            map.removeLayer(markers.lines.pop());
+        }
+        while(markers.stations.length > 0) {
+            map.removeLayer(markers.stations.pop());
+        }
+        while(markers.transfers.length > 0) {
+            map.removeLayer(markers.transfers.pop());
+        }
     }
 
     function drawLine(line) {
-        const pointsToDraw = line.stations.map(stationId => core.getStation(stationId).latLng);
+        const pointsToDraw = line.stations.map(stationId => Core.getStation(stationId).latLng);
         const linePoly = L.polyline(pointsToDraw, {color: line.color});
         markers.lines.push(linePoly);
         linePoly.addTo(map);
@@ -55,23 +61,36 @@ const Map = (function () {
     function drawStation(station) {
         let popupText = '<b>' + station.name + '</b> <i>' + station.id + '</i><br>';
         const linesAtStation = new Set();
-        station.lines.forEach(lineId => linesAtStation.add(core.getLine(lineId).name));
+        station.lines.forEach(lineId => linesAtStation.add(Core.getLine(lineId).name));
         linesAtStation.forEach(lineName => {popupText += lineName + ' ';});
         const stationMarker = L.marker(station.latLng, {icon:stationLocalIcon});
         markers.stations.push(stationMarker);
         stationMarker.addTo(map).bindPopup(popupText)
-            .addEventListener('click', core.setActiveStation.bind(this, station.id));
+            .addEventListener('click', Core.setActiveStation.bind(this, station.id));
     }
 
     function drawTransfer(transfer) {
     }
 
-    function setActiveLine(lineId) {
+    function setActiveLine(line) {
+    }
+
+    function setActiveStation(station) {
+    }
+
+    function setActiveTransfer(transfer) {
+    }
+
+    function getMarkers() {
+        return markers;
     }
 
     return {
-        initialize: initialize,
-        update: update,
-        setActiveLine: setActiveLine
+        initialize,
+        update,
+        setActiveLine,
+        setActiveStation,
+        setActiveTransfer,
+        getMarkers
     };
 })();

@@ -1,4 +1,4 @@
-const fileIO = (function() {
+const Files = (function() {
 
     function generateSave(state) {
         return {
@@ -41,8 +41,8 @@ const fileIO = (function() {
     }
 
     return {
-        generateSave: generateSave,
-        loadFromLocal: loadFromLocal,
-        loadFromServer: loadFromServer
+        generateSave,
+        loadFromLocal,
+        loadFromServer
     };
 })();

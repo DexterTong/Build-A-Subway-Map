@@ -15,8 +15,8 @@ const UI = (function () {
             tabContents[i].style.display = 'none';
         }
 
-        document.getElementById('button-save').onclick = core.saveGame;
-        document.getElementById('button-load').onclick = core.loadGame;
+        document.getElementById('button-save').onclick = Core.saveGame;
+        document.getElementById('button-load').onclick = Core.loadGame;
         addMenuSwitchers();
     }
 
@@ -34,9 +34,7 @@ const UI = (function () {
                 case 'Transfers':
                     tabContentId = 'transfers-content';
             }
-            tabLinks[i].addEventListener('click', function(event){
-                switchMenu(event.target, tabContentId);
-            });
+            tabLinks[i].addEventListener('click', switchMenu.bind(null, tabLinks[i], tabContentId));
         }
     }
 
@@ -58,7 +56,7 @@ const UI = (function () {
     }
 
     function update() {
-        const lineGroupsObject = core.getAllLines().reduce((groups, line) => {
+        const lineGroupsObject = Core.getAllLines().reduce((groups, line) => {
             if (groups[line.color])
                 groups[line.color].push(line);
             else
@@ -85,7 +83,7 @@ const UI = (function () {
             lineGroups.map(lineGroup => createLineGroupElement(lineGroup))
         );
         replaceList(document.getElementById('station-list'),
-            core.getAllStations()
+            Core.getAllStations()
                 .sort((A, B) => A.name.localeCompare(B.name))
                 .map(station => createStationElement(station))
         );
@@ -97,7 +95,7 @@ const UI = (function () {
         lineElement.classList.add('line', line.express ? 'express' : 'local');
         lineElement.appendChild(document.createTextNode(line.name));
         lineElement.style.backgroundColor = line.color;
-        lineElement.onclick = core.setActiveLine.bind(null, line.id);
+        lineElement.onclick = Core.setActiveLine.bind(null, line.id);
         return lineElement;
     }
 
@@ -110,16 +108,15 @@ const UI = (function () {
 
     function setActiveLine(line) {
         replaceChild(document.getElementById('line-element-container'), createLineElement(line));
-        replaceChild(document.getElementById('terminal-1'), document.createTextNode(core.getStation(line.stations[0]).name));
-        replaceChild(document.getElementById('terminal-2'), document.createTextNode(core.getStation(line.stations[line.stations.length - 1]).name));
+        replaceChild(document.getElementById('terminal-1'), document.createTextNode(Core.getStation(line.stations[0]).name));
+        replaceChild(document.getElementById('terminal-2'), document.createTextNode(Core.getStation(line.stations[line.stations.length - 1]).name));
         replaceChild(document.getElementById('station-count'), document.createTextNode('' + line.stations.length));
-        replaceList(document.getElementById('line-station-list'), line.stations.map(stationId => createStationElement(core.getStation(stationId))));
+        replaceList(document.getElementById('line-station-list'), line.stations.map(stationId => createStationElement(Core.getStation(stationId))));
     }
 
     function setActiveStation(station) {
         replaceChild(document.getElementById('station-name'), document.createTextNode(station.name));
-        const lineElements = station.lines.map(lineId => createLineElement(core.getLine(lineId)));
-        replaceList(document.getElementById('station-lines'), lineElements);
+        replaceList(document.getElementById('station-lines'), station.lines.map(lineId => createLineElement(Core.getLine(lineId))));
     }
 
     function replaceChild(parentNode, newChild) {
@@ -148,11 +145,11 @@ const UI = (function () {
         stationElement.classList.add('station-element');
         const stationName = document.createElement('p');
         stationName.appendChild(document.createTextNode(station.name));
-        stationName.onclick = core.setActiveStation.bind(null, station.id);
+        stationName.onclick = Core.setActiveStation.bind(null, station.id);
         stationElement.appendChild(stationName);
         const stationLines = document.createElement('ul');
         stationLines.classList.add('line-list');
-        replaceList(stationLines, station.lines.map(lineId => createLineElement(core.getLine(lineId))));
+        replaceList(stationLines, station.lines.map(lineId => createLineElement(Core.getLine(lineId))));
         stationElement.appendChild(stationLines);
         return stationElement;
     }
@@ -167,17 +164,17 @@ const UI = (function () {
     function uploadGame() {
         const loadForm = document.createElement('input');
         loadForm.setAttribute('type', 'file');
-        loadForm.onchange = core.loadHandler.bind(null, loadForm);
+        loadForm.onchange = Core.loadHandler.bind(null, loadForm);
         loadForm.click();
     }
 
     return {
-        getMap: getMap,
-        initialize: initialize,
-        update: update,
-        setActiveLine: setActiveLine,
-        setActiveStation: setActiveStation,
-        downloadGame: downloadGame,
-        uploadGame: uploadGame
+        getMap,
+        initialize,
+        update,
+        setActiveLine,
+        setActiveStation,
+        downloadGame,
+        uploadGame
     };
 })();
