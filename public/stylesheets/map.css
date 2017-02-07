@@ -112,7 +112,7 @@ html, body, #map {
 #station-list {
     border: 1px solid #999999;
     overflow: auto;
-    height: 30%;
+    height: 300px;
 }
 
 .info-box {
@@ -136,4 +136,8 @@ ul {
 #line-group-list {
     overflow: auto;
     height: 350px;
+}
+
+.station-element *{
+    display: inline;
 }

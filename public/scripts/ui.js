@@ -145,16 +145,15 @@ const UI = (function () {
 
     function createStationElement(station) {
         const stationElement = document.createElement('span');
-        const stationName = document.createElement('span'); //change to p and make in-line
+        stationElement.classList.add('station-element');
+        const stationName = document.createElement('p');
         stationName.appendChild(document.createTextNode(station.name));
         stationName.onclick = core.setActiveStation.bind(null, station.id);
         stationElement.appendChild(stationName);
-        station.lines.forEach(lineId => {
-            const line = core.getLine(lineId);
-            const lineElement = createLineElement(line);
-            lineElement.onclick = core.setActiveLine.bind(null, line);
-            stationElement.appendChild(lineElement);
-        });
+        const stationLines = document.createElement('ul');
+        stationLines.classList.add('line-list');
+        replaceList(stationLines, station.lines.map(lineId => createLineElement(core.getLine(lineId))));
+        stationElement.appendChild(stationLines);
         return stationElement;
     }
 
