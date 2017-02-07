@@ -1,4 +1,4 @@
-const CityMap = (function () {
+const CityMap = (function() {
 
     let map;
     const LATLNG_NYC = L.latLng(40.7128, -74.0061); //City Hall, New York City
@@ -81,16 +81,11 @@ const CityMap = (function () {
     function setActiveTransfer(transfer) {
     }
 
-    function getMarkers() {
-        return markers;
-    }
-
     return {
         initialize,
         update,
         setActiveLine,
         setActiveStation,
-        setActiveTransfer,
-        getMarkers
+        setActiveTransfer
     };
 })();

@@ -1,4 +1,4 @@
-const UI = (function () {
+const UI = (function() {
 
     function getMap() {
         return document.getElementById('map');
@@ -108,6 +108,7 @@ const UI = (function () {
 
     function setActiveLine(line) {
         replaceChild(document.getElementById('line-element-container'), createLineElement(line));
+        replaceChild(document.getElementById('line-fullname'), document.createTextNode(line.fullName));
         replaceChild(document.getElementById('terminal-1'), document.createTextNode(Core.getStation(line.stations[0]).name));
         replaceChild(document.getElementById('terminal-2'), document.createTextNode(Core.getStation(line.stations[line.stations.length - 1]).name));
         replaceChild(document.getElementById('station-count'), document.createTextNode('' + line.stations.length));
@@ -131,7 +132,10 @@ const UI = (function () {
         const elementsToAdd = newListElementArray.slice();
         while (elementsToAdd.length > 0) {
             const listElement = document.createElement('li');
-            listElement.appendChild(elementsToAdd.shift());
+            const elementToAdd = elementsToAdd.shift();
+            if(elementToAdd === undefined)
+                continue;
+            listElement.appendChild(elementToAdd);
             listNode.appendChild(listElement);
         }
     }

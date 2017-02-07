@@ -119,6 +119,10 @@ html, body, #map {
     border: 1px solid #999999;
 }
 
+.info-box header *{
+    display: inline;
+}
+
 ul {
     list-style-type: none;
     margin: 0;

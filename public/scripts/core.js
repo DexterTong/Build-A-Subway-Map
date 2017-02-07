@@ -1,4 +1,4 @@
-const Core = (function () {
+const Core = (function() {
 
     let state = createEmptyState();
 
