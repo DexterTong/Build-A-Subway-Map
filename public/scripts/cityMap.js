@@ -19,7 +19,7 @@ const CityMap = (function() {
     });
 
     function initialize() {
-        map = L.map(UI.getMap(), {zoomControl: false});
+        map = L.map(UI.getMap(), {zoomControl: false}); // Get map through core module instead?
         const defaultLocation = LATLNG_NYC;
         map.setView(defaultLocation, 13);
         const tileURL = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -81,11 +81,21 @@ const CityMap = (function() {
     function setActiveTransfer(transfer) {
     }
 
+    function addCoordinates(station, callback) {
+        const getCoordinates = (event) => {
+            map.removeEventListener('click', getCoordinates);
+            station.latLng = [Number(event.latlng.lat.toFixed(6)), Number(event.latlng.lng.toFixed(6))];
+            callback(station);
+        };
+        map.addEventListener('click', getCoordinates);
+    }
+
     return {
         initialize,
         update,
         setActiveLine,
         setActiveStation,
-        setActiveTransfer
+        setActiveTransfer,
+        addCoordinates
     };
 })();

@@ -9,7 +9,7 @@ const Core = (function() {
     document.addEventListener('DOMContentLoaded', () => {
         CityMap.initialize();
         UI.initialize();
-        Files.loadFromServer('nyc2016')
+        Files.loadFromServer('nyc2017')
             .then(data => {createGameState(data);})
             .then(() => {update();});
     });
@@ -26,10 +26,12 @@ const Core = (function() {
         state = createEmptyState();
         //TODO: validate data
         data.lines.forEach(line => {
-            state.lines[line.id] = new Line(line);
+            if(line !== null)
+                state.lines[line.id] = new Line(line);
         });
         data.stations.forEach(station => {
-            state.stations[station.id] = new Station(station);
+            if(station !== null)
+                state.stations[station.id] = new Station(station);
         });
     }
 
@@ -43,6 +45,7 @@ const Core = (function() {
     }
 
     function loadGame() {
+        UI.setCurrentAction('Load save file');
         UI.uploadGame();
     }
 
@@ -50,8 +53,10 @@ const Core = (function() {
         Files.loadFromLocal(loadForm).then((data) => {
             if(data.error !== undefined){
                 console.log(data.error);
+                UI.setCurrentAction('');
                 return;
             }
+            UI.setCurrentAction('');
             createGameState(data);
         });
     }
@@ -98,6 +103,32 @@ const Core = (function() {
         CityMap.setActiveStation(activeTransfer);
     }
 
+    function generateLineId() {
+    }
+
+    //TODO: move array 'hole filling' to save step?
+    function generateStationId() {
+        let i = 0;
+        for(; i < state.stations.length; i++) {
+            if(state.stations[i] === undefined)
+                return i;
+        }
+        return i;
+    }
+
+    function generateTransferId() {
+    }
+
+    function createStation() {
+        const station = new Station(generateStationId(), ' New Station'); // Leading space to be at top of list
+        activeStation = station;
+        CityMap.addCoordinates(station, (station) => {
+            state.stations[station.id] = station;
+            update();
+            setActiveStation(station.id);
+        });
+    }
+
     return {
         saveGame,
         loadGame,
@@ -111,6 +142,7 @@ const Core = (function() {
         setActiveLine,
         setActiveStation,
         setActiveTransfer,
-        createGameState
+        createGameState,
+        createStation
     };
 })();

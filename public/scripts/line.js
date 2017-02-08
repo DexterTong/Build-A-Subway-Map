@@ -1,6 +1,6 @@
 class Line {
     constructor(id, color, name, fullName, express, category, stations) {
-        if(arguments.length === 1) {    //Assuming an object representing a line was passed in
+        if(typeof id === 'object') {
             this.id = id.id;
             this.color = id.color;
             this.name = id.name;

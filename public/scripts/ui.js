@@ -17,6 +17,7 @@ const UI = (function() {
 
         document.getElementById('button-save').onclick = Core.saveGame;
         document.getElementById('button-load').onclick = Core.loadGame;
+        document.getElementById('button-station-add').onclick = Core.createStation;
         addMenuSwitchers();
     }
 
@@ -172,12 +173,17 @@ const UI = (function() {
         loadForm.click();
     }
 
+    function setCurrentAction(message) {
+        replaceChild(document.getElementById('current-action'), document.createTextNode(message));
+    }
+
     return {
         getMap,
         initialize,
         update,
         setActiveLine,
         setActiveStation,
+        setCurrentAction,
         downloadGame,
         uploadGame
     };
