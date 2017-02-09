@@ -1,3 +1,5 @@
+/*globals Utils*/
+
 class Station {
     constructor(id, name, latLng, lines, transfers) {
         if(typeof id === 'object'){
@@ -46,10 +48,10 @@ class Station {
     }
 
     static isValid(value) {
-        return Station.isValidId(value.id)
-            && Station.isValidName(value.name)
-            && Station.isValidLatLng(value.latLng)
-            && Station.isValidLines(value.lines)
-            && Station.isValidTransfers(value.transfers);
+        return Station.isValidId(value.id) &&
+            Station.isValidName(value.name) &&
+            Station.isValidLatLng(value.latLng) &&
+            Station.isValidLines(value.lines) &&
+            Station.isValidTransfers(value.transfers);
     }
 }

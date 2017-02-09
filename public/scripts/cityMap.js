@@ -1,3 +1,5 @@
+/*globals Core, L*/
+
 const CityMap = (function() {
 
     let map;
@@ -18,8 +20,8 @@ const CityMap = (function() {
         iconSize: [8, 8]
     });
 
-    function initialize() {
-        map = L.map(UI.getMap(), {zoomControl: false}); // Get map through core module instead?
+    function initialize(mapElement) {
+        map = L.map(mapElement, {zoomControl: false}); // Get map through core module instead?
         const defaultLocation = LATLNG_NYC;
         map.setView(defaultLocation, 13);
         const tileURL = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';

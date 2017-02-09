@@ -1,3 +1,5 @@
+/*globals FileReader, XMLHttpRequest*/
+
 const Files = (function() {
 
     function generateSave(state) {

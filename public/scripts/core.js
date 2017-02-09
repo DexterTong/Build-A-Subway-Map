@@ -1,3 +1,5 @@
+/*globals CityMap, Files, Line, Station, UI*/
+
 const Core = (function() {
 
     let state = createEmptyState();
@@ -6,13 +8,13 @@ const Core = (function() {
     let activeStation;
     let activeTransfer;
 
-    document.addEventListener('DOMContentLoaded', () => {
-        CityMap.initialize();
+    function initialize() {
         UI.initialize();
+        CityMap.initialize(UI.getMap());
         Files.loadFromServer('nyc2017')
             .then(data => {createGameState(data);})
             .then(() => {update();});
-    });
+    }
 
     function createEmptyState() {
         return {
@@ -141,7 +143,20 @@ const Core = (function() {
         UI.update(activeLine);
     }
 
+    function updateStation(station, property, value) {
+        const stationCopy = new Station(station);
+        stationCopy[property] = value;
+        if(Station.isValid(stationCopy)) {
+            state.stations[station.id] = stationCopy;
+            activeStation = stationCopy;
+        }
+        else
+            console.log('Did not update station');
+        UI.update(undefined, activeStation);
+    }
+
     return {
+        initialize,
         saveGame,
         loadGame,
         loadHandler,
@@ -156,6 +171,7 @@ const Core = (function() {
         setActiveTransfer,
         createGameState,
         createStation,
-        updateLine
+        updateLine,
+        updateStation
     };
 })();

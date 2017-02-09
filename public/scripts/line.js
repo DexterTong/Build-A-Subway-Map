@@ -1,3 +1,5 @@
+/*globals Utils*/
+
 class Line {
     constructor(id, color, name, branch, express, category, stations) {
         if(typeof id === 'object') {
@@ -61,12 +63,12 @@ class Line {
     }
 
     static isValid(value) {
-        return Line.isValidId(value.id)
-            && Line.isValidColor(value.color)
-            && Line.isValidName(value.name)
-            && Line.isValidBranch(value.branch)
-            && Line.isValidExpress(value.express)
-            && Line.isValidCategory(value.category)
-            && Line.isValidStations(value.stations);
+        return Line.isValidId(value.id) &&
+            Line.isValidColor(value.color) &&
+            Line.isValidName(value.name) &&
+            Line.isValidBranch(value.branch) &&
+            Line.isValidExpress(value.express) &&
+            Line.isValidCategory(value.category) &&
+            Line.isValidStations(value.stations);
     }
 }

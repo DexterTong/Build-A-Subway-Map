@@ -1,8 +1,12 @@
+/*globals Core, document*/
+
 const UI = (function() {
 
     function getMap() {
         return document.getElementById('map');
     }
+
+    document.addEventListener('DOMContentLoaded', Core.initialize);
 
     function initialize() {
         const header = document.getElementById('main-header');
@@ -122,7 +126,7 @@ const UI = (function() {
     }
 
     function setActiveStation(station) {
-        replaceChild(document.getElementById('station-name'), document.createTextNode(station.name));
+        replaceChild(document.getElementById('station-name'), makeEditable(document.createTextNode(station.name), Core.updateStation.bind(null, station, 'name')));
         replaceList(document.getElementById('station-lines'), station.lines.map(lineId => createLineElement(Core.getLine(lineId))));
     }
 
@@ -195,9 +199,7 @@ const UI = (function() {
             editBox.appendChild(textNode);
             editableElement.removeChild(editIcon);
             editBox.focus();
-            editBox.onblur = () => {
-                callback(editBox.value);
-            }
+            editBox.onblur = () => {callback(editBox.value);};
         };
         return editableElement;
     }
