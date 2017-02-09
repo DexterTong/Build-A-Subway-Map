@@ -15,20 +15,4 @@ class Station {
             this.transfers = transfers !== undefined ? transfers : [];
         }
     }
-
-    addLine() {
-
-    }
-
-    removeLine() {
-
-    }
-
-    addTransfer() {
-
-    }
-
-    removeTransfer() {
-
-    }
 }

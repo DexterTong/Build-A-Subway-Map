@@ -61,7 +61,7 @@ const CityMap = (function() {
     function drawStation(station) {
         let popupText = '<b>' + station.name + '</b> <i>' + station.id + '</i><br>';
         const linesAtStation = new Set();
-        station.lines.forEach(lineId => linesAtStation.add(Core.getLine(lineId).name));
+        station.lines.forEach(lineId => {linesAtStation.add(Core.getLine(lineId).name);});
         linesAtStation.forEach(lineName => {popupText += lineName + ' ';});
         const stationMarker = L.marker(station.latLng, {icon:stationLocalIcon});
         markers.stations.push(stationMarker);
