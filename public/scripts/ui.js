@@ -56,7 +56,7 @@ const UI = (function() {
         }
     }
 
-    function update() {
+    function update(activeLine, activeStation, activeTransfer) {
         const lineGroupsObject = Core.getAllLines().reduce((groups, line) => {
             if (groups[line.color])
                 groups[line.color].push(line);
@@ -88,11 +88,15 @@ const UI = (function() {
                 .sort((A, B) => A.name.localeCompare(B.name))
                 .map(station => createStationElement(station))
         );
+        if(activeLine !== undefined)
+            setActiveLine(activeLine);
+        if(activeStation !== undefined)
+            setActiveStation(activeStation);
     }
 
     function createLineElement(line) {
         const lineElement = document.createElement('span');
-        lineElement.title = line.fullName;
+        lineElement.title = line.branch;
         lineElement.classList.add('line', line.express ? 'express' : 'local');
         lineElement.appendChild(document.createTextNode(line.name));
         lineElement.style.backgroundColor = line.color;
@@ -109,7 +113,8 @@ const UI = (function() {
 
     function setActiveLine(line) {
         replaceChild(document.getElementById('line-element-container'), createLineElement(line));
-        replaceChild(document.getElementById('line-fullname'), document.createTextNode(line.fullName));
+        replaceChild(document.getElementById('express'), document.createTextNode(line.express ? 'Express' : ''));
+        replaceChild(document.getElementById('branch'), makeEditable(document.createTextNode(line.branch), Core.updateLine.bind(null, line, 'branch')));
         replaceChild(document.getElementById('terminal-1'), document.createTextNode(Core.getStation(line.stations[0]).name));
         replaceChild(document.getElementById('terminal-2'), document.createTextNode(Core.getStation(line.stations[line.stations.length - 1]).name));
         replaceChild(document.getElementById('station-count'), document.createTextNode('' + line.stations.length));
@@ -175,6 +180,26 @@ const UI = (function() {
 
     function setCurrentAction(message) {
         replaceChild(document.getElementById('current-action'), document.createTextNode(message));
+    }
+
+    function makeEditable(textNode, callback) {
+        const editIcon = document.createElement('i');
+        editIcon.classList.add('material-icons');
+        editIcon.appendChild(document.createTextNode('mode_edit'));
+        const editableElement = document.createElement('span');
+        editableElement.appendChild(textNode);
+        editableElement.appendChild(editIcon);
+        editIcon.onclick = () => {
+            const editBox = document.createElement('textarea');
+            textNode.parentNode.replaceChild(editBox, textNode);
+            editBox.appendChild(textNode);
+            editableElement.removeChild(editIcon);
+            editBox.focus();
+            editBox.onblur = () => {
+                callback(editBox.value);
+            }
+        };
+        return editableElement;
     }
 
     return {

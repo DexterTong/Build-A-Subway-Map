@@ -1,10 +1,10 @@
 class Line {
-    constructor(id, color, name, fullName, express, category, stations) {
+    constructor(id, color, name, branch, express, category, stations) {
         if(typeof id === 'object') {
             this.id = id.id;
             this.color = id.color;
             this.name = id.name;
-            this.fullName = id.fullName;
+            this.branch = id.branch;
             this.express = id.express;
             this.category = id.category;
             this.stations = id.stations;
@@ -13,7 +13,7 @@ class Line {
             this.id = id;
             this.color = color;
             this.name = name;
-            this.fullName = fullName;
+            this.branch = branch;
             this.express = express;
             this.category = category;
             this.stations = stations;

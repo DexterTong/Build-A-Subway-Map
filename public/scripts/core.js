@@ -26,7 +26,7 @@ const Core = (function() {
         state = createEmptyState();
         //TODO: validate data
         data.lines.forEach(line => {
-            if(line !== null)
+            if(line !== null && validateLine(line))
                 state.lines[line.id] = new Line(line);
         });
         data.stations.forEach(station => {
@@ -129,6 +129,47 @@ const Core = (function() {
         });
     }
 
+    function updateLine(line, property, newValue) {
+        if(validateLineProperty(property, newValue)) {
+            line[property] = newValue;
+            state.lines[line.id] = line;
+            activeLine = line;
+            UI.update(activeLine);
+        }
+        else
+            console.log('Did not update line');
+    }
+
+    function validateLineProperty(property, value) {
+        switch(property) {
+            case 'id':
+                return Number.isInteger(value);
+            case 'color':
+                break;
+            case 'name':
+                return /^[A-Z\d]*$/.test(value);     //Uppercase letters and numbers only
+            case 'branch':
+                return /^[A-Za-z\d ()]*$/.test(value);
+            case 'express':
+                return typeof value === 'boolean';
+            case 'category':
+                return ['subway'].indexOf(value) > -1;  // no light rail/trams/commuter rail for now
+            case 'stations':
+                break;
+            default:
+                return false;
+        }
+        return true;
+    }
+
+    function validateLine(line) {
+        const lineProperties = Object.getOwnPropertyNames(line);
+        for(let i = 0; i < lineProperties.length; i++)
+            if(!validateLineProperty(lineProperties[i], line[lineProperties[i]]))
+                return false;
+        return true;
+    }
+
     return {
         saveGame,
         loadGame,
@@ -143,6 +184,8 @@ const Core = (function() {
         setActiveStation,
         setActiveTransfer,
         createGameState,
-        createStation
+        createStation,
+        updateLine,
+        validateLine
     };
 })();
