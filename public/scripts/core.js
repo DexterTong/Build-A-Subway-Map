@@ -24,13 +24,13 @@ const Core = (function() {
 
     function createGameState(data) {
         state = createEmptyState();
-        //TODO: validate data
+        //TODO: isValid data
         data.lines.forEach(line => {
-            if(line !== null && Line.validate(line))
+            if(line !== null && Line.isValid(line))
                 state.lines[line.id] = new Line(line);
         });
         data.stations.forEach(station => {
-            if(station !== null)
+            if(station !== null && Station.isValid(station))
                 state.stations[station.id] = new Station(station);
         });
     }
@@ -130,14 +130,15 @@ const Core = (function() {
     }
 
     function updateLine(line, property, value) {
-        line[property] = value;
-        if(Line.validate(line)) {
-            state.lines[line.id] = line;
-            activeLine = line;
-            UI.update(activeLine);
+        const lineCopy = new Line(line);
+        lineCopy[property] = value;
+        if(Line.isValid(lineCopy)) {
+            state.lines[line.id] = lineCopy;
+            activeLine = lineCopy;
         }
         else
             console.log('Did not update line');
+        UI.update(activeLine);
     }
 
     return {

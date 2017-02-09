@@ -20,57 +20,53 @@ class Line {
         }
     }
 
-    static validateId(value) {
+
+    static isValidId(value) {
         if(!Number.isInteger(value))
             return false;
         return value >= 0;
     }
 
-    static validateColor(value) {
+    static isValidColor(value) {
         //Check if value is a string representing a valid hexadecimal color, i.e. '#XXX' or '#XXXXXX'
         if(typeof value !== 'string')
             return false;
         return /^#([0-9A-Fa-f]{3}){1,2}$/.test(value);
     }
 
-    static validateName(value) {
+    static isValidName(value) {
         if(typeof value !== 'string')
             return false;
         return /^[A-Za-z\d]{1,3}$/.test(value);
     }
 
-    static validateBranch(value) {
+    static isValidBranch(value) {
         if(typeof value !== 'string')
             return false;
         return /^[A-Za-z\d ()]*$/.test(value);
     }
 
-    static validateExpress(value) {
+    static isValidExpress(value) {
         return typeof value === 'boolean';
     }
 
-    static validateCategory(value) {
+    static isValidCategory(value) {
         if(typeof value !== 'string')
             return false;
         return ['subway'].indexOf(value) > -1;
     }
 
-    static validateStations(value) {
-        if(!Array.isArray(value))
-            return false;
-        for(let i = 0; i < value.length; i++)
-            if(!Number.isInteger(value[i]))
-                return false;
-        return true;
+    static isValidStations(value) {
+        return Utils.isIntegerArray(value);
     }
 
-    static validate(line) {
-        return Line.validateId(line.id)
-            && Line.validateColor(line.color)
-            && Line.validateName(line.name)
-            && Line.validateBranch(line.branch)
-            && Line.validateExpress(line.express)
-            && Line.validateCategory(line.category)
-            && Line.validateStations(line.stations);
+    static isValid(value) {
+        return Line.isValidId(value.id)
+            && Line.isValidColor(value.color)
+            && Line.isValidName(value.name)
+            && Line.isValidBranch(value.branch)
+            && Line.isValidExpress(value.express)
+            && Line.isValidCategory(value.category)
+            && Line.isValidStations(value.stations);
     }
 }
