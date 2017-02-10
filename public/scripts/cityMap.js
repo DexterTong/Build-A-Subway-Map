@@ -56,17 +56,18 @@ const CityMap = (function() {
     function drawLine(line) {
         const pointsToDraw = line.stations.map(stationId => Core.getStation(stationId).latLng);
         const linePoly = L.polyline(pointsToDraw, {color: line.color});
-        markers.lines.push(linePoly);
+        markers.lines[line.id] = linePoly;
         linePoly.addTo(map);
     }
 
     function drawStation(station) {
+        //change station name on update too
         let popupText = '<b>' + station.name + '</b> <i>' + station.id + '</i><br>';
         const linesAtStation = new Set();
         station.lines.forEach(lineId => {linesAtStation.add(Core.getLine(lineId).name);});
         linesAtStation.forEach(lineName => {popupText += lineName + ' ';});
         const stationMarker = L.marker(station.latLng, {icon:stationLocalIcon});
-        markers.stations.push(stationMarker);
+        markers.stations[station.id] = stationMarker;
         stationMarker.addTo(map).bindPopup(popupText)
             .addEventListener('click', Core.setActiveStation.bind(this, station.id));
     }
@@ -78,6 +79,7 @@ const CityMap = (function() {
     }
 
     function setActiveStation(station) {
+        //Open station popup
     }
 
     function setActiveTransfer(transfer) {

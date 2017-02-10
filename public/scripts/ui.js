@@ -25,28 +25,22 @@ const UI = (function() {
         addMenuSwitchers();
     }
 
+    const switchToLinesMenu = switchMenu.bind(null, 'lines-tab', 'lines-content');
+
+    const switchToStationsMenu = switchMenu.bind(null, 'stations-tab', 'stations-content');
+    
+    const switchToTransfersMenu = switchMenu.bind(null, 'transfers-tab', 'transfers-content');
+
     function addMenuSwitchers() {
-        const tabLinks = document.getElementsByClassName('tab-link');
-        for(let i = 0; i < tabLinks.length; i++) {
-            let tabContentId;
-            switch(tabLinks[i].textContent) {
-                case 'Lines':
-                    tabContentId = 'lines-content';
-                    break;
-                case 'Stations':
-                    tabContentId = 'stations-content';
-                    break;
-                case 'Transfers':
-                    tabContentId = 'transfers-content';
-            }
-            tabLinks[i].addEventListener('click', switchMenu.bind(null, tabLinks[i], tabContentId));
-        }
+        document.getElementById('lines-tab').addEventListener('click', switchToLinesMenu);
+        document.getElementById('stations-tab').addEventListener('click', switchToStationsMenu);
+        document.getElementById('transfers-tab').addEventListener('click', switchToTransfersMenu);
     }
 
-    function switchMenu(tabLinkElement, tabContentId) {
+    function switchMenu(tabLinkId, tabContentId) {
         const menuLinks = document.getElementsByClassName('tab-link');
         for(let i = 0; i < menuLinks.length; i++) {
-            if(menuLinks[i] === tabLinkElement)
+            if(menuLinks[i].id === tabLinkId)
                 menuLinks[i].classList.add('active');
             else
                 menuLinks[i].classList.remove('active');
@@ -123,11 +117,13 @@ const UI = (function() {
         replaceChild(document.getElementById('terminal-2'), document.createTextNode(Core.getStation(line.stations[line.stations.length - 1]).name));
         replaceChild(document.getElementById('station-count'), document.createTextNode('' + line.stations.length));
         replaceList(document.getElementById('line-station-list'), line.stations.map(stationId => createStationElement(Core.getStation(stationId))));
+        switchToLinesMenu();
     }
 
     function setActiveStation(station) {
         replaceChild(document.getElementById('station-name'), makeEditable(document.createTextNode(station.name), Core.updateStation.bind(null, station, 'name')));
         replaceList(document.getElementById('station-lines'), station.lines.map(lineId => createLineElement(Core.getLine(lineId))));
+        switchToStationsMenu();
     }
 
     function replaceChild(parentNode, newChild) {
