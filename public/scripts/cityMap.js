@@ -72,10 +72,9 @@ const CityMap = (function() {
         const linesAtStation = new Set();
         station.lines.forEach(lineId => {linesAtStation.add(Core.getLine(lineId).name);});
         linesAtStation.forEach(lineName => {popupText += lineName + ' ';});
-        const stationMarker = L.marker(station.latLng, {icon:stationLocalIcon});
+        const stationMarker = L.marker(station.latLng, {icon:stationLocalIcon}).addTo(map);
         markers.stations[station.id] = stationMarker;
-        stationMarker.addTo(map).bindPopup(popupText)
-            .addEventListener('click', Core.setActiveStation.bind(this, station.id));
+        stationMarker.bindPopup(popupText).addEventListener('click', Core.setActiveStation.bind(this, station.id));
     }
 
     function drawTransfer(transfer) {
@@ -85,7 +84,9 @@ const CityMap = (function() {
     }
 
     function setActiveStation(station) {
-        //Open station popup
+        const stationMarker = markers.stations[station.id];
+        if(!stationMarker.getPopup().isOpen())
+            stationMarker._icon.click();
     }
 
     function setActiveTransfer(transfer) {
