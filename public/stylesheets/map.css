@@ -68,7 +68,7 @@ html, body, #map {
     display: inline-flex;
 }
 
-#ui .line {
+.line {
     text-align: center;
     vertical-align: middle;
     width: 2em;
@@ -77,13 +77,13 @@ html, body, #map {
     margin: .1em;
 }
 
-#ui .line.local {
+.local {
     border-radius: 50%;
     -moz-border-radius: 50%;
     -webkit-border-radius: 50%;
 }
 
-#ui .line.express {
+.express {
     /* TODO: figure out how to make a proper diamond*/
     -webkit-transform: rotate(0deg);
     -moz-transform: rotate(0deg);
@@ -144,4 +144,12 @@ ul {
 
 .station-element *{
     display: inline;
+}
+
+.leaflet-popup-content p,ul{
+    margin: 0;
+}
+
+.leaflet-popup-content h1{
+    font-size: small;
 }
