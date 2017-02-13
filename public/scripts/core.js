@@ -3,7 +3,6 @@
 const Core = (function() {
 
     let state = createEmptyState();
-
     let activeLine;
     let activeStation;
     let activeTransfer;
@@ -105,6 +104,7 @@ const Core = (function() {
         CityMap.setActiveStation(activeTransfer);
     }
 
+    //noinspection JSUnusedLocalSymbols
     function generateLineId() {
     }
 
@@ -118,6 +118,7 @@ const Core = (function() {
         return i;
     }
 
+    //noinspection JSUnusedLocalSymbols
     function generateTransferId() {
     }
 

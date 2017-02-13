@@ -15,13 +15,15 @@ const CityMap = (function() {
         iconSize: [8, 8]
     });
 
+    //noinspection JSUnusedLocalSymbols
     const stationExpressIcon = L.divIcon({
         className: 'station express',
         iconSize: [8, 8]
     });
 
     function initialize(mapElement) {
-        map = L.map(mapElement, {zoomControl: false}); // Get map through core module instead?
+        map = L.map(mapElement, {zoomControl: false});
+        //noinspection UnnecessaryLocalVariableJS
         const defaultLocation = LATLNG_NYC;
         map.setView(defaultLocation, 13);
         const tileURL = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -68,10 +70,10 @@ const CityMap = (function() {
 
     function drawStation(station) {
         //change station name on update too
-        let popupText = '<b>' + station.name + '</b> <i>' + station.id + '</i><br>';
+        /*let popupText = '<b>' + station.name + '</b> <i>' + station.id + '</i><br>';
         const linesAtStation = new Set();
         station.lines.forEach(lineId => {linesAtStation.add(Core.getLine(lineId).name);});
-        linesAtStation.forEach(lineName => {popupText += lineName + ' ';});
+        linesAtStation.forEach(lineName => {popupText += lineName + ' ';});*/
         const stationMarker = L.marker(station.latLng, {icon:stationLocalIcon}).addTo(map);
         markers.stations[station.id] = stationMarker;
         stationMarker.addEventListener('click', Core.setActiveStation.bind(null, station.id));

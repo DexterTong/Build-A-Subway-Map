@@ -25,6 +25,7 @@ class Station {
     }
 
     static isValidName(value) {
+        //noinspection RedundantIfStatementJS
         if(typeof value !== 'string')
             return false;
         return true; //TODO: replace with real check later

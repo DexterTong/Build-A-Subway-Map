@@ -4,6 +4,7 @@ const Files = (function() {
 
     function generateSave(state) {
         return {
+            // Generate a pseudorandom 6-character sequence using a-z, 0-9
             name: 'basm-' + Math.random().toString(36).substr(2, 6) + '.json',
             data: 'text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(state, null, 4))
         };

@@ -16,12 +16,13 @@ const UI = (function() {
 
         const tabContents = document.getElementsByClassName('tab-content');
         for(let i = 0; i < tabContents.length; i++) {
-            tabContents[i].style.display = 'none';
+            tabContents[i].style.display = 'none'
         }
 
         document.getElementById('button-save').onclick = Core.saveGame;
         document.getElementById('button-load').onclick = Core.loadGame;
         document.getElementById('button-station-add').onclick = Core.createStation;
+
         addMenuSwitchers();
     }
 
@@ -45,6 +46,7 @@ const UI = (function() {
             else
                 menuLinks[i].classList.remove('active');
         }
+
         const menuContents = document.getElementsByClassName('tab-content');
         for(let i = 0; i < menuContents.length; i++) {
             if(menuContents[i].id === tabContentId)
@@ -54,6 +56,7 @@ const UI = (function() {
         }
     }
 
+    //noinspection JSUnusedLocalSymbols
     function update(activeLine, activeStation, activeTransfer) {
         const lineGroupsObject = Core.getAllLines().reduce((groups, line) => {
             if (groups[line.color])
@@ -81,11 +84,14 @@ const UI = (function() {
         replaceList(document.getElementById('line-group-list'),
             lineGroups.map(lineGroup => createLineGroupElement(lineGroup))
         );
+
+        //noinspection JSUnresolvedFunction
         replaceList(document.getElementById('station-list'),
             Core.getAllStations()
                 .sort((A, B) => A.name.localeCompare(B.name))
                 .map(station => createStationElement(station))
         );
+
         if(activeLine !== undefined)
             setActiveLine(activeLine);
         if(activeStation !== undefined)
@@ -112,17 +118,23 @@ const UI = (function() {
     function setActiveLine(line) {
         replaceChild(document.getElementById('line-element-container'), createLineElement(line));
         replaceChild(document.getElementById('express'), document.createTextNode(line.express ? 'Express' : ''));
-        replaceChild(document.getElementById('branch'), makeEditable(document.createTextNode(line.branch), Core.updateLine.bind(null, line, 'branch')));
-        replaceChild(document.getElementById('terminal-1'), document.createTextNode(Core.getStation(line.stations[0]).name));
-        replaceChild(document.getElementById('terminal-2'), document.createTextNode(Core.getStation(line.stations[line.stations.length - 1]).name));
+        replaceChild(document.getElementById('branch'),
+            makeEditable(document.createTextNode(line.branch), Core.updateLine.bind(null, line, 'branch')));
+        replaceChild(document.getElementById('terminal-1'),
+            document.createTextNode(Core.getStation(line.stations[0]).name));
+        replaceChild(document.getElementById('terminal-2'),
+            document.createTextNode(Core.getStation(line.stations[line.stations.length - 1]).name));
         replaceChild(document.getElementById('station-count'), document.createTextNode('' + line.stations.length));
-        replaceList(document.getElementById('line-station-list'), line.stations.map(stationId => createStationElement(Core.getStation(stationId))));
+        replaceList(document.getElementById('line-station-list'),
+            line.stations.map(stationId => createStationElement(Core.getStation(stationId))));
         switchToLinesMenu();
     }
 
     function setActiveStation(station) {
-        replaceChild(document.getElementById('station-name'), makeEditable(document.createTextNode(station.name), Core.updateStation.bind(null, station, 'name')));
-        replaceList(document.getElementById('station-lines'), station.lines.map(lineId => createLineElement(Core.getLine(lineId))));
+        replaceChild(document.getElementById('station-name'),
+            makeEditable(document.createTextNode(station.name), Core.updateStation.bind(null, station, 'name')));
+        replaceList(document.getElementById('station-lines'),
+            station.lines.map(lineId => createLineElement(Core.getLine(lineId))));
         switchToStationsMenu();
     }
 
@@ -135,6 +147,7 @@ const UI = (function() {
     function replaceList(listNode, newListElementArray) {
         while (listNode.firstChild !== null)
             listNode.removeChild(listNode.firstChild);
+
         const elementsToAdd = newListElementArray.slice();
         while (elementsToAdd.length > 0) {
             const listElement = document.createElement('li');
@@ -146,21 +159,20 @@ const UI = (function() {
         }
     }
 
-    function idify(str) {
-        return str.trim().replace(/ /g, '-');
-    }
-
     function createStationElement(station) {
         const stationElement = document.createElement('span');
         stationElement.classList.add('station-element');
+
         const stationName = document.createElement('p');
         stationName.appendChild(document.createTextNode(station.name));
         stationName.onclick = Core.setActiveStation.bind(null, station.id);
         stationElement.appendChild(stationName);
+
         const stationLines = document.createElement('ul');
         stationLines.classList.add('line-list');
         replaceList(stationLines, station.lines.map(lineId => createLineElement(Core.getLine(lineId))));
         stationElement.appendChild(stationLines);
+
         return stationElement;
     }
 
@@ -186,9 +198,11 @@ const UI = (function() {
         const editIcon = document.createElement('i');
         editIcon.classList.add('material-icons');
         editIcon.appendChild(document.createTextNode('mode_edit'));
+
         const editableElement = document.createElement('span');
         editableElement.appendChild(textNode);
         editableElement.appendChild(editIcon);
+
         editIcon.onclick = () => {
             const editBox = document.createElement('textarea');
             textNode.parentNode.replaceChild(editBox, textNode);
@@ -197,6 +211,7 @@ const UI = (function() {
             editBox.focus();
             editBox.onblur = () => {callback(editBox.value);};
         };
+
         return editableElement;
     }
 
