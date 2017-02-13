@@ -17,7 +17,7 @@ const UI = (function() {
 
         const tabContents = document.getElementsByClassName('tab-content');
         for(let i = 0; i < tabContents.length; i++) {
-            tabContents[i].style.display = 'none';
+            tabContents[i].classList.add('hide');
         }
 
         document.getElementById('button-save').onclick = Core.saveGame;
@@ -51,9 +51,9 @@ const UI = (function() {
         const menuContents = document.getElementsByClassName('tab-content');
         for(let i = 0; i < menuContents.length; i++) {
             if(menuContents[i].id === tabContentId)
-                menuContents[i].style.display = '';
+                menuContents[i].classList.remove('hide');
             else
-                menuContents[i].style.display = 'none';
+                menuContents[i].classList.add('hide');
         }
     }
 
