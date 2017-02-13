@@ -153,3 +153,7 @@ ul {
 .leaflet-popup-content h1{
     font-size: small;
 }
+
+.hide {
+    display: none;
+}

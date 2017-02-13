@@ -183,9 +183,12 @@ const UI = (function() {
 
     function downloadGame(save) {
         const saveLink = document.createElement('a');
+        saveLink.classList.add('hide');
         saveLink.href = 'data:' + save.data;
         saveLink.download = save.name;
+        document.body.appendChild(saveLink);
         saveLink.click();
+        document.body.removeChild(saveLink);
     }
 
     function uploadGame() {
