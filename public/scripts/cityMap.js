@@ -43,13 +43,19 @@ const CityMap = (function() {
 
     function deleteAllMarkers() {
         while(markers.lines.length > 0) {
-            map.removeLayer(markers.lines.pop());
+            const toRemove = markers.lines.pop();
+            if(toRemove !== undefined)
+                map.removeLayer(toRemove);
         }
         while(markers.stations.length > 0) {
-            map.removeLayer(markers.stations.pop());
+            const toRemove = markers.stations.pop();
+            if(toRemove !== undefined)
+                map.removeLayer(toRemove);
         }
         while(markers.transfers.length > 0) {
-            map.removeLayer(markers.transfers.pop());
+            const toRemove = markers.transfers.pop();
+            if(toRemove !== undefined)
+                map.removeLayer(toRemove);
         }
     }
 
