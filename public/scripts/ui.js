@@ -1,4 +1,5 @@
 /*globals Core, document*/
+/*exported UI*/
 
 const UI = (function() {
 
@@ -16,7 +17,7 @@ const UI = (function() {
 
         const tabContents = document.getElementsByClassName('tab-content');
         for(let i = 0; i < tabContents.length; i++) {
-            tabContents[i].style.display = 'none'
+            tabContents[i].style.display = 'none';
         }
 
         document.getElementById('button-save').onclick = Core.saveGame;
@@ -56,8 +57,7 @@ const UI = (function() {
         }
     }
 
-    //noinspection JSUnusedLocalSymbols
-    function update(activeLine, activeStation, activeTransfer) {
+    function update(activeLine, activeStation, activeTransfer) {    //jshint ignore:line
         const lineGroupsObject = Core.getAllLines().reduce((groups, line) => {
             if (groups[line.color])
                 groups[line.color].push(line);
@@ -117,14 +117,17 @@ const UI = (function() {
 
     function setActiveLine(line) {
         replaceChild(document.getElementById('line-element-container'), createLineElement(line));
-        replaceChild(document.getElementById('express'), document.createTextNode(line.express ? 'Express' : ''));
+        replaceChild(document.getElementById('express'),
+            document.createTextNode(line.express ? 'Express' : ''));
         replaceChild(document.getElementById('branch'),
-            makeEditable(document.createTextNode(line.branch), Core.updateLine.bind(null, line, 'branch')));
+            makeEditable(document.createTextNode(line.branch),
+                Core.updateLine.bind(null, line, 'branch')));
         replaceChild(document.getElementById('terminal-1'),
             document.createTextNode(Core.getStation(line.stations[0]).name));
         replaceChild(document.getElementById('terminal-2'),
             document.createTextNode(Core.getStation(line.stations[line.stations.length - 1]).name));
-        replaceChild(document.getElementById('station-count'), document.createTextNode('' + line.stations.length));
+        replaceChild(document.getElementById('station-count'),
+            document.createTextNode('' + line.stations.length));
         replaceList(document.getElementById('line-station-list'),
             line.stations.map(stationId => createStationElement(Core.getStation(stationId))));
         switchToLinesMenu();
@@ -132,7 +135,8 @@ const UI = (function() {
 
     function setActiveStation(station) {
         replaceChild(document.getElementById('station-name'),
-            makeEditable(document.createTextNode(station.name), Core.updateStation.bind(null, station, 'name')));
+            makeEditable(document.createTextNode(station.name),
+                Core.updateStation.bind(null, station, 'name')));
         replaceList(document.getElementById('station-lines'),
             station.lines.map(lineId => createLineElement(Core.getLine(lineId))));
         switchToStationsMenu();
@@ -170,7 +174,8 @@ const UI = (function() {
 
         const stationLines = document.createElement('ul');
         stationLines.classList.add('line-list');
-        replaceList(stationLines, station.lines.map(lineId => createLineElement(Core.getLine(lineId))));
+        replaceList(stationLines, station.lines.map(
+            lineId => createLineElement(Core.getLine(lineId))));
         stationElement.appendChild(stationLines);
 
         return stationElement;

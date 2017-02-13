@@ -1,4 +1,5 @@
 /*globals Core, L*/
+/*exported CityMap*/
 
 const CityMap = (function() {
 
@@ -15,15 +16,13 @@ const CityMap = (function() {
         iconSize: [8, 8]
     });
 
-    //noinspection JSUnusedLocalSymbols
-    const stationExpressIcon = L.divIcon({
+    const stationExpressIcon = L.divIcon({  //jshint ignore:line
         className: 'station express',
         iconSize: [8, 8]
     });
 
     function initialize(mapElement) {
         map = L.map(mapElement, {zoomControl: false});
-        //noinspection UnnecessaryLocalVariableJS
         const defaultLocation = LATLNG_NYC;
         map.setView(defaultLocation, 13);
         const tileURL = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -79,10 +78,10 @@ const CityMap = (function() {
         stationMarker.addEventListener('click', Core.setActiveStation.bind(null, station.id));
     }
 
-    function drawTransfer(transfer) {
+    function drawTransfer(transfer) {   //jshint ignore:line
     }
 
-    function setActiveLine(line) {
+    function setActiveLine(line) {  //jshint ignore:line
     }
 
     function setActiveStation(station, popupContent) {
@@ -92,13 +91,14 @@ const CityMap = (function() {
         stationMarker.openPopup();
     }
 
-    function setActiveTransfer(transfer) {
+    function setActiveTransfer(transfer) {  //jshint ignore:line
     }
 
     function addCoordinates(station, callback) {
         const getCoordinates = (event) => {
             map.removeEventListener('click', getCoordinates);
-            station.latLng = [Number(event.latlng.lat.toFixed(6)), Number(event.latlng.lng.toFixed(6))];
+            station.latLng = [Number(event.latlng.lat.toFixed(6)),
+                Number(event.latlng.lng.toFixed(6))];
             callback(station);
         };
         map.addEventListener('click', getCoordinates);

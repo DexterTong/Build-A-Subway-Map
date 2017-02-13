@@ -30,7 +30,7 @@ class Line {
     }
 
     static isValidColor(value) {
-        //Check if value is a string representing a valid hexadecimal color, i.e. '#XXX' or '#XXXXXX'
+        //Check if value is a valid hex color string, i.e. '#XXX' or '#XXXXXX'
         if(typeof value !== 'string')
             return false;
         return /^#([0-9A-Fa-f]{3}){1,2}$/.test(value);

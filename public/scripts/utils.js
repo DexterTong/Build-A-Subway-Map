@@ -1,3 +1,5 @@
+/*exported Utils*/
+
 class Utils {
     static isIntegerArray(value) {
         if(!Array.isArray(value))

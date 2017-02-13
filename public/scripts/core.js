@@ -1,4 +1,5 @@
 /*globals CityMap, Files, Line, Station, UI*/
+/*exported Core*/
 
 const Core = (function() {
 
@@ -104,8 +105,7 @@ const Core = (function() {
         CityMap.setActiveStation(activeTransfer);
     }
 
-    //noinspection JSUnusedLocalSymbols
-    function generateLineId() {
+    function generateLineId() { //jshint ignore:line
     }
 
     //TODO: move array 'hole filling' to save step?
@@ -118,12 +118,12 @@ const Core = (function() {
         return i;
     }
 
-    //noinspection JSUnusedLocalSymbols
-    function generateTransferId() {
+    function generateTransferId() { //jshint ignore:line
     }
 
     function createStation() {
-        const station = new Station(generateStationId(), ' New Station'); // Leading space to be at top of list
+        // Leading space added to appear at top of station list
+        const station = new Station(generateStationId(), ' New Station');
         activeStation = station;
         CityMap.addCoordinates(station, (station) => {
             state.stations[station.id] = station;
