@@ -96,7 +96,7 @@ const Core = (function() {
     function setActiveStation(stationId) {
         activeStation = getStation(stationId);
         UI.setActiveStation(activeStation);
-        CityMap.setActiveStation(activeStation);
+        CityMap.setActiveStation(activeStation, UI.createStationPopupContent(activeStation));
     }
 
     function setActiveTransfer(transferId) {

@@ -200,6 +200,25 @@ const UI = (function() {
         return editableElement;
     }
 
+    function createStationPopupContent(station) {
+        const content = document.createElement('div');
+
+        const nameElement = document.createElement('h1');
+        nameElement.appendChild(document.createTextNode(station.name));
+        content.appendChild(nameElement);
+
+        const idElement = document.createElement('p');
+        idElement.appendChild(document.createTextNode('id: ' + station.id));
+        content.appendChild(idElement);
+
+        const linesList = document.createElement('ul');
+        station.lines.map(lineId => createLineElement(Core.getLine(lineId)))
+            .forEach(lineElement => {linesList.appendChild(lineElement);});
+        content.appendChild(linesList);
+
+        return content;
+    }
+
     return {
         getMap,
         initialize,
@@ -208,6 +227,7 @@ const UI = (function() {
         setActiveStation,
         setCurrentAction,
         downloadGame,
-        uploadGame
+        uploadGame,
+        createStationPopupContent
     };
 })();
