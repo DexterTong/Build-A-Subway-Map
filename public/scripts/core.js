@@ -76,15 +76,15 @@ const Core = (function() {
     }
 
     function getAllLines() {
-        return state.lines.slice();
+        return state.lines.filter(line => line !== undefined);
     }
 
     function getAllStations() {
-        return state.stations.slice();
+        return state.stations.filter(station => station !== undefined);
     }
 
     function getAllTransfers() {
-        return state.transfers.slice();
+        return state.transfers.filter(transfer => transfer !== undefined);
     }
 
     function setActiveLine(lineId) {
@@ -96,7 +96,8 @@ const Core = (function() {
     function setActiveStation(stationId) {
         activeStation = getStation(stationId);
         UI.setActiveStation(activeStation);
-        CityMap.setActiveStation(activeStation, UI.createStationPopupContent(activeStation));
+        CityMap.setActiveStation(activeStation, activeStation !== undefined ?
+            UI.createStationPopupContent(activeStation) : undefined);
     }
 
     function setActiveTransfer(transferId) {
@@ -130,6 +131,16 @@ const Core = (function() {
             update();
             setActiveStation(station.id);
         });
+    }
+
+    function deleteStation() {
+        if(activeStation === undefined)
+            return;
+        activeStation.lines.forEach(lineId => {
+            state.lines[lineId].deleteStation(activeStation.id);});
+        state.stations[activeStation.id] = undefined;
+        setActiveStation(undefined);
+        update();
     }
 
     function updateLine(line, property, value) {
@@ -172,6 +183,7 @@ const Core = (function() {
         setActiveTransfer,
         createGameState,
         createStation,
+        deleteStation,
         updateLine,
         updateStation
     };

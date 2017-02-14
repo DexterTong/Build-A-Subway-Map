@@ -85,10 +85,14 @@ const CityMap = (function() {
     }
 
     function setActiveStation(station, popupContent) {
-        const stationMarker = markers.stations[station.id];
-        stationMarker.unbindPopup();
-        stationMarker.bindPopup(popupContent);
-        stationMarker.openPopup();
+        if(station === undefined)
+            map.closePopup();
+        else {
+            const stationMarker = markers.stations[station.id];
+            stationMarker.unbindPopup();
+            stationMarker.bindPopup(popupContent);
+            stationMarker.openPopup();
+        }
     }
 
     function setActiveTransfer(transfer) {  //jshint ignore:line

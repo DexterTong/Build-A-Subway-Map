@@ -22,6 +22,13 @@ class Line {
         }
     }
 
+    deleteStation(stationId) {
+        for(let i = 0; i < this.stations.length; i++){
+            if(this.stations[i] === stationId){
+                this.stations.splice(i, 1);
+            }
+        }
+    }
 
     static isValidId(value) {
         if(!Number.isInteger(value))

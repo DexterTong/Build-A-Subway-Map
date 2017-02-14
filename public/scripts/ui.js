@@ -23,6 +23,7 @@ const UI = (function() {
         document.getElementById('button-save').onclick = Core.saveGame;
         document.getElementById('button-load').onclick = Core.loadGame;
         document.getElementById('button-station-add').onclick = Core.createStation;
+        document.getElementById('button-station-delete').onclick = Core.deleteStation;
 
         addMenuSwitchers();
     }
@@ -134,11 +135,20 @@ const UI = (function() {
     }
 
     function setActiveStation(station) {
-        replaceChild(document.getElementById('station-name'),
-            makeEditable(document.createTextNode(station.name),
-                Core.updateStation.bind(null, station, 'name')));
-        replaceList(document.getElementById('station-lines'),
-            station.lines.map(lineId => createLineElement(Core.getLine(lineId))));
+        const stationNameElement = document.getElementById('station-name');
+        const stationLinesElement = document.getElementById('station-lines');
+        if(station === undefined) {
+            if(stationNameElement.firstChild !== null)
+                stationNameElement.removeChild(stationNameElement.firstChild);
+            while(stationLinesElement.firstChild !== null)
+                stationLinesElement.removeChild(stationLinesElement.firstChild);
+        }
+        else {
+            replaceChild(stationNameElement, makeEditable(document.createTextNode(station.name),
+                    Core.updateStation.bind(null, station, 'name')));
+            replaceList(stationLinesElement,
+                station.lines.map(lineId => createLineElement(Core.getLine(lineId))));
+        }
         switchToStationsMenu();
     }
 
