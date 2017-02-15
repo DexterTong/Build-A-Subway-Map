@@ -24,6 +24,7 @@ const UI = (function() {
         document.getElementById('button-load').onclick = Core.loadGame;
         document.getElementById('button-station-add').onclick = Core.createStation;
         document.getElementById('button-station-delete').onclick = Core.deleteStation;
+        document.getElementById('button-line-delete').onclick = Core.deleteLine;
 
         addMenuSwitchers();
     }
@@ -117,20 +118,32 @@ const UI = (function() {
     }
 
     function setActiveLine(line) {
-        replaceChild(document.getElementById('line-element-container'), createLineElement(line));
-        replaceChild(document.getElementById('express'),
-            document.createTextNode(line.express ? 'Express' : ''));
-        replaceChild(document.getElementById('branch'),
-            makeEditable(document.createTextNode(line.branch),
-                Core.updateLine.bind(null, line, 'branch')));
-        replaceChild(document.getElementById('terminal-1'),
-            document.createTextNode(Core.getStation(line.stations[0]).name));
-        replaceChild(document.getElementById('terminal-2'),
-            document.createTextNode(Core.getStation(line.stations[line.stations.length - 1]).name));
-        replaceChild(document.getElementById('station-count'),
-            document.createTextNode('' + line.stations.length));
-        replaceList(document.getElementById('line-station-list'),
-            line.stations.map(stationId => createStationElement(Core.getStation(stationId))));
+        let lineElement;
+        let lineExpressElement;
+        let branchElement;
+        let terminalOneElement;
+        let terminalTwoElement;
+        let stationCountElement;
+        let stationListElement;
+        if(line !== undefined) {
+            lineElement = createLineElement(line);
+            lineExpressElement = document.createTextNode(line.express ? 'Express' : '');
+            branchElement = makeEditable(document.createTextNode(line.branch),
+                Core.updateLine.bind(null, line, 'branch'));
+            terminalOneElement = document.createTextNode(Core.getStation(line.stations[0]).name);
+            terminalTwoElement = document.createTextNode(
+                Core.getStation(line.stations[line.stations.length - 1]).name);
+            stationCountElement = document.createTextNode('' + line.stations.length);
+            stationListElement = line.stations.map(
+                stationId => createStationElement(Core.getStation(stationId)));
+        }
+        replaceChild(document.getElementById('line-element-container'), lineElement);
+        replaceChild(document.getElementById('express'), lineExpressElement);
+        replaceChild(document.getElementById('branch'), branchElement);
+        replaceChild(document.getElementById('terminal-1'), terminalOneElement);
+        replaceChild(document.getElementById('terminal-2'), terminalTwoElement);
+        replaceChild(document.getElementById('station-count'), stationCountElement);
+        replaceList(document.getElementById('line-station-list'), stationListElement);
         switchToLinesMenu();
     }
 
@@ -155,21 +168,24 @@ const UI = (function() {
     function replaceChild(parentNode, newChild) {
         if(parentNode.firstChild !== null)
             parentNode.removeChild(parentNode.firstChild);
-        parentNode.appendChild(newChild);
+        if(newChild !== undefined)
+            parentNode.appendChild(newChild);
     }
 
     function replaceList(listNode, newListElementArray) {
-        while (listNode.firstChild !== null)
+        while (listNode.firstChild !== null) {
             listNode.removeChild(listNode.firstChild);
-
-        const elementsToAdd = newListElementArray.slice();
-        while (elementsToAdd.length > 0) {
-            const listElement = document.createElement('li');
-            const elementToAdd = elementsToAdd.shift();
-            if(elementToAdd === undefined)
-                continue;
-            listElement.appendChild(elementToAdd);
-            listNode.appendChild(listElement);
+        }
+        if(newListElementArray !== undefined) {
+            const elementsToAdd = newListElementArray.slice();
+            while (elementsToAdd.length > 0) {
+                const listElement = document.createElement('li');
+                const elementToAdd = elementsToAdd.shift();
+                if (elementToAdd === undefined)
+                    continue;
+                listElement.appendChild(elementToAdd);
+                listNode.appendChild(listElement);
+            }
         }
     }
 

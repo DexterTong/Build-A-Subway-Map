@@ -55,4 +55,12 @@ class Station {
             Station.isValidLines(value.lines) &&
             Station.isValidTransfers(value.transfers);
     }
+
+    deleteLine(lineId) {
+        for(let i = 0; i < this.lines.length; i++){
+            if(this.lines[i] === lineId){
+                this.lines.splice(i, 1);
+            }
+        }
+    }
 }

@@ -122,6 +122,20 @@ const Core = (function() {
     function generateTransferId() { //jshint ignore:line
     }
 
+    function createLine() {
+    }
+
+    function deleteLine() {
+        if(activeLine === undefined)
+            return;
+        activeLine.stations.forEach(stationId => {
+            getStation(stationId).deleteLine(activeLine.id);
+        });
+        state.lines[activeLine.id] = undefined;
+        setActiveLine(undefined);
+        update();
+    }
+
     function createStation() {
         // Leading space added to appear at top of station list
         const station = new Station(generateStationId(), ' New Station');
@@ -182,6 +196,8 @@ const Core = (function() {
         setActiveStation,
         setActiveTransfer,
         createGameState,
+        createLine,
+        deleteLine,
         createStation,
         deleteStation,
         updateLine,
