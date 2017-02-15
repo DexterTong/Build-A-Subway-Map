@@ -150,20 +150,15 @@ const UI = (function () {
     }
 
     function setActiveStation(station) {
-        const stationNameElement = document.getElementById('station-name');
-        const stationLinesElement = document.getElementById('station-lines');
-        if (station === undefined) {
-            if (stationNameElement.firstChild !== null)
-                stationNameElement.removeChild(stationNameElement.firstChild);
-            while (stationLinesElement.firstChild !== null)
-                stationLinesElement.removeChild(stationLinesElement.firstChild);
+        let stationName;
+        let stationLines;
+        if (station !== undefined) {
+           stationName = makeEditable(document.createTextNode(station.name),
+               Core.updateStation.bind(null, station, 'name'));
+           stationLines = station.lines.map(lineId => createLineElement(Core.getLine(lineId)));
         }
-        else {
-            replaceChild(stationNameElement, makeEditable(document.createTextNode(station.name),
-                Core.updateStation.bind(null, station, 'name')));
-            replaceList(stationLinesElement,
-                station.lines.map(lineId => createLineElement(Core.getLine(lineId))));
-        }
+        replaceChild(document.getElementById('station-name'), stationName);
+        replaceList(document.getElementById('station-lines'), stationLines);
         switchToStationsMenu();
     }
 
