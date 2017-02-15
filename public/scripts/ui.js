@@ -87,7 +87,6 @@ const UI = (function () {
             lineGroups.map(lineGroup => createLineGroupElement(lineGroup))
         );
 
-        //noinspection JSUnresolvedFunction
         replaceList(document.getElementById('station-list'),
             Core.getAllStations()
                 .sort((A, B) => A.name.localeCompare(B.name))
@@ -127,18 +126,22 @@ const UI = (function () {
         let terminalTwoElement;
         let stationCountElement;
         let stationListElement;
+
         if (line !== undefined) {
             lineElement = createLineElement(line);
             lineExpressElement = document.createTextNode(line.express ? 'Express' : '');
             branchElement = makeEditable(document.createTextNode(line.branch),
                 Core.updateLine.bind(null, line, 'branch'));
-            terminalOneElement = document.createTextNode(Core.getStation(line.stations[0]).name);
-            terminalTwoElement = document.createTextNode(
-                Core.getStation(line.stations[line.stations.length - 1]).name);
+            if(line.stations.length > 0) {
+                terminalOneElement = document.createTextNode(Core.getStation(line.stations[0]).name);
+                terminalTwoElement = document.createTextNode(
+                    Core.getStation(line.stations[line.stations.length - 1]).name);
+            }
             stationCountElement = document.createTextNode('' + line.stations.length);
             stationListElement = line.stations.map(
                 stationId => createStationElement(Core.getStation(stationId)));
         }
+
         replaceChild(document.getElementById('line-element-container'), lineElement);
         replaceChild(document.getElementById('express'), lineExpressElement);
         replaceChild(document.getElementById('branch'), branchElement);
@@ -146,19 +149,23 @@ const UI = (function () {
         replaceChild(document.getElementById('terminal-2'), terminalTwoElement);
         replaceChild(document.getElementById('station-count'), stationCountElement);
         replaceList(document.getElementById('line-station-list'), stationListElement);
+
         switchToLinesMenu();
     }
 
     function setActiveStation(station) {
         let stationName;
         let stationLines;
+
         if (station !== undefined) {
            stationName = makeEditable(document.createTextNode(station.name),
                Core.updateStation.bind(null, station, 'name'));
            stationLines = station.lines.map(lineId => createLineElement(Core.getLine(lineId)));
         }
+
         replaceChild(document.getElementById('station-name'), stationName);
         replaceList(document.getElementById('station-lines'), stationLines);
+
         switchToStationsMenu();
     }
 
