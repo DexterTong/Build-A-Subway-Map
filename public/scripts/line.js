@@ -2,7 +2,7 @@
 
 class Line {
     constructor(id, color, name, branch, express, category, stations) {
-        if(typeof id === 'object') {
+        if (typeof id === 'object') {
             this.id = id.id;
             this.color = id.color;
             this.name = id.name;
@@ -23,34 +23,34 @@ class Line {
     }
 
     deleteStation(stationId) {
-        for(let i = 0; i < this.stations.length; i++){
-            if(this.stations[i] === stationId){
+        for (let i = 0; i < this.stations.length; i++) {
+            if (this.stations[i] === stationId) {
                 this.stations.splice(i, 1);
             }
         }
     }
 
     static isValidId(value) {
-        if(!Number.isInteger(value))
+        if (!Number.isInteger(value))
             return false;
         return value >= 0;
     }
 
     static isValidColor(value) {
         //Check if value is a valid hex color string, i.e. '#XXX' or '#XXXXXX'
-        if(typeof value !== 'string')
+        if (typeof value !== 'string')
             return false;
         return /^#([0-9A-Fa-f]{3}){1,2}$/.test(value);
     }
 
     static isValidName(value) {
-        if(typeof value !== 'string')
+        if (typeof value !== 'string')
             return false;
         return /^[A-Za-z\d]{1,3}$/.test(value);
     }
 
     static isValidBranch(value) {
-        if(typeof value !== 'string')
+        if (typeof value !== 'string')
             return false;
         return /^[A-Za-z\d ()]*$/.test(value);
     }
@@ -60,7 +60,7 @@ class Line {
     }
 
     static isValidCategory(value) {
-        if(typeof value !== 'string')
+        if (typeof value !== 'string')
             return false;
         return ['subway'].indexOf(value) > -1;
     }

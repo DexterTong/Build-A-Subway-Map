@@ -1,7 +1,7 @@
 /*globals FileReader, XMLHttpRequest*/
 /*exported Files*/
 
-const Files = (function() {
+const Files = (function () {
 
     function generateSave(state) {
         return {

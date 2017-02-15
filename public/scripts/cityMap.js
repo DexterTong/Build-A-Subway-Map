@@ -1,7 +1,7 @@
 /*globals Core, L*/
 /*exported CityMap*/
 
-const CityMap = (function() {
+const CityMap = (function () {
 
     let map;
     const LATLNG_NYC = L.latLng(40.7128, -74.0061); //City Hall, New York City
@@ -43,19 +43,19 @@ const CityMap = (function() {
     }
 
     function deleteAllMarkers() {
-        while(markers.lines.length > 0) {
+        while (markers.lines.length > 0) {
             const toRemove = markers.lines.pop();
-            if(toRemove !== undefined)
+            if (toRemove !== undefined)
                 map.removeLayer(toRemove);
         }
-        while(markers.stations.length > 0) {
+        while (markers.stations.length > 0) {
             const toRemove = markers.stations.pop();
-            if(toRemove !== undefined)
+            if (toRemove !== undefined)
                 map.removeLayer(toRemove);
         }
-        while(markers.transfers.length > 0) {
+        while (markers.transfers.length > 0) {
             const toRemove = markers.transfers.pop();
-            if(toRemove !== undefined)
+            if (toRemove !== undefined)
                 map.removeLayer(toRemove);
         }
     }
@@ -70,10 +70,10 @@ const CityMap = (function() {
     function drawStation(station) {
         //change station name on update too
         /*let popupText = '<b>' + station.name + '</b> <i>' + station.id + '</i><br>';
-        const linesAtStation = new Set();
-        station.lines.forEach(lineId => {linesAtStation.add(Core.getLine(lineId).name);});
-        linesAtStation.forEach(lineName => {popupText += lineName + ' ';});*/
-        const stationMarker = L.marker(station.latLng, {icon:stationLocalIcon}).addTo(map);
+         const linesAtStation = new Set();
+         station.lines.forEach(lineId => {linesAtStation.add(Core.getLine(lineId).name);});
+         linesAtStation.forEach(lineName => {popupText += lineName + ' ';});*/
+        const stationMarker = L.marker(station.latLng, {icon: stationLocalIcon}).addTo(map);
         markers.stations[station.id] = stationMarker;
         stationMarker.addEventListener('click', Core.setActiveStation.bind(null, station.id));
     }
@@ -85,7 +85,7 @@ const CityMap = (function() {
     }
 
     function setActiveStation(station, popupContent) {
-        if(station === undefined)
+        if (station === undefined)
             map.closePopup();
         else {
             const stationMarker = markers.stations[station.id];

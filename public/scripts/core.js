@@ -1,7 +1,7 @@
 /*globals CityMap, Files, Line, Station, UI*/
 /*exported Core*/
 
-const Core = (function() {
+const Core = (function () {
 
     let state = createEmptyState();
     let activeLine;
@@ -12,8 +12,12 @@ const Core = (function() {
         UI.initialize();
         CityMap.initialize(UI.getMap());
         Files.loadFromServer('nyc2017')
-            .then(data => {createGameState(data);})
-            .then(() => {update();});
+            .then(data => {
+                createGameState(data);
+            })
+            .then(() => {
+                update();
+            });
     }
 
     function createEmptyState() {
@@ -28,11 +32,11 @@ const Core = (function() {
         state = createEmptyState();
         //TODO: isValid data
         data.lines.forEach(line => {
-            if(line !== null && Line.isValid(line))
+            if (line !== null && Line.isValid(line))
                 state.lines[line.id] = new Line(line);
         });
         data.stations.forEach(station => {
-            if(station !== null && Station.isValid(station))
+            if (station !== null && Station.isValid(station))
                 state.stations[station.id] = new Station(station);
         });
     }
@@ -53,7 +57,7 @@ const Core = (function() {
 
     function loadHandler(loadForm) {
         Files.loadFromLocal(loadForm).then((data) => {
-            if(data.error !== undefined){
+            if (data.error !== undefined) {
                 console.log(data.error);
                 UI.setCurrentAction('');
                 return;
@@ -112,8 +116,8 @@ const Core = (function() {
     //TODO: move array 'hole filling' to save step?
     function generateStationId() {
         let i = 0;
-        for(; i < state.stations.length; i++) {
-            if(state.stations[i] === undefined)
+        for (; i < state.stations.length; i++) {
+            if (state.stations[i] === undefined)
                 return i;
         }
         return i;
@@ -126,7 +130,7 @@ const Core = (function() {
     }
 
     function deleteLine() {
-        if(activeLine === undefined)
+        if (activeLine === undefined)
             return;
         activeLine.stations.forEach(stationId => {
             getStation(stationId).deleteLine(activeLine.id);
@@ -148,10 +152,11 @@ const Core = (function() {
     }
 
     function deleteStation() {
-        if(activeStation === undefined)
+        if (activeStation === undefined)
             return;
         activeStation.lines.forEach(lineId => {
-            state.lines[lineId].deleteStation(activeStation.id);});
+            state.lines[lineId].deleteStation(activeStation.id);
+        });
         state.stations[activeStation.id] = undefined;
         setActiveStation(undefined);
         update();
@@ -160,7 +165,7 @@ const Core = (function() {
     function updateLine(line, property, value) {
         const lineCopy = new Line(line);
         lineCopy[property] = value;
-        if(Line.isValid(lineCopy)) {
+        if (Line.isValid(lineCopy)) {
             state.lines[line.id] = lineCopy;
             activeLine = lineCopy;
         }
@@ -172,7 +177,7 @@ const Core = (function() {
     function updateStation(station, property, value) {
         const stationCopy = new Station(station);
         stationCopy[property] = value;
-        if(Station.isValid(stationCopy)) {
+        if (Station.isValid(stationCopy)) {
             state.stations[station.id] = stationCopy;
             activeStation = stationCopy;
         }

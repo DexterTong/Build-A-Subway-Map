@@ -1,7 +1,7 @@
 /*globals Core, document*/
 /*exported UI*/
 
-const UI = (function() {
+const UI = (function () {
 
     function getMap() {
         return document.getElementById('map');
@@ -16,7 +16,7 @@ const UI = (function() {
         sidebar.insertBefore(header, sidebar.firstChild);
 
         const tabContents = document.getElementsByClassName('tab-content');
-        for(let i = 0; i < tabContents.length; i++) {
+        for (let i = 0; i < tabContents.length; i++) {
             tabContents[i].classList.add('hide');
         }
 
@@ -32,7 +32,7 @@ const UI = (function() {
     const switchToLinesMenu = switchMenu.bind(null, 'lines-tab', 'lines-content');
 
     const switchToStationsMenu = switchMenu.bind(null, 'stations-tab', 'stations-content');
-    
+
     const switchToTransfersMenu = switchMenu.bind(null, 'transfers-tab', 'transfers-content');
 
     function addMenuSwitchers() {
@@ -43,16 +43,16 @@ const UI = (function() {
 
     function switchMenu(tabLinkId, tabContentId) {
         const menuLinks = document.getElementsByClassName('tab-link');
-        for(let i = 0; i < menuLinks.length; i++) {
-            if(menuLinks[i].id === tabLinkId)
+        for (let i = 0; i < menuLinks.length; i++) {
+            if (menuLinks[i].id === tabLinkId)
                 menuLinks[i].classList.add('active');
             else
                 menuLinks[i].classList.remove('active');
         }
 
         const menuContents = document.getElementsByClassName('tab-content');
-        for(let i = 0; i < menuContents.length; i++) {
-            if(menuContents[i].id === tabContentId)
+        for (let i = 0; i < menuContents.length; i++) {
+            if (menuContents[i].id === tabContentId)
                 menuContents[i].classList.remove('hide');
             else
                 menuContents[i].classList.add('hide');
@@ -94,9 +94,9 @@ const UI = (function() {
                 .map(station => createStationElement(station))
         );
 
-        if(activeLine !== undefined)
+        if (activeLine !== undefined)
             setActiveLine(activeLine);
-        if(activeStation !== undefined)
+        if (activeStation !== undefined)
             setActiveStation(activeStation);
     }
 
@@ -113,7 +113,9 @@ const UI = (function() {
     function createLineGroupElement(lineGroup) {
         const lineGroupElement = document.createElement('li');
         lineGroupElement.classList.add('line-group');
-        lineGroup.forEach(line => {lineGroupElement.appendChild(createLineElement(line));});
+        lineGroup.forEach(line => {
+            lineGroupElement.appendChild(createLineElement(line));
+        });
         return lineGroupElement;
     }
 
@@ -125,7 +127,7 @@ const UI = (function() {
         let terminalTwoElement;
         let stationCountElement;
         let stationListElement;
-        if(line !== undefined) {
+        if (line !== undefined) {
             lineElement = createLineElement(line);
             lineExpressElement = document.createTextNode(line.express ? 'Express' : '');
             branchElement = makeEditable(document.createTextNode(line.branch),
@@ -150,15 +152,15 @@ const UI = (function() {
     function setActiveStation(station) {
         const stationNameElement = document.getElementById('station-name');
         const stationLinesElement = document.getElementById('station-lines');
-        if(station === undefined) {
-            if(stationNameElement.firstChild !== null)
+        if (station === undefined) {
+            if (stationNameElement.firstChild !== null)
                 stationNameElement.removeChild(stationNameElement.firstChild);
-            while(stationLinesElement.firstChild !== null)
+            while (stationLinesElement.firstChild !== null)
                 stationLinesElement.removeChild(stationLinesElement.firstChild);
         }
         else {
             replaceChild(stationNameElement, makeEditable(document.createTextNode(station.name),
-                    Core.updateStation.bind(null, station, 'name')));
+                Core.updateStation.bind(null, station, 'name')));
             replaceList(stationLinesElement,
                 station.lines.map(lineId => createLineElement(Core.getLine(lineId))));
         }
@@ -166,9 +168,9 @@ const UI = (function() {
     }
 
     function replaceChild(parentNode, newChild) {
-        if(parentNode.firstChild !== null)
+        if (parentNode.firstChild !== null)
             parentNode.removeChild(parentNode.firstChild);
-        if(newChild !== undefined)
+        if (newChild !== undefined)
             parentNode.appendChild(newChild);
     }
 
@@ -176,7 +178,7 @@ const UI = (function() {
         while (listNode.firstChild !== null) {
             listNode.removeChild(listNode.firstChild);
         }
-        if(newListElementArray !== undefined) {
+        if (newListElementArray !== undefined) {
             const elementsToAdd = newListElementArray.slice();
             while (elementsToAdd.length > 0) {
                 const listElement = document.createElement('li');
@@ -243,7 +245,9 @@ const UI = (function() {
             editBox.appendChild(textNode);
             editableElement.removeChild(editIcon);
             editBox.focus();
-            editBox.onblur = () => {callback(editBox.value);};
+            editBox.onblur = () => {
+                callback(editBox.value);
+            };
         };
 
         return editableElement;
@@ -262,7 +266,9 @@ const UI = (function() {
 
         const linesList = document.createElement('ul');
         station.lines.map(lineId => createLineElement(Core.getLine(lineId)))
-            .forEach(lineElement => {linesList.appendChild(lineElement);});
+            .forEach(lineElement => {
+                linesList.appendChild(lineElement);
+            });
         content.appendChild(linesList);
 
         return content;
