@@ -1,8 +1,7 @@
-/*globals CityMap, Files, Line, Station, UI*/
-/*exported Core*/
+/* globals CityMap, Files, Line, Station, UI */
+/* eslint-env browser */
 
-const Core = (function () {
-
+const Core = (function Core() {
   let state = createEmptyState();
   let activeLine;
   let activeStation;
@@ -26,13 +25,15 @@ const Core = (function () {
 
   function createGameState(data) {
     state = createEmptyState();
-    data.lines.forEach(line => {
-      if (line !== null && Line.isValid(line))
+    data.lines.forEach((line) => {
+      if (line !== null && Line.isValid(line)) {
         state.lines[line.id] = new Line(line);
+      }
     });
-    data.stations.forEach(station => {
-      if (station !== null && Station.isValid(station))
+    data.stations.forEach((station) => {
+      if (station !== null && Station.isValid(station)) {
         state.stations[station.id] = new Station(station);
+      }
     });
   }
 
@@ -106,29 +107,28 @@ const Core = (function () {
     CityMap.setActiveStation(activeTransfer);
   }
 
-  function generateLineId() { //jshint ignore:line
+  function generateLineId() { // eslint-disable-line no-unused-vars
   }
 
-  //TODO: move array 'hole filling' to save step?
+  // TODO: move array 'hole filling' to save step?
   function generateStationId() {
     let i = 0;
     for (; i < state.stations.length; i++) {
-      if (state.stations[i] === undefined)
-        break;
+      if (state.stations[i] === undefined) { break; }
     }
 
     return i;
   }
 
-  function generateTransferId() { //jshint ignore:line
+  function generateTransferId() { // eslint-disable-line no-unused-vars
   }
 
   function createLine() {
   }
 
   function deleteLine() {
-    if (activeLine === undefined)
-      return;
+    if (activeLine === undefined) { return; }
+
     activeLine.stations.forEach(stationId => getStation(stationId).deleteLine(activeLine.id));
     state.lines[activeLine.id] = undefined;
     setActiveLine(undefined);
@@ -137,9 +137,9 @@ const Core = (function () {
 
   function createStation() {
     // Leading space added to appear at top of station list
-    const station = new Station(generateStationId(), ' New Station');
-    activeStation = station;
-    CityMap.addCoordinates(station, (station) => {
+    const newStation = new Station(generateStationId(), ' New Station');
+    activeStation = newStation;
+    CityMap.addCoordinates(newStation, (station) => {
       state.stations[station.id] = station;
       update();
       setActiveStation(station.id);
@@ -147,8 +147,8 @@ const Core = (function () {
   }
 
   function deleteStation() {
-    if (activeStation === undefined)
-      return;
+    if (activeStation === undefined) { return; }
+
     activeStation.lines.forEach(lineId => state.lines[lineId].deleteStation(activeStation.id));
     state.stations[activeStation.id] = undefined;
     setActiveStation(undefined);
@@ -161,8 +161,10 @@ const Core = (function () {
     if (Line.isValid(lineCopy)) {
       state.lines[line.id] = lineCopy;
       activeLine = lineCopy;
-    } else
+    } else {
       console.log('Did not update line');
+    }
+
     UI.update(activeLine);
   }
 
@@ -172,8 +174,10 @@ const Core = (function () {
     if (Station.isValid(stationCopy)) {
       state.stations[station.id] = stationCopy;
       activeStation = stationCopy;
-    } else
+    } else {
       console.log('Did not update station');
+    }
+
     UI.update(undefined, activeStation);
   }
 
@@ -199,4 +203,4 @@ const Core = (function () {
     updateLine,
     updateStation,
   };
-})();
+}());

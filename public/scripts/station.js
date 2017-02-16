@@ -1,4 +1,5 @@
-/*globals Utils*/
+/* eslint-env browser */
+/* globals Utils */
 
 class Station {
   constructor(id, name, latLng, lines, transfers) {
@@ -18,25 +19,31 @@ class Station {
   }
 
   static isValidId(value) {
-    if (!Number.isInteger(value))
+    if (!Number.isInteger(value)) {
       return false;
+    }
+
     return value >= 0;
   }
 
   static isValidName(value) {
-    //noinspection RedundantIfStatementJS
-    if (typeof value !== 'string')
+    if (typeof value !== 'string') {
       return false;
-    return true; //TODO: replace with real check later
+    }
+
+    return true; // TODO: replace with real check later
   }
 
   static isValidLatLng(value) {
-    if (!Array.isArray(value))
+    if (!Array.isArray(value)) {
       return false;
-    if (value.length !== 2)
-      return false;
-    return !(isNaN(value[0]) || isNaN(value[1]));
+    }
 
+    if (value.length !== 2) {
+      return false;
+    }
+
+    return !(isNaN(value[0]) || isNaN(value[1]));
   }
 
   static isValidLines(value) {

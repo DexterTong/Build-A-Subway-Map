@@ -1,4 +1,5 @@
-/*globals Utils*/
+/* eslint-env browser */
+/* globals Utils */
 
 class Line {
   constructor(id, color, name, branch, express, category, stations) {
@@ -30,27 +31,35 @@ class Line {
   }
 
   static isValidId(value) {
-    if (!Number.isInteger(value))
+    if (!Number.isInteger(value)) {
       return false;
+    }
+
     return value >= 0;
   }
 
   static isValidColor(value) {
-    //Check if value is a valid hex color string, i.e. '#XXX' or '#XXXXXX'
-    if (typeof value !== 'string')
+    // Check if value is a valid hex color string, i.e. '#XXX' or '#XXXXXX'
+    if (typeof value !== 'string') {
       return false;
+    }
+
     return /^#([0-9A-Fa-f]{3}){1,2}$/.test(value);
   }
 
   static isValidName(value) {
-    if (typeof value !== 'string')
+    if (typeof value !== 'string') {
       return false;
+    }
+
     return /^[A-Za-z\d]{1,3}$/.test(value);
   }
 
   static isValidBranch(value) {
-    if (typeof value !== 'string')
+    if (typeof value !== 'string') {
       return false;
+    }
+
     return /^[A-Za-z\d ()]*$/.test(value);
   }
 
@@ -59,8 +68,10 @@ class Line {
   }
 
   static isValidCategory(value) {
-    if (typeof value !== 'string')
+    if (typeof value !== 'string') {
       return false;
+    }
+
     return ['subway'].indexOf(value) > -1;
   }
 

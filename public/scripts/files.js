@@ -1,12 +1,11 @@
-/*globals FileReader, XMLHttpRequest*/
-/*exported Files*/
+/* eslint-env browser */
 
-const Files = (function () {
+const Files = (function Files() {
   function generateSave(state) {
     return {
       // Generate a pseudo-random 6-character sequence using a-z, 0-9
-      name: 'basm-' + Math.random().toString(36).substr(2, 6) + '.json',
-      data: 'text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(state, null, 4)),
+      name: `basm-${Math.random().toString(36).substr(2, 6)}.json`,
+      data: `text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(state, null, 4))}`,
     };
   }
 
@@ -17,8 +16,7 @@ const Files = (function () {
         let state;
         try {
           state = JSON.parse(event.target.result);
-        }
-        catch (err) {
+        } catch (err) {
           reject({ error: 'Not a (valid) JSON file.' });
         }
 
@@ -30,15 +28,17 @@ const Files = (function () {
   }
 
   function loadFromServer(name) {
-    const fileName = name + '.json';
+    const fileName = `${name}.json`;
     return new Promise((resolve, reject) => {
       const req = new XMLHttpRequest();
-      req.open('GET', '/data/' + fileName, true);
-      req.addEventListener('load', function () {
+      req.open('GET', `/data/${fileName}`, true);
+      req.addEventListener('load', function handleLoad() {
+        console.log(event);
         if (this.status < 200 && this.status > 400) {
-          reject(Error('Could not load the requested game: ' + req.statusText));
-        } else
+          reject(Error(`Could not load the requested game: ${req.statusText}`));
+        } else {
           resolve(JSON.parse(this.response));
+        }
       });
 
       req.send();
@@ -50,4 +50,4 @@ const Files = (function () {
     loadFromLocal,
     loadFromServer,
   };
-})();
+}());

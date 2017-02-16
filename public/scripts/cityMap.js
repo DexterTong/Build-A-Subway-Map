@@ -1,10 +1,9 @@
-/*globals Core, L*/
-/*exported CityMap*/
+/* globals Core, L */
+/* eslint-env browser */
 
-const CityMap = (function () {
-
+const CityMap = (function CityMap() {
   let map;
-  const LATLNG_NYC = L.latLng(40.7128, -74.0061); //City Hall, New York City
+  const LATLNG_NYC = L.latLng(40.7128, -74.0061); // City Hall, New York City
   const markers = {
     lines: [],
     stations: [],
@@ -16,7 +15,7 @@ const CityMap = (function () {
     iconSize: [8, 8],
   });
 
-  const stationExpressIcon = L.divIcon({  //jshint ignore:line
+  const stationExpressIcon = L.divIcon({  // eslint-disable-line no-unused-vars
     className: 'station express',
     iconSize: [8, 8],
   });
@@ -45,20 +44,23 @@ const CityMap = (function () {
   function deleteAllMarkers() {
     while (markers.lines.length > 0) {
       const toRemove = markers.lines.pop();
-      if (toRemove !== undefined)
+      if (toRemove !== undefined) {
         map.removeLayer(toRemove);
+      }
     }
 
     while (markers.stations.length > 0) {
       const toRemove = markers.stations.pop();
-      if (toRemove !== undefined)
+      if (toRemove !== undefined) {
         map.removeLayer(toRemove);
+      }
     }
 
     while (markers.transfers.length > 0) {
       const toRemove = markers.transfers.pop();
-      if (toRemove !== undefined)
+      if (toRemove !== undefined) {
         map.removeLayer(toRemove);
+      }
     }
   }
 
@@ -70,26 +72,27 @@ const CityMap = (function () {
   }
 
   function drawStation(station) {
-    //change station name on update too
-    /*let popupText = '<b>' + station.name + '</b> <i>' + station.id + '</i><br>';
-     const linesAtStation = new Set();
-     station.lines.forEach(lineId => {linesAtStation.add(Core.getLine(lineId).name);});
-     linesAtStation.forEach(lineName => {popupText += lineName + ' ';});*/
+    /*
+    let popupText = '<b>' + station.name + '</b> <i>' + station.id + '</i><br>';
+    const linesAtStation = new Set();
+    station.lines.forEach(lineId => {linesAtStation.add(Core.getLine(lineId).name);});
+    linesAtStation.forEach(lineName => {popupText += lineName + ' ';});
+    */
     const stationMarker = L.marker(station.latLng, { icon: stationLocalIcon }).addTo(map);
     markers.stations[station.id] = stationMarker;
     stationMarker.addEventListener('click', Core.setActiveStation.bind(null, station.id));
   }
 
-  function drawTransfer(transfer) {   //jshint ignore:line
+  function drawTransfer(transfer) {   // eslint-disable-line no-unused-vars
   }
 
-  function setActiveLine(line) {  //jshint ignore:line
+  function setActiveLine(line) {  // eslint-disable-line no-unused-vars
   }
 
   function setActiveStation(station, popupContent) {
-    if (station === undefined)
+    if (station === undefined) {
       map.closePopup();
-    else {
+    } else {
       const stationMarker = markers.stations[station.id];
       stationMarker.unbindPopup();
       stationMarker.bindPopup(popupContent);
@@ -97,13 +100,13 @@ const CityMap = (function () {
     }
   }
 
-  function setActiveTransfer(transfer) {  //jshint ignore:line
+  function setActiveTransfer(transfer) {  // eslint-disable-line no-unused-vars
   }
 
   function addCoordinates(station, callback) {
     const getCoordinates = (event) => {
       map.removeEventListener('click', getCoordinates);
-      station.latLng = [
+      station.latLng = [// eslint-disable-line no-param-reassign
         Number(event.latlng.lat.toFixed(6)),
         Number(event.latlng.lng.toFixed(6)),
       ];
@@ -121,4 +124,4 @@ const CityMap = (function () {
     setActiveTransfer,
     addCoordinates,
   };
-})();
+}());

@@ -1,8 +1,7 @@
-/*globals Core, document*/
-/*exported UI*/
+/* globals Core */
+/* eslint-env browser */
 
-const UI = (function () {
-
+const UI = (function UI() {
   function getMap() {
     return document.getElementById('map');
   }
@@ -44,57 +43,58 @@ const UI = (function () {
   function switchMenu(tabLinkId, tabContentId) {
     const menuLinks = document.getElementsByClassName('tab-link');
     for (let i = 0; i < menuLinks.length; i++) {
-      if (menuLinks[i].id === tabLinkId)
+      if (menuLinks[i].id === tabLinkId) {
         menuLinks[i].classList.add('active');
-      else
+      } else {
         menuLinks[i].classList.remove('active');
+      }
     }
 
     const menuContents = document.getElementsByClassName('tab-content');
     for (let i = 0; i < menuContents.length; i++) {
-      if (menuContents[i].id === tabContentId)
+      if (menuContents[i].id === tabContentId) {
         menuContents[i].classList.remove('hide');
-      else
+      } else {
         menuContents[i].classList.add('hide');
+      }
     }
   }
 
-  function update(activeLine, activeStation, activeTransfer) {    //jshint ignore:line
+  function update(activeLine, activeStation, activeTransfer) { // eslint-disable-line no-unused-vars
     const lineGroupsObject = Core.getAllLines().reduce((groups, line) => {
-      if (groups[line.color])
+      if (groups[line.color]) {
         groups[line.color].push(line);
-      else
-        groups[line.color] = [line];
+      } else {
+        groups[line.color] = [line];  // eslint-disable-line no-param-reassign
+      }
+
       return groups;
     }, {});
     const lineGroupsKeys = Object.keys(lineGroupsObject);
     const lineGroups = [];
     lineGroupsKeys.forEach(key => lineGroups.push(lineGroupsObject[key]));
-    lineGroups.forEach(lineGroup => {
+    lineGroups.forEach((lineGroup) => {
       lineGroup.sort((A, B) => {
         const res = A.name.localeCompare(B.name);
-        if (res !== 0)
-          return res;
-        if (B.express)
-          return -1;
+        if (res !== 0) { return res; }
+
+        if (B.express) { return -1; }
+
         return 1;
       });
     });
     lineGroups.sort((A, B) => A[0].name.localeCompare(B[0].name));
     replaceList(document.getElementById('line-group-list'),
-      lineGroups.map(lineGroup => createLineGroupElement(lineGroup))
-    );
+      lineGroups.map(lineGroup => createLineGroupElement(lineGroup)));
 
     replaceList(document.getElementById('station-list'),
       Core.getAllStations()
         .sort((A, B) => A.name.localeCompare(B.name))
-        .map(station => createStationElement(station))
-    );
+        .map(station => createStationElement(station)));
 
-    if (activeLine !== undefined)
-      setActiveLine(activeLine);
-    if (activeStation !== undefined)
-      setActiveStation(activeStation);
+    if (activeLine !== undefined) { setActiveLine(activeLine); }
+
+    if (activeStation !== undefined) { setActiveStation(activeStation); }
   }
 
   function createLineElement(line) {
@@ -126,17 +126,14 @@ const UI = (function () {
     if (line !== undefined) {
       lineIcon = createLineElement(line);
       lineExpress = document.createTextNode(line.express ? 'Express' : '');
-      branch = makeEditable(document.createTextNode(line.branch),
-        Core.updateLine.bind(null, line, 'branch'));
+      branch = makeEditable(document.createTextNode(line.branch), Core.updateLine.bind(null, line, 'branch'));
       if (line.stations.length > 0) {
         terminalOne = document.createTextNode(Core.getStation(line.stations[0]).name);
-        terminalTwo = document.createTextNode(
-          Core.getStation(line.stations[line.stations.length - 1]).name);
+        terminalTwo = document.createTextNode(Core.getStation(line.stations[line.stations.length - 1]).name);
       }
 
-      stationCount = document.createTextNode('' + line.stations.length);
-      stationList = line.stations.map(
-        stationId => createStationElement(Core.getStation(stationId)));
+      stationCount = document.createTextNode(`${line.stations.length}`);
+      stationList = line.stations.map(stationId => createStationElement(Core.getStation(stationId)));
     }
 
     replaceChild(document.getElementById('line-element-container'), lineIcon);
@@ -155,8 +152,7 @@ const UI = (function () {
     let stationLines;
 
     if (station !== undefined) {
-      stationName = makeEditable(document.createTextNode(station.name),
-        Core.updateStation.bind(null, station, 'name'));
+      stationName = makeEditable(document.createTextNode(station.name), Core.updateStation.bind(null, station, 'name'));
       stationLines = station.lines.map(lineId => createLineElement(Core.getLine(lineId)));
     }
 
@@ -167,10 +163,13 @@ const UI = (function () {
   }
 
   function replaceChild(parentNode, newChild) {
-    if (parentNode.firstChild !== null)
+    if (parentNode.firstChild !== null) {
       parentNode.removeChild(parentNode.firstChild);
-    if (newChild !== undefined)
+    }
+
+    if (newChild !== undefined) {
       parentNode.appendChild(newChild);
+    }
   }
 
   function replaceList(listNode, newListElementArray) {
@@ -202,8 +201,7 @@ const UI = (function () {
 
     const stationLines = document.createElement('ul');
     stationLines.classList.add('line-list');
-    replaceList(stationLines, station.lines.map(
-      lineId => createLineElement(Core.getLine(lineId))));
+    replaceList(stationLines, station.lines.map(lineId => createLineElement(Core.getLine(lineId))));
     stationElement.appendChild(stationLines);
 
     return stationElement;
@@ -212,7 +210,7 @@ const UI = (function () {
   function downloadGame(save) {
     const saveLink = document.createElement('a');
     saveLink.classList.add('hide');
-    saveLink.href = 'data:' + save.data;
+    saveLink.href = `data:${save.data}`;
     saveLink.download = save.name;
     document.body.appendChild(saveLink);
     saveLink.click();
@@ -259,7 +257,7 @@ const UI = (function () {
     content.appendChild(nameElement);
 
     const idElement = document.createElement('p');
-    idElement.appendChild(document.createTextNode('id: ' + station.id));
+    idElement.appendChild(document.createTextNode(`id: ${station.id}`));
     content.appendChild(idElement);
 
     const linesList = document.createElement('ul');
@@ -281,4 +279,4 @@ const UI = (function () {
     uploadGame,
     createStationPopupContent,
   };
-})();
+}());
