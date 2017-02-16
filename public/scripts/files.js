@@ -33,7 +33,6 @@ const Files = (function Files() {
       const req = new XMLHttpRequest();
       req.open('GET', `/data/${fileName}`, true);
       req.addEventListener('load', function handleLoad() {
-        console.log(event);
         if (this.status < 200 && this.status > 400) {
           reject(Error(`Could not load the requested game: ${req.statusText}`));
         } else {
