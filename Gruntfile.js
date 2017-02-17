@@ -1,20 +1,36 @@
-module.exports = function (grunt) {
-  const client = 'public/scripts/*.js';
-  const app = 'app.js';
-  const server = 'bin/www';
+module.exports = function Grunt(grunt) {
+  const browserFiles = 'public/scripts/*.js';
+  const nodeFiles = 'app.js';
+  const gruntFile = 'Gruntfile.js';
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+
     jscs: {
-      src: [client, app, server],
+      src: [browserFiles, nodeFiles, gruntFile],
       options: {
         config: '.jscsrc',
+      },
+    },
+
+    eslint: {
+      browser: {
+        src: [browserFiles, gruntFile],
+        options: {
+          config: '.eslintrc.json',
+        },
+      },
+      node: {
+        src: [nodeFiles],
+        options: {
+          config: 'eslintrc.json',
+        },
       },
     },
   });
 
   grunt.loadNpmTasks('grunt-jscs');
+  grunt.loadNpmTasks('grunt-eslint');
 
-  grunt.registerTask('default', ['jscs']);
-
+  grunt.registerTask('default', ['jscs', 'eslint']);
 };

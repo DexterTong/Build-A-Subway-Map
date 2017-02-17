@@ -24,6 +24,7 @@
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.10.0",
     "grunt": "^1.0.1",
+    "grunt-eslint": "^19.0.0",
     "grunt-jscs": "^3.0.1",
     "jscs": "^3.0.7"
   }

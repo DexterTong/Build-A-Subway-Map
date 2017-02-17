@@ -6,7 +6,7 @@
   "rules": {
     "no-use-before-define": ["error", "nofunc"],
     "no-plusplus": ["off"],
-    "no-unused-vars": ["warn", {"vars": "local", "args": "none"}],
+    "no-unused-vars": ["off"],
     "max-len": ["error", {
       "code": 120,
       "ignoreUrls": true,
