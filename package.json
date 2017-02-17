@@ -18,11 +18,8 @@
   },
   "devDependencies": {
     "eslint": "^3.15.0",
-    "eslint-config-airbnb": "^14.1.0",
     "eslint-config-airbnb-base": "^11.1.0",
     "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-jsx-a11y": "^4.0.0",
-    "eslint-plugin-react": "^6.10.0",
     "grunt": "^1.0.1",
     "grunt-eslint": "^19.0.0",
     "grunt-jscs": "^3.0.1",
