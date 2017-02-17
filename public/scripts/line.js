@@ -1,7 +1,7 @@
 /* eslint-env browser */
 /* globals Utils */
 
-class Line {
+class Line {  // eslint-disable-line no-unused-vars
   constructor(id, color, name, branch, express, category, stations) {
     if (typeof id === 'object') {
       this.id = id.id;

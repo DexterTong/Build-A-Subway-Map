@@ -1,6 +1,6 @@
 /* eslint-env browser */
 
-class Utils {
+class Utils { // eslint-disable-line no-unused-vars
   static isIntegerArray(value) {
     if (!Array.isArray(value)) {
       return false;

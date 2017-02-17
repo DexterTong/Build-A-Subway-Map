@@ -1,7 +1,7 @@
 /* eslint-env browser */
 /* globals Utils */
 
-class Station {
+class Station { // eslint-disable-line no-unused-vars
   constructor(id, name, latLng, lines, transfers) {
     if (typeof id === 'object') {
       this.id = id.id;

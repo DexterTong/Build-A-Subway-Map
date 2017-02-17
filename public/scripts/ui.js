@@ -1,7 +1,7 @@
 /* eslint-env browser */
 /* globals Core */
 
-const UI = (function UI() {
+const UI = (function UI() { // eslint-disable-line no-unused-vars
   function getMap() {
     return document.getElementById('map');
   }

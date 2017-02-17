@@ -1,7 +1,7 @@
 /* eslint-env browser */
 /* globals CityMap, Files, Line, Station, UI, Core */
 
-const Core = (function Core() {
+const Core = (function Core() { // eslint-disable-line no-unused-vars
   let state = createEmptyState();
   let activeLine;
   let activeStation;

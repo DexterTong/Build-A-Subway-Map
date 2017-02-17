@@ -1,7 +1,7 @@
 /* eslint-env browser */
 /* globals Core, L */
 
-const CityMap = (function CityMap() {
+const CityMap = (function CityMap() { // eslint-disable-line no-unused-vars
   let map;
   const LATLNG_NYC = L.latLng(40.7128, -74.0061); // City Hall, New York City
   const markers = {

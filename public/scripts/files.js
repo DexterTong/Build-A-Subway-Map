@@ -1,6 +1,6 @@
 /* eslint-env browser */
 
-const Files = (function Files() {
+const Files = (function Files() { // eslint-disable-line no-unused-vars
   function generateSave(state) {
     return {
       // Generate a pseudo-random 6-character sequence using a-z, 0-9
