@@ -1,5 +1,5 @@
-/* globals Core, L */
 /* eslint-env browser */
+/* globals Core, L */
 
 const CityMap = (function CityMap() {
   let map;

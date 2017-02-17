@@ -1,5 +1,5 @@
-/* globals Core */
 /* eslint-env browser */
+/* globals Core */
 
 const UI = (function UI() {
   function getMap() {

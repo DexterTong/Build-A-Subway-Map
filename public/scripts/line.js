@@ -25,7 +25,7 @@ class Line {
   deleteStation(stationId) {
     for (let i = 0; i < this.stations.length; i++) {
       if (this.stations[i] === stationId) {
-        this.stations.splice(i, 1);
+        this.stations.splice(i, 1); // Do not stop checking early, in case line stops here multiple times
       }
     }
   }

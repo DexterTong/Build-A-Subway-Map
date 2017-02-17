@@ -1,5 +1,5 @@
-/* globals CityMap, Files, Line, Station, UI */
 /* eslint-env browser */
+/* globals CityMap, Files, Line, Station, UI, Core */
 
 const Core = (function Core() {
   let state = createEmptyState();
@@ -54,7 +54,7 @@ const Core = (function Core() {
   function loadHandler(loadForm) {
     Files.loadFromLocal(loadForm).then((data) => {
       if (data.error !== undefined) {
-        console.log(data.error);
+        // console.log(data.error);
         UI.setCurrentAction('');
         return;
       }
@@ -161,9 +161,9 @@ const Core = (function Core() {
     if (Line.isValid(lineCopy)) {
       state.lines[line.id] = lineCopy;
       activeLine = lineCopy;
-    } else {
+    } /* else {
       console.log('Did not update line');
-    }
+    } */
 
     UI.update(activeLine);
   }
@@ -174,9 +174,9 @@ const Core = (function Core() {
     if (Station.isValid(stationCopy)) {
       state.stations[station.id] = stationCopy;
       activeStation = stationCopy;
-    } else {
+    } /* else {
       console.log('Did not update station');
-    }
+    } */
 
     UI.update(undefined, activeStation);
   }
