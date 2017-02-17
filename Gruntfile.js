@@ -2,7 +2,11 @@ const path = require('path');
 
 module.exports = function Grunt(grunt) {
   const browserFiles = path.join('public', 'scripts', '*.js');
-  const nodeFiles = [path.join('server', 'app.js'), path.join('server', 'bin', 'www')];
+  const nodeFiles = [
+    path.join('server', 'app.js'),
+    path.join('server', 'routes', '*.js'),
+    path.join('server', 'bin', 'www'),
+  ];
   const gruntFile = 'Gruntfile.js';
 
   grunt.initConfig({
