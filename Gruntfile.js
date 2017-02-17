@@ -1,13 +1,19 @@
 const path = require('path');
 
 module.exports = function Grunt(grunt) {
-  const browserFiles = path.join('public', 'scripts', '*.js');
+  const clientDir = 'public';
+  const serverDir = 'server';
+  const testDir = 'test';
+
+  const browserFiles = path.join(clientDir, 'scripts', '*.js');
   const nodeFiles = [
-    path.join('server', 'app.js'),
-    path.join('server', 'routes', '*.js'),
-    path.join('server', 'bin', 'www'),
+    path.join(serverDir, 'app.js'),
+    path.join(serverDir, 'routes', '*.js'),
+    path.join(serverDir, 'bin', 'www'),
   ];
   const gruntFile = 'Gruntfile.js';
+  const serverTestFile = path.join(testDir, 'serverTest.js');
+  const clientTestFile = path.join(testDir, 'clientTest.js');
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -33,10 +39,20 @@ module.exports = function Grunt(grunt) {
         },
       },
     },
+
+    mochaTest: {
+      serverTest: {
+        src: [serverTestFile],
+      },
+      clientTests: {
+        src: [clientTestFile],
+      },
+    },
   });
 
   grunt.loadNpmTasks('grunt-jscs');
   grunt.loadNpmTasks('grunt-eslint');
+  grunt.loadNpmTasks('grunt-mocha-test');
 
-  grunt.registerTask('default', ['jscs', 'eslint']);
+  grunt.registerTask('default', ['jscs', 'eslint', 'mochaTest']);
 };
