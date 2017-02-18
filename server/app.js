@@ -14,11 +14,11 @@ app.set('view engine', 'hbs');
 
 app.use(favicon(path.join(__dirname, '..', 'public', 'favicon.ico')));
 let logFormat = 'tiny';
-if (process.env.NODE_ENV === 'development') {
+if (app.get('env') === 'development') {
   logFormat = 'dev';
 }
 
-if (process.env.NODE_ENV !== 'test') {
+if (app.get('env') !== 'test') {
   app.use(logger(logFormat));
 }
 
