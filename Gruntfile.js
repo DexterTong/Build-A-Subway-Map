@@ -18,6 +18,18 @@ module.exports = function Grunt(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
+    env: {
+      dev: {
+        NODE_ENV: 'development',
+      },
+      test: {
+        NODE_ENV: 'test',
+      },
+      build: {
+        NODE_ENV: 'production',
+      },
+    },
+
     jscs: {
       src: [browserFiles, nodeFiles, gruntFile],
       options: {
@@ -50,9 +62,10 @@ module.exports = function Grunt(grunt) {
     },
   });
 
+  grunt.loadNpmTasks('grunt-env');
   grunt.loadNpmTasks('grunt-jscs');
   grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-mocha-test');
 
-  grunt.registerTask('default', ['jscs', 'eslint', 'mochaTest']);
+  grunt.registerTask('default', ['env:test', 'jscs', 'eslint', 'mochaTest']);
 };
