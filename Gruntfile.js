@@ -12,8 +12,9 @@ module.exports = function Grunt(grunt) {
     path.join(serverDir, 'bin', 'www'),
   ];
   const gruntFile = 'Gruntfile.js';
-  const serverTestFile = path.join(testDir, 'serverTest.js');
-  const clientTestFile = path.join(testDir, 'clientTest.js');
+  const testFiles = [
+    path.join(testDir, 'serverTest.js'),
+  ];
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -53,11 +54,8 @@ module.exports = function Grunt(grunt) {
     },
 
     mochaTest: {
-      serverTest: {
-        src: [serverTestFile],
-      },
-      clientTests: {
-        src: [clientTestFile],
+      all: {
+        src: [testFiles],
       },
     },
   });
