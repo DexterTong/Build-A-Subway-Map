@@ -13,7 +13,7 @@ module.exports = function Grunt(grunt) {
   ];
   const gruntFile = 'Gruntfile.js';
   const testFiles = [
-    path.join(testDir, 'serverTest.js'),
+    path.join(testDir, 'routesTest.js'),
   ];
 
   grunt.initConfig({
@@ -57,9 +57,7 @@ module.exports = function Grunt(grunt) {
     },
 
     mochaTest: {
-      server: {
-        src: [testFiles],
-      },
+      routes: path.join(testDir, 'routesTest.js'),
     },
   });
 
