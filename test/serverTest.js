@@ -11,14 +11,24 @@ chai.use(chaiHttp);
 
 describe('Home', () => {
   it('Should display a home page', (done) => {
-    chai.request(server)
-      .get('/').end((err, res) => {
-        if (err) { return done(err); }
+    chai.request(server).get('/').end((err, res) => {
+      if (err) { return done(err); }
 
-        res.should.have.status(200);
-        res.should.be.html;
-        res.should.have.headers;
-        return done();
-      });
+      res.should.have.status(200);
+      res.should.be.html;
+      res.should.have.headers;
+      return done();
+    });
+  });
+
+  it('Should display the web app page', (done) => {
+    chai.request(server).get('/map').end((err, res) => {
+      if (err) { return done(err); }
+
+      res.should.have.status(200);
+      res.should.be.html;
+      res.should.have.headers;
+      return done();
+    });
   });
 });
