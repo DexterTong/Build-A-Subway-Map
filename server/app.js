@@ -13,7 +13,15 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
 app.use(favicon(path.join(__dirname, '..', 'public', 'favicon.ico')));
-app.use(logger('dev'));
+let logFormat = 'tiny';
+if (process.env.NODE_ENV === 'development') {
+  logFormat = 'dev';
+}
+
+if (process.env.NODE_ENV !== 'test') {
+  app.use(logger(logFormat));
+}
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, '..', 'public')));
