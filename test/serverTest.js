@@ -1,12 +1,11 @@
-/* eslint-env mocha*/
+/* eslint-env node,mocha */
 /* eslint no-unused-expressions: ["off"] */
 
-const path = require('path');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../server/app.js');
 
-const should = chai.should();
+const should = chai.should(); // eslint-disable-line no-unused-vars
 chai.use(chaiHttp);
 
 function shouldBeFileType(done, type, err, res) {

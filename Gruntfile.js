@@ -32,29 +32,32 @@ module.exports = function Grunt(grunt) {
     },
 
     jscs: {
-      src: [browserFiles, nodeFiles, gruntFile],
       options: {
         config: '.jscsrc',
+      },
+      src: {
+        src: [browserFiles, nodeFiles, gruntFile],
+
+      },
+      test: {
+        src: [testFiles],
       },
     },
 
     eslint: {
-      browser: {
-        src: [browserFiles, gruntFile],
-        options: {
-          config: '.eslintrc.json',
-        },
+      options: {
+        config: '.eslintrc.json',
       },
-      node: {
-        src: [nodeFiles],
-        options: {
-          config: 'eslintrc.json',
-        },
+      src: {
+        src: [browserFiles, gruntFile, nodeFiles],
+      },
+      test: {
+        src: [testFiles],
       },
     },
 
     mochaTest: {
-      all: {
+      server: {
         src: [testFiles],
       },
     },
