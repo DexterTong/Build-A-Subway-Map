@@ -25,6 +25,17 @@ describe('Pages', () => {
   it('Map (web app) page is accessible', (done) => {
     chai.request(server).get('/map').end(shouldBeFileType.bind(null, done, 'html'));
   });
+
+  it('Responds with a 404 page for nonexistent resources', (done) => {
+    chai.request(server).get('/foo/bar/baz').end((err, res) => {
+      if (!err) { return done(new Error(`The response was not an error. Status code ${res.status}`)); }
+
+      res.should.have.status(404);
+      res.should.have.headers;
+      res.should.be.html;
+      return done();
+    });
+  });
 });
 
 describe('Scripts', () => {
