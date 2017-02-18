@@ -56,15 +56,17 @@ module.exports = function Grunt(grunt) {
       },
     },
 
-    mochaTest: {
-      routes: path.join(testDir, 'routesTest.js'),
+    mocha_istanbul: {
+      coverage: {
+        src: testDir,
+      },
     },
   });
 
   grunt.loadNpmTasks('grunt-env');
   grunt.loadNpmTasks('grunt-jscs');
   grunt.loadNpmTasks('grunt-eslint');
-  grunt.loadNpmTasks('grunt-mocha-test');
+  grunt.loadNpmTasks('grunt-mocha-istanbul');
 
-  grunt.registerTask('default', ['env:test', 'jscs', 'eslint', 'mochaTest']);
+  grunt.registerTask('default', ['env:test', 'jscs', 'eslint', 'mocha_istanbul']);
 };
