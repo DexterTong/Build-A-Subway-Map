@@ -5,16 +5,12 @@ module.exports = function Grunt(grunt) {
   const serverDir = 'server';
   const testDir = 'test';
 
-  const browserFiles = path.join(clientDir, 'scripts', '*.js');
   const nodeFiles = [
     path.join(serverDir, 'app.js'),
-    path.join(serverDir, 'routes', '*.js'),
-    path.join(serverDir, 'bin', 'www'),
+    path.join(serverDir, 'routes'),
+    path.join(serverDir, 'bin'),
   ];
-  const gruntFile = 'Gruntfile.js';
-  const testFiles = [
-    path.join(testDir, 'routesTest.js'),
-  ];
+  const jsFiles = [clientDir, nodeFiles, testDir, 'Gruntfile.js'];
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -35,12 +31,7 @@ module.exports = function Grunt(grunt) {
       options: {
         config: '.eslintrc.json',
       },
-      src: {
-        src: [browserFiles, gruntFile, nodeFiles],
-      },
-      test: {
-        src: [testFiles],
-      },
+      all: jsFiles,
     },
 
     mocha_istanbul: {
@@ -55,4 +46,6 @@ module.exports = function Grunt(grunt) {
   grunt.loadNpmTasks('grunt-mocha-istanbul');
 
   grunt.registerTask('default', ['env:test', 'eslint', 'mocha_istanbul']);
+  grunt.registerTask('lint', ['eslint']);
+  grunt.registerTask('test', ['env:test', 'mocha_istanbul']);
 };
