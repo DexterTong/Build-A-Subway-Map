@@ -3,7 +3,7 @@
 
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const server = require('../server/app.js');
+const server = require('../../server/app.js');
 
 const should = chai.should(); // eslint-disable-line no-unused-vars
 chai.use(chaiHttp);

@@ -1,8 +1,6 @@
-/* eslint-env node, mocha */
+/* eslint-env browser, mocha */
 /* eslint no-unused-expressions: ["off"] */
-
-const chai = require('chai');
-const Utils = require('../public/scripts/utils.js');
+/* globals chai, Utils */
 
 const should = chai.should(); // eslint-disable-line no-unused-vars
 
@@ -14,7 +12,10 @@ describe('Utils.js', () => {
     it('Returns true for an empty array', () => {
       Utils.isNonNegativeIntArray([]).should.be.true;
     });
-    it('Returns false when an array with a non-integer', () => {
+    it('Returns false when array has a negative integer', () => {
+      Utils.isNonNegativeIntArray([0, 'apples', 16, 2]).should.be.false;
+    });
+    it('Returns false when array has a non-integer', () => {
       Utils.isNonNegativeIntArray([0, 'apples', 16, 2]).should.be.false;
     });
     it('Returns false when given a sparse array', () => {

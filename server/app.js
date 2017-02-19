@@ -35,7 +35,7 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use('/', routes);
 /* istanbul ignore if */
 if (['development', 'test'].indexOf(app.get('env')) > -1) {
-  app.use(express.static(path.join(__dirname, '..', 'public-test')));
+  app.use(express.static(path.join(__dirname, '..', 'test')));
   app.use('/test', testRoutes);
 }
 

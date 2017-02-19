@@ -3,14 +3,15 @@ const path = require('path');
 module.exports = function Grunt(grunt) {
   const clientDir = 'public';
   const serverDir = 'server';
-  const testDir = 'test';
+  const serverTestFiles = [path.join('test', 'server')];
+  const clientTestFiles = [path.join('test', 'client')];
 
   const nodeFiles = [
     path.join(serverDir, 'app.js'),
     path.join(serverDir, 'routes'),
     path.join(serverDir, 'bin'),
   ];
-  const jsFiles = [clientDir, nodeFiles, testDir, 'Gruntfile.js'];
+  const jsFiles = [clientDir, nodeFiles, clientTestFiles, serverTestFiles, 'Gruntfile.js'];
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -36,7 +37,7 @@ module.exports = function Grunt(grunt) {
 
     mocha_istanbul: {
       coverage: {
-        src: testDir,
+        src: serverTestFiles,
       },
     },
   });
