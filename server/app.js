@@ -14,11 +14,12 @@ app.set('view engine', 'hbs');
 
 app.use(favicon(path.join(__dirname, '..', 'public', 'favicon.ico')));
 let logFormat = 'tiny';
-if (process.env.NODE_ENV === 'development') {
+/* istanbul ignore if */
+if (app.get('env') === 'development') {
   logFormat = 'dev';
 }
-
-if (process.env.NODE_ENV !== 'test') {
+/* istanbul ignore if */
+if (app.get('env') !== 'test') {
   app.use(logger(logFormat));
 }
 
@@ -36,6 +37,7 @@ app.use((req, res, next) => {
 });
 
 // error handlers
+/* istanbul ignore if */
 if (app.get('env') === 'development') {
   app.use((err, req, res, next) => {
     res.status(err.status || 500);
@@ -46,6 +48,7 @@ if (app.get('env') === 'development') {
   });
 } else {
   app.use((err, req, res, next) => {
+    /* istanbul ignore next */
     res.status(err.status || 500);
     res.render('error', {
       message: err,
