@@ -47,11 +47,11 @@ class Station { // eslint-disable-line no-unused-vars
   }
 
   static isValidLines(value) {
-    return Utils.isNonNegativeIntArray(value);
+    return Utils.isIntegerArray(value);
   }
 
   static isValidTransfers(value) {
-    return Utils.isNonNegativeIntArray(value);
+    return Utils.isIntegerArray(value);
   }
 
   static isValid(value) {
@@ -70,5 +70,3 @@ class Station { // eslint-disable-line no-unused-vars
     }
   }
 }
-
-module.exports = Station;

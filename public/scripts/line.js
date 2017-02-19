@@ -76,7 +76,7 @@ class Line {  // eslint-disable-line no-unused-vars
   }
 
   static isValidStations(value) {
-    return Utils.isNonNegativeIntArray(value);
+    return Utils.isIntegerArray(value);
   }
 
   static isValid(value) {
@@ -89,5 +89,3 @@ class Line {  // eslint-disable-line no-unused-vars
       Line.isValidStations(value.stations);
   }
 }
-
-module.exports = Line;

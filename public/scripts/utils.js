@@ -1,7 +1,7 @@
 /* eslint-env browser */
 
 class Utils { // eslint-disable-line no-unused-vars
-  static isNonNegativeIntArray(value) {
+  static isIntegerArray(value) {
     if (!Array.isArray(value)) {
       return false;
     }
@@ -15,5 +15,3 @@ class Utils { // eslint-disable-line no-unused-vars
     return true;
   }
 }
-
-module.exports = Utils;
