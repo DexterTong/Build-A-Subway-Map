@@ -31,19 +31,6 @@ module.exports = function Grunt(grunt) {
       },
     },
 
-    jscs: {
-      options: {
-        config: '.jscsrc',
-      },
-      src: {
-        src: [browserFiles, nodeFiles, gruntFile],
-
-      },
-      test: {
-        src: [testFiles],
-      },
-    },
-
     eslint: {
       options: {
         config: '.eslintrc.json',
@@ -64,9 +51,8 @@ module.exports = function Grunt(grunt) {
   });
 
   grunt.loadNpmTasks('grunt-env');
-  grunt.loadNpmTasks('grunt-jscs');
   grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-mocha-istanbul');
 
-  grunt.registerTask('default', ['env:test', 'jscs', 'eslint', 'mocha_istanbul']);
+  grunt.registerTask('default', ['env:test', 'eslint', 'mocha_istanbul']);
 };
