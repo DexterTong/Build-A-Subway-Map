@@ -6,7 +6,6 @@ const bodyParser = require('body-parser');
 const hbs = require('hbs');
 
 const routes = require('./routes/index');
-const testRoutes = require('./routes/test');
 
 const app = express();
 
@@ -33,11 +32,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 app.use('/', routes);
-/* istanbul ignore if */
-if (['development', 'test'].indexOf(app.get('env')) > -1) {
-  app.use(express.static(path.join(__dirname, '..', 'test')));
-  app.use('/test', testRoutes);
-}
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
