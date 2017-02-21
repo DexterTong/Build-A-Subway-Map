@@ -57,7 +57,7 @@ module.exports = function Grunt(grunt) {
       options: {
         type: 'html',
         dir: 'coverage/report',
-        print: 'detail',
+        print: 'both',
       },
     },
   });
@@ -68,8 +68,8 @@ module.exports = function Grunt(grunt) {
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-istanbul');
 
-  grunt.registerTask('default', ['env:test', 'eslint', 'mocha_istanbul:tests', 'karma']);
+  grunt.registerTask('default', ['env:test', 'eslint', 'mocha_istanbul', 'karma']);
   grunt.registerTask('lint', ['eslint']);
-  grunt.registerTask('test', ['env:test', 'mocha_istanbul:tests', 'karma']);
+  grunt.registerTask('test', ['env:test', 'mocha_istanbul', 'karma']);
   grunt.registerTask('coverage', ['test', 'makeReport']);
 };
