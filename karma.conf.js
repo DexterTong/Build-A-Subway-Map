@@ -6,7 +6,7 @@ module.exports = function Karma(config) {
       'karma-mocha',
       'karma-chai',
       'karma-chrome-launcher',
-      'karma-firefox-launcher',
+      /* 'karma-firefox-launcher', */
     ],
 
     reporters: ['coverage', 'spec'],
@@ -35,7 +35,7 @@ module.exports = function Karma(config) {
 
     autoWatch: false,
 
-    browsers: ['Chrome', 'Firefox'],
+    browsers: ['Chrome'/* , 'Firefox' */],
 
     singleRun: true,
 
