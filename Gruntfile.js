@@ -36,18 +36,28 @@ module.exports = function Grunt(grunt) {
     },
 
     mocha_istanbul: {
-      coverage: {
+      tests: {
         src: serverTestFiles,
         options: {
           coverageFolder: path.join('coverage', 'node'),
           reportFormats: ['json'],
+          istanbulOptions: ['--print', 'none'],
         },
       },
     },
 
     karma: {
-      unit: {
+      tests: {
         configFile: 'karma.conf.js',
+      },
+    },
+
+    makeReport: {
+      src: 'coverage/*/*.json',
+      options: {
+        type: 'html',
+        dir: 'coverage/report',
+        print: 'detail',
       },
     },
   });
@@ -56,8 +66,10 @@ module.exports = function Grunt(grunt) {
   grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-mocha-istanbul');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-istanbul');
 
-  grunt.registerTask('default', ['env:test', 'eslint', 'mocha_istanbul:coverage', 'karma']);
+  grunt.registerTask('default', ['env:test', 'eslint', 'mocha_istanbul:tests', 'karma']);
   grunt.registerTask('lint', ['eslint']);
-  grunt.registerTask('test', ['env:test', 'mocha_istanbul:coverage', 'karma']);
+  grunt.registerTask('test', ['env:test', 'mocha_istanbul:tests', 'karma']);
+  grunt.registerTask('coverage', ['test', 'makeReport']);
 };
