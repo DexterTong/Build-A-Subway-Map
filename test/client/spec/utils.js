@@ -2,8 +2,6 @@
 /* eslint no-unused-expressions: ["off"] */
 /* globals chai, Utils */
 
-const should = chai.should(); // eslint-disable-line no-unused-vars
-
 describe('Utils.js', () => {
   describe('isNonNegativeIntArray()', () => {
     it('Returns true when given an array of non-negative integers', () => {
