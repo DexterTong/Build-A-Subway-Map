@@ -18,7 +18,8 @@ module.exports = (config) => {
     frameworks: ['mocha', 'chai'],
 
     files: [
-      path.join('public', 'scripts', 'utils.js'),
+      path.join('node_modules', 'leaflet', 'dist', 'leaflet.js'),
+      path.join('public', 'scripts', '*.js'),
       path.join('test', 'client', 'spec', '*.js'),
     ],
 
@@ -49,7 +50,7 @@ module.exports = (config) => {
     },
   };
 
-  conf.preprocessors[path.join('public', 'scripts', 'utils.js')] = ['coverage'];
+  conf.preprocessors[path.join('public', 'scripts', '*.js')] = ['coverage'];
 
   config.set(conf);
 };
