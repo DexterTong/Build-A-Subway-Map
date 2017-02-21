@@ -36,8 +36,12 @@ module.exports = function Grunt(grunt) {
     },
 
     mocha_istanbul: {
-      coverage: {
+      nodeCoverage: {
         src: serverTestFiles,
+        options: {
+          coverageFolder: path.join('coverage', 'node'),
+          reportFormats: ['json'],
+        },
       },
     },
   });
