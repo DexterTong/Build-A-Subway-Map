@@ -1,5 +1,7 @@
-module.exports = function Karma(config) {
-  config.set({
+const path = require('path');
+
+module.exports = (config) => {
+  const conf = {
     plugins: [
       'karma-coverage',
       'karma-spec-reporter',
@@ -16,15 +18,13 @@ module.exports = function Karma(config) {
     frameworks: ['mocha', 'chai'],
 
     files: [
-      'public/scripts/utils.js',
-      'test/client/spec/utils.js',
+      path.join('public', 'scripts', 'utils.js'),
+      path.join('test', 'client', 'spec', '*.js'),
     ],
 
     exclude: [],
 
-    preprocessors: {
-      'public/scripts/utils.js': ['coverage'],
-    },
+    preprocessors: { /* Dynamically set at bottom */ },
 
     port: 9876,
 
@@ -42,10 +42,14 @@ module.exports = function Karma(config) {
     concurrency: Infinity,
 
     coverageReporter: {
-      dir: 'coverage/',
+      dir: 'coverage',
       reporters: [
         { type: 'json', subdir: 'client' },
       ],
     },
-  });
+  };
+
+  conf.preprocessors[path.join('public', 'scripts', 'utils.js')] = ['coverage'];
+
+  config.set(conf);
 };
