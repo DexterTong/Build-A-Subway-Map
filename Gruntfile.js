@@ -36,7 +36,7 @@ module.exports = function Grunt(grunt) {
     },
 
     mocha_istanbul: {
-      nodeCoverage: {
+      coverage: {
         src: serverTestFiles,
         options: {
           coverageFolder: path.join('coverage', 'node'),
@@ -44,13 +44,20 @@ module.exports = function Grunt(grunt) {
         },
       },
     },
+
+    karma: {
+      unit: {
+        configFile: 'karma.conf.js',
+      },
+    },
   });
 
   grunt.loadNpmTasks('grunt-env');
   grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-mocha-istanbul');
+  grunt.loadNpmTasks('grunt-karma');
 
-  grunt.registerTask('default', ['env:test', 'eslint', 'mocha_istanbul']);
+  grunt.registerTask('default', ['env:test', 'eslint', 'mocha_istanbul:coverage', 'karma']);
   grunt.registerTask('lint', ['eslint']);
-  grunt.registerTask('test', ['env:test', 'mocha_istanbul']);
+  grunt.registerTask('test', ['env:test', 'mocha_istanbul:coverage', 'karma']);
 };
