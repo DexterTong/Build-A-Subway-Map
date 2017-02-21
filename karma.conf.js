@@ -1,6 +1,3 @@
-// Karma configuration
-// Generated on Tue Feb 21 2017 01:14:34 GMT-0500 (EST)
-
 module.exports = function Karma(config) {
   config.set({
     plugins: [
@@ -45,8 +42,10 @@ module.exports = function Karma(config) {
     concurrency: Infinity,
 
     coverageReporter: {
-      type: 'html',
       dir: 'coverage/',
+      reporters: [
+        { type: 'json', subdir: 'report-json' },
+      ],
     },
   });
 };
