@@ -44,7 +44,7 @@ module.exports = function Karma(config) {
     coverageReporter: {
       dir: 'coverage/',
       reporters: [
-        { type: 'json', subdir: 'report-json' },
+        { type: 'json', subdir: 'client' },
       ],
     },
   });
