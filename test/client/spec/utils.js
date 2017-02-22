@@ -3,6 +3,20 @@
 /* globals chai, Utils */
 
 describe('utils.js', () => {
+  describe('isValidId()', () => {
+    it('Returns true for a non-negative integer', () => {
+      Utils.isValidId(3).should.be.true;
+      Utils.isValidId(0).should.be.true;
+    });
+    it('Returns false for a negative integer', () => {
+      Utils.isValidId(-1).should.be.false;
+    });
+    it('Returns false for non-integers', () => {
+      Utils.isValidId(3.1).should.be.false;
+      Utils.isValidId(undefined).should.be.false;
+    });
+  });
+
   describe('isNonNegativeIntArray()', () => {
     it('Returns true when given an array of non-negative integers', () => {
       Utils.isNonNegativeIntArray([0, 3, 16, 2]).should.be.true;
