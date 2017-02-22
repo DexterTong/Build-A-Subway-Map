@@ -2,7 +2,7 @@
 /* eslint no-unused-expressions: ["off"] */
 /* globals chai, Utils */
 
-describe('Utils.js', () => {
+describe('utils.js', () => {
   describe('isNonNegativeIntArray()', () => {
     it('Returns true when given an array of non-negative integers', () => {
       Utils.isNonNegativeIntArray([0, 3, 16, 2]).should.be.true;
