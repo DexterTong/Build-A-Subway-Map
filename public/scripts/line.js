@@ -31,11 +31,7 @@ class Line {  // eslint-disable-line no-unused-vars
   }
 
   static isValidId(value) {
-    if (!Number.isInteger(value)) {
-      return false;
-    }
-
-    return value >= 0;
+    return Utils.isValidId(value);
   }
 
   static isValidColor(value) {
