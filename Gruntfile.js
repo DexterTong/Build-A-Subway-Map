@@ -4,7 +4,7 @@ module.exports = function Grunt(grunt) {
   const clientDir = 'public';
   const serverDir = 'server';
   const serverTestFiles = [path.join('test', 'server')];
-  const clientTestFiles = [path.join('test', 'client')];
+  const clientTestFiles = [path.join('test', 'client', 'spec')];
 
   const nodeFiles = [
     path.join(serverDir, 'app.js'),
