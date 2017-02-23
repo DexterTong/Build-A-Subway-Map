@@ -36,27 +36,18 @@ class Line {  // eslint-disable-line no-unused-vars
 
   static isValidColor(value) {
     // Check if value is a valid hex color string, i.e. '#XXX' or '#XXXXXX'
-    if (typeof value !== 'string') {
-      return false;
-    }
-
+    if (typeof value !== 'string') { return false; }
     return /^#([0-9A-Fa-f]{3}){1,2}$/.test(value);
   }
 
   static isValidName(value) {
-    if (typeof value !== 'string') {
-      return false;
-    }
-
-    return /^[A-Za-z\d]{1,3}$/.test(value);
+    if (typeof value !== 'string') { return false; }
+    return /^[A-Z]{1,3}$|^[\d]{1,2}$/.test(value);
   }
 
   static isValidBranch(value) {
-    if (typeof value !== 'string') {
-      return false;
-    }
-
-    return /^[A-Za-z\d ()]*$/.test(value);
+    if (typeof value !== 'string') { return false; }
+    return /^[A-Za-z\d '-.]*$/.test(value);
   }
 
   static isValidExpress(value) {
@@ -64,10 +55,7 @@ class Line {  // eslint-disable-line no-unused-vars
   }
 
   static isValidCategory(value) {
-    if (typeof value !== 'string') {
-      return false;
-    }
-
+    if (typeof value !== 'string') { return false; }
     return ['subway'].indexOf(value) > -1;
   }
 
