@@ -15,15 +15,12 @@ describe('line.js', () => {
 
   describe('constructor', () => {
     const checkLine = (testLine, obj) => {
-      testLine.id.should.equal(obj.id);
-      testLine.color.should.equal(obj.color);
-      testLine.name.should.equal(obj.name);
-      testLine.branch.should.equal(obj.branch);
-      testLine.express.should.equal(obj.express);
-      testLine.category.should.equal(obj.category);
-      testLine.stations.should.equal(obj.stations);
+      Object.getOwnPropertyNames(testLine).forEach((prop) => {
+        testLine[prop].should.equal(obj[prop]);
+      });
       (testLine instanceof Line).should.be.true;
     };
+
     it('Should create a line object from an object containing the same properties', () => {
       const line = new Line(lineObject);
       checkLine(line, lineObject);
