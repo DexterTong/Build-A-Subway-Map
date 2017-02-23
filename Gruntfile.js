@@ -68,8 +68,7 @@ module.exports = function Grunt(grunt) {
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-istanbul');
 
-  grunt.registerTask('default', ['env:test', 'eslint', 'mocha_istanbul', 'karma']);
+  grunt.registerTask('default', ['eslint', 'env:test', 'mocha_istanbul', 'karma', 'makeReport']);
   grunt.registerTask('lint', ['eslint']);
-  grunt.registerTask('test', ['env:test', 'mocha_istanbul', 'karma']);
-  grunt.registerTask('coverage', ['test', 'makeReport']);
+  grunt.registerTask('test', ['env:test', 'mocha_istanbul', 'karma', 'makeReport']);
 };
