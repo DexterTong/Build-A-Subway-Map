@@ -16,7 +16,7 @@ describe('line.js', () => {
   describe('constructor', () => {
     const checkLine = (testLine, obj) => {
       Object.getOwnPropertyNames(testLine).forEach((prop) => {
-        testLine[prop].should.equal(obj[prop]);
+        testLine[prop].should.deep.equal(obj[prop]);
       });
       (testLine instanceof Line).should.be.true;
     };
