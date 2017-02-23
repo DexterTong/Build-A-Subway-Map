@@ -18,6 +18,7 @@ describe('station.js', () => {
       });
       (testStation instanceof Station).should.be.true;
     };
+
     it('Should create a station object from an object containing the same properties', () => {
       const station = new Station(stationObject);
       checkStation(station, stationObject);
