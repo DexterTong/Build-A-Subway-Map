@@ -23,22 +23,12 @@ class Station { // eslint-disable-line no-unused-vars
   }
 
   static isValidName(value) {
-    if (typeof value !== 'string') {
-      return false;
-    }
-
+    if (typeof value !== 'string') { return false; }
     return true; // TODO: replace with real check later
   }
 
   static isValidLatLng(value) {
-    if (!Array.isArray(value)) {
-      return false;
-    }
-
-    if (value.length !== 2) {
-      return false;
-    }
-
+    if (!Array.isArray(value) || value.length !== 2) { return false; }
     return !(isNaN(value[0]) || isNaN(value[1]));
   }
 
