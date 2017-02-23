@@ -136,8 +136,7 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
   }
 
   function createStation() {
-    // Leading space added to appear at top of station list
-    const newStation = new Station(generateStationId(), ' New Station');
+    const newStation = new Station(generateStationId());
     activeStation = newStation;
     CityMap.addCoordinates(newStation, (station) => {
       state.stations[station.id] = station;

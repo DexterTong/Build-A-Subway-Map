@@ -11,7 +11,7 @@ class Station { // eslint-disable-line no-unused-vars
       this.transfers = id.transfers;
     } else {
       this.id = id;
-      this.name = name !== undefined ? name : '';
+      this.name = name !== undefined ? name : '*New Station';
       this.latLng = latLng !== undefined ? latLng : [0, 0];
       this.lines = lines !== undefined ? lines : [];
       this.transfers = transfers !== undefined ? transfers : [];
