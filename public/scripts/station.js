@@ -24,7 +24,8 @@ class Station { // eslint-disable-line no-unused-vars
 
   static isValidName(value) {
     if (typeof value !== 'string') { return false; }
-    return true; // TODO: replace with real check later
+    if (value.length < 1) { return false; }
+    return true;
   }
 
   static isValidLatLng(value) {
