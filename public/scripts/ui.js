@@ -9,11 +9,6 @@ const UI = (function UI() { // eslint-disable-line no-unused-vars
   document.addEventListener('DOMContentLoaded', Core.initialize);
 
   function initialize() {
-    const header = document.getElementById('main-header');
-    const sidebar = document.getElementById('ui');
-    header.parentNode.removeChild(header);
-    sidebar.insertBefore(header, sidebar.firstChild);
-
     const tabContents = document.getElementsByClassName('tab-content');
     for (let i = 0; i < tabContents.length; i++) {
       tabContents[i].classList.add('hide');

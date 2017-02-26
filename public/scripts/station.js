@@ -11,7 +11,7 @@ class Station { // eslint-disable-line no-unused-vars
       this.transfers = id.transfers;
     } else {
       this.id = id;
-      this.name = name !== undefined ? name : '';
+      this.name = name !== undefined ? name : '*New Station';
       this.latLng = latLng !== undefined ? latLng : [0, 0];
       this.lines = lines !== undefined ? lines : [];
       this.transfers = transfers !== undefined ? transfers : [];
@@ -19,30 +19,17 @@ class Station { // eslint-disable-line no-unused-vars
   }
 
   static isValidId(value) {
-    if (!Number.isInteger(value)) {
-      return false;
-    }
-
-    return value >= 0;
+    return Utils.isValidId(value);
   }
 
   static isValidName(value) {
-    if (typeof value !== 'string') {
-      return false;
-    }
-
-    return true; // TODO: replace with real check later
+    if (typeof value !== 'string') { return false; }
+    if (value.length < 1) { return false; }
+    return true;
   }
 
   static isValidLatLng(value) {
-    if (!Array.isArray(value)) {
-      return false;
-    }
-
-    if (value.length !== 2) {
-      return false;
-    }
-
+    if (!Array.isArray(value) || value.length !== 2) { return false; }
     return !(isNaN(value[0]) || isNaN(value[1]));
   }
 
