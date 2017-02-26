@@ -5,9 +5,13 @@ class Utils { // eslint-disable-line no-unused-vars
     if (!Array.isArray(value)) { return false; }
 
     for (let i = 0; i < value.length; i++) {
-      if (!Number.isInteger(value[i]) || value[i] < 0) { return false; }
+      if (!Utils.isValidId(value[i])) { return false; }
     }
 
     return true;
+  }
+
+  static isValidId(value) {
+    return Number.isInteger(value) && value >= 0;
   }
 }
