@@ -3,7 +3,7 @@
 /* eslint-disable no-use-before-define */
 
 const Core = (function Core() { // eslint-disable-line no-unused-vars
-  let state = createEmptyState();
+  let state = createNewState();
 
   function initialize() {
     UI.initialize();
@@ -13,7 +13,7 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
       .then(() => render());
   }
 
-  function createEmptyState() {
+  function createNewState() {
     return {
       lines: [],
       stations: [],
@@ -22,7 +22,7 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
   }
 
   function createGameState(data) {
-    state = createEmptyState();
+    state = createNewState();
     data.lines.forEach((line) => {
       if (line !== null && Line.isValid(line)) {
         state.lines[line.id] = new Line(line);
@@ -103,7 +103,7 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
       render();
     }
 
-    function generateId() { // eslint-disable-line no-unused-vars
+    function generateId() {
     }
 
     return {
