@@ -4,9 +4,6 @@
 
 const Core = (function Core() { // eslint-disable-line no-unused-vars
   let state = createEmptyState();
-  let activeLine;
-  let activeStation;
-  let activeTransfer;
 
   function initialize() {
     UI.initialize();
@@ -17,6 +14,8 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
   }
 
   const Lines = (function Lines() {
+    let active;
+
     function get(lineId) {
       return state.lines[lineId];
     }
@@ -26,9 +25,9 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
     }
 
     function setActive(lineId) {
-      activeLine = get(lineId);
-      UI.setActiveLine(activeLine);
-      CityMap.setActiveLine(activeLine);
+      active = get(lineId);
+      UI.setActiveLine(active);
+      CityMap.setActiveLine(active);
     }
 
     function update(line, property, value) {
@@ -36,20 +35,20 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
       lineCopy[property] = value;
       if (Line.isValid(lineCopy)) {
         state.lines[line.id] = lineCopy;
-        activeLine = lineCopy;
+        active = lineCopy;
       }
 
-      UI.update(activeLine);
+      UI.update(active);
     }
 
     function create() {
     }
 
     function remove() {
-      if (activeLine === undefined) { return; }
+      if (active === undefined) { return; }
 
-      activeLine.stations.forEach(stationId => Stations.get(stationId).deleteLine(activeLine.id));
-      state.lines[activeLine.id] = undefined;
+      active.stations.forEach(stationId => Stations.get(stationId).deleteLine(active.id));
+      state.lines[active.id] = undefined;
       setActive(undefined);
       render();
     }
@@ -69,6 +68,8 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
   }());
 
   const Stations = (function Stations() {
+    let active;
+
     function get(stationId) {
       return state.stations[stationId];
     }
@@ -78,10 +79,10 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
     }
 
     function setActive(stationId) {
-      activeStation = get(stationId);
-      UI.setActiveStation(activeStation);
-      CityMap.setActiveStation(activeStation, activeStation !== undefined ?
-        UI.createStationPopupContent(activeStation) : undefined);
+      active = get(stationId);
+      UI.setActiveStation(active);
+      CityMap.setActiveStation(active, active !== undefined ?
+        UI.createStationPopupContent(active) : undefined);
     }
 
     // TODO: move array 'hole filling' to save step?
@@ -96,7 +97,7 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
 
     function create() {
       const newStation = new Station(generateId());
-      activeStation = newStation;
+      active = newStation;
       CityMap.addCoordinates(newStation, (station) => {
         state.stations[station.id] = station;
         render();
@@ -105,10 +106,10 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
     }
 
     function remove() {
-      if (activeStation === undefined) { return; }
+      if (active === undefined) { return; }
 
-      activeStation.lines.forEach(lineId => state.lines[lineId].deleteStation(activeStation.id));
-      state.stations[activeStation.id] = undefined;
+      active.lines.forEach(lineId => state.lines[lineId].deleteStation(active.id));
+      state.stations[active.id] = undefined;
       setActive(undefined);
       render();
     }
@@ -118,10 +119,10 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
       stationCopy[property] = value;
       if (Station.isValid(stationCopy)) {
         state.stations[station.id] = stationCopy;
-        activeStation = stationCopy;
+        active = stationCopy;
       }
 
-      UI.update(undefined, activeStation);
+      UI.update(undefined, active);
     }
 
     return {
@@ -136,6 +137,8 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
   }());
 
   const Transfers = (function Transfers() {
+    let active;
+
     function get(transferId) {
       return state.transfers[transferId];
     }
@@ -145,9 +148,9 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
     }
 
     function setActive(transferId) {
-      activeTransfer = get(transferId);
-      UI.setActiveStation(activeTransfer);
-      CityMap.setActiveStation(activeTransfer);
+      active = get(transferId);
+      UI.setActiveStation(active);
+      CityMap.setActiveStation(active);
     }
 
     function generateId() {
