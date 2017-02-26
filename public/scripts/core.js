@@ -13,6 +13,56 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
       .then(() => render());
   }
 
+  function createEmptyState() {
+    return {
+      lines: [],
+      stations: [],
+      transfers: [],
+    };
+  }
+
+  function createGameState(data) {
+    state = createEmptyState();
+    data.lines.forEach((line) => {
+      if (line !== null && Line.isValid(line)) {
+        state.lines[line.id] = new Line(line);
+      }
+    });
+    data.stations.forEach((station) => {
+      if (station !== null && Station.isValid(station)) {
+        state.stations[station.id] = new Station(station);
+      }
+    });
+  }
+
+  function render() {
+    CityMap.update();
+    UI.update();
+  }
+
+  function saveGame() {
+    UI.downloadGame(Files.generateSave(state));
+  }
+
+  function loadGame() {
+    UI.setCurrentAction('Load save file');
+    UI.uploadGame();
+  }
+
+  function loadHandler(loadForm) {
+    Files.loadFromLocal(loadForm).then((data) => {
+      if (data.error !== undefined) {
+        // console.log(data.error);
+        UI.setCurrentAction('');
+        return;
+      }
+
+      UI.setCurrentAction('');
+      createGameState(data);
+      render();
+    });
+  }
+
   const Lines = (function Lines() {
     let active;
 
@@ -164,62 +214,12 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
     };
   }());
 
-  function createEmptyState() {
-    return {
-      lines: [],
-      stations: [],
-      transfers: [],
-    };
-  }
-
-  function createGameState(data) {
-    state = createEmptyState();
-    data.lines.forEach((line) => {
-      if (line !== null && Line.isValid(line)) {
-        state.lines[line.id] = new Line(line);
-      }
-    });
-    data.stations.forEach((station) => {
-      if (station !== null && Station.isValid(station)) {
-        state.stations[station.id] = new Station(station);
-      }
-    });
-  }
-
-  function render() {
-    CityMap.update();
-    UI.update();
-  }
-
-  function saveGame() {
-    UI.downloadGame(Files.generateSave(state));
-  }
-
-  function loadGame() {
-    UI.setCurrentAction('Load save file');
-    UI.uploadGame();
-  }
-
-  function loadHandler(loadForm) {
-    Files.loadFromLocal(loadForm).then((data) => {
-      if (data.error !== undefined) {
-        // console.log(data.error);
-        UI.setCurrentAction('');
-        return;
-      }
-
-      UI.setCurrentAction('');
-      createGameState(data);
-      render();
-    });
-  }
-
   return {
+    createGameState,
     initialize,
-    saveGame,
     loadGame,
     loadHandler,
-    createGameState,
+    saveGame,
     Lines,
     Stations,
     Transfers,
