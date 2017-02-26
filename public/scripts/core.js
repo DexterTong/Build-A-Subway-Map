@@ -10,7 +10,7 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
   function initialize() {
     UI.initialize();
     CityMap.initialize(UI.getMap());
-    Files.loadFromServer('nyc2017')
+    Files.loadFromServer('nyc2017_unbranched')
       .then(data => createGameState(data))
       .then(() => update());
   }
