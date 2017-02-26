@@ -61,6 +61,7 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
 
       UI.setCurrentAction('');
       createGameState(data);
+      update();
     });
   }
 
