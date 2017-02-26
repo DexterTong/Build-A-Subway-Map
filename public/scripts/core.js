@@ -1,5 +1,6 @@
 /* eslint-env browser */
 /* globals CityMap, Files, Line, Station, UI, Core */
+/* eslint-disable no-use-before-define */
 
 const Core = (function Core() { // eslint-disable-line no-unused-vars
   let state = createEmptyState();
@@ -12,8 +13,153 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
     CityMap.initialize(UI.getMap());
     Files.loadFromServer('nyc2017_unbranched')
       .then(data => createGameState(data))
-      .then(() => update());
+      .then(() => render());
   }
+
+  const Lines = (function Lines() {
+    function get(lineId) {
+      return state.lines[lineId];
+    }
+
+    function getAll() {
+      return state.lines.filter(line => line !== undefined);
+    }
+
+    function setActive(lineId) {
+      activeLine = get(lineId);
+      UI.setActiveLine(activeLine);
+      CityMap.setActiveLine(activeLine);
+    }
+
+    function update(line, property, value) {
+      const lineCopy = new Line(line);
+      lineCopy[property] = value;
+      if (Line.isValid(lineCopy)) {
+        state.lines[line.id] = lineCopy;
+        activeLine = lineCopy;
+      }
+
+      UI.update(activeLine);
+    }
+
+    function create() {
+    }
+
+    function remove() {
+      if (activeLine === undefined) { return; }
+
+      activeLine.stations.forEach(stationId => Stations.get(stationId).deleteLine(activeLine.id));
+      state.lines[activeLine.id] = undefined;
+      setActive(undefined);
+      render();
+    }
+
+    function generateId() { // eslint-disable-line no-unused-vars
+    }
+
+    return {
+      create,
+      generateId,
+      get,
+      getAll,
+      remove,
+      setActive,
+      update,
+    };
+  }());
+
+  const Stations = (function Stations() {
+    function get(stationId) {
+      return state.stations[stationId];
+    }
+
+    function getAll() {
+      return state.stations.filter(station => station !== undefined);
+    }
+
+    function setActive(stationId) {
+      activeStation = get(stationId);
+      UI.setActiveStation(activeStation);
+      CityMap.setActiveStation(activeStation, activeStation !== undefined ?
+        UI.createStationPopupContent(activeStation) : undefined);
+    }
+
+    // TODO: move array 'hole filling' to save step?
+    function generateId() {
+      let i = 0;
+      for (; i < state.stations.length; i++) {
+        if (state.stations[i] === undefined) { break; }
+      }
+
+      return i;
+    }
+
+    function create() {
+      const newStation = new Station(generateId());
+      activeStation = newStation;
+      CityMap.addCoordinates(newStation, (station) => {
+        state.stations[station.id] = station;
+        render();
+        setActive(station.id);
+      });
+    }
+
+    function remove() {
+      if (activeStation === undefined) { return; }
+
+      activeStation.lines.forEach(lineId => state.lines[lineId].deleteStation(activeStation.id));
+      state.stations[activeStation.id] = undefined;
+      setActive(undefined);
+      render();
+    }
+
+    function update(station, property, value) {
+      const stationCopy = new Station(station);
+      stationCopy[property] = value;
+      if (Station.isValid(stationCopy)) {
+        state.stations[station.id] = stationCopy;
+        activeStation = stationCopy;
+      }
+
+      UI.update(undefined, activeStation);
+    }
+
+    return {
+      create,
+      generateId,
+      get,
+      getAll,
+      remove,
+      setActive,
+      update,
+    };
+  }());
+
+  const Transfers = (function Transfers() {
+    function get(transferId) {
+      return state.transfers[transferId];
+    }
+
+    function getAll() {
+      return state.transfers.filter(transfer => transfer !== undefined);
+    }
+
+    function setActive(transferId) {
+      activeTransfer = get(transferId);
+      UI.setActiveStation(activeTransfer);
+      CityMap.setActiveStation(activeTransfer);
+    }
+
+    function generateId() {
+    }
+
+    return {
+      generateId,
+      get,
+      getAll,
+      setActive,
+    };
+  }());
 
   function createEmptyState() {
     return {
@@ -37,7 +183,7 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
     });
   }
 
-  function update() {
+  function render() {
     CityMap.update();
     UI.update();
   }
@@ -61,124 +207,8 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
 
       UI.setCurrentAction('');
       createGameState(data);
-      update();
+      render();
     });
-  }
-
-  function getLine(lineId) {
-    return state.lines[lineId];
-  }
-
-  function getStation(stationId) {
-    return state.stations[stationId];
-  }
-
-  function getTransfer(transferId) {
-    return state.transfers[transferId];
-  }
-
-  function getAllLines() {
-    return state.lines.filter(line => line !== undefined);
-  }
-
-  function getAllStations() {
-    return state.stations.filter(station => station !== undefined);
-  }
-
-  function getAllTransfers() {
-    return state.transfers.filter(transfer => transfer !== undefined);
-  }
-
-  function setActiveLine(lineId) {
-    activeLine = getLine(lineId);
-    UI.setActiveLine(activeLine);
-    CityMap.setActiveLine(activeLine);
-  }
-
-  function setActiveStation(stationId) {
-    activeStation = getStation(stationId);
-    UI.setActiveStation(activeStation);
-    CityMap.setActiveStation(activeStation, activeStation !== undefined ?
-      UI.createStationPopupContent(activeStation) : undefined);
-  }
-
-  function setActiveTransfer(transferId) {
-    activeTransfer = getTransfer(transferId);
-    UI.setActiveStation(activeTransfer);
-    CityMap.setActiveStation(activeTransfer);
-  }
-
-  function generateLineId() { // eslint-disable-line no-unused-vars
-  }
-
-  // TODO: move array 'hole filling' to save step?
-  function generateStationId() {
-    let i = 0;
-    for (; i < state.stations.length; i++) {
-      if (state.stations[i] === undefined) { break; }
-    }
-
-    return i;
-  }
-
-  function generateTransferId() { // eslint-disable-line no-unused-vars
-  }
-
-  function createLine() {
-  }
-
-  function deleteLine() {
-    if (activeLine === undefined) { return; }
-
-    activeLine.stations.forEach(stationId => getStation(stationId).deleteLine(activeLine.id));
-    state.lines[activeLine.id] = undefined;
-    setActiveLine(undefined);
-    update();
-  }
-
-  function createStation() {
-    const newStation = new Station(generateStationId());
-    activeStation = newStation;
-    CityMap.addCoordinates(newStation, (station) => {
-      state.stations[station.id] = station;
-      update();
-      setActiveStation(station.id);
-    });
-  }
-
-  function deleteStation() {
-    if (activeStation === undefined) { return; }
-
-    activeStation.lines.forEach(lineId => state.lines[lineId].deleteStation(activeStation.id));
-    state.stations[activeStation.id] = undefined;
-    setActiveStation(undefined);
-    update();
-  }
-
-  function updateLine(line, property, value) {
-    const lineCopy = new Line(line);
-    lineCopy[property] = value;
-    if (Line.isValid(lineCopy)) {
-      state.lines[line.id] = lineCopy;
-      activeLine = lineCopy;
-    } /* else {
-      console.log('Did not update line');
-    } */
-
-    UI.update(activeLine);
-  }
-
-  function updateStation(station, property, value) {
-    const stationCopy = new Station(station);
-    stationCopy[property] = value;
-    if (Station.isValid(stationCopy)) {
-      state.stations[station.id] = stationCopy;
-      activeStation = stationCopy;
-    } /* else {
-      console.log('Did not update station');
-    } */
-
-    UI.update(undefined, activeStation);
   }
 
   return {
@@ -186,21 +216,9 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
     saveGame,
     loadGame,
     loadHandler,
-    getLine,
-    getStation,
-    getTransfer,
-    getAllLines,
-    getAllStations,
-    getAllTransfers,
-    setActiveLine,
-    setActiveStation,
-    setActiveTransfer,
     createGameState,
-    createLine,
-    deleteLine,
-    createStation,
-    deleteStation,
-    updateLine,
-    updateStation,
+    Lines,
+    Stations,
+    Transfers,
   };
 }());
