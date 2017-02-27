@@ -63,6 +63,10 @@ const core = (() => { // eslint-disable-line no-unused-vars
     }
   };
 
+  // TODO: shift elements in items array to fill holes
+  Common.prototype.flatten = function flatten() {
+  };
+
   Common.prototype.get = function get(id) {
     return this.items[id];
   };
@@ -71,7 +75,7 @@ const core = (() => { // eslint-disable-line no-unused-vars
     return this.items.filter(item => item !== undefined);
   };
 
-  Common.prototype.generateId = function newId() {
+  Common.prototype.newId = function newId() {
     return this.items.length;
   };
 
@@ -115,123 +119,62 @@ const core = (() => { // eslint-disable-line no-unused-vars
   }());
 
   const stations = (function Stations() {
-    let active;
-    const items = [];
+    const module = new Common();
 
-    function add(item) {
-      if (item && Station.isValid(item)) { items[item.id] = item; }
-    }
+    module.add = function add(item) {
+      if (item && Station.isValid(item)) { module.items[item.id] = item; }
+    };
 
-    function clear() {
-      active = undefined;
-      while (items.length > 1) {
-        items.pop();
-      }
-    }
+    module.setActive = function setActive(stationId) {
+      module.active = module.get(stationId);
+      ui.setActiveStation(module.active);
+      mapper.setActiveStation(module.active, module.active !== undefined ?
+        ui.createStationPopupContent(module.active) : undefined);
+    };
 
-    function get(stationId) {
-      return items[stationId];
-    }
-
-    function getAll() {
-      return items.filter(station => station !== undefined);
-    }
-
-    function setActive(stationId) {
-      active = get(stationId);
-      ui.setActiveStation(active);
-      mapper.setActiveStation(active, active !== undefined ?
-        ui.createStationPopupContent(active) : undefined);
-    }
-
-    // TODO: move array 'hole filling' to save step?
-    function generateId() {
-      let i = 0;
-      for (; i < items.length; i++) {
-        if (items[i] === undefined) { break; }
-      }
-
-      return i;
-    }
-
-    function create() {
-      const newStation = new Station(generateId());
-      active = newStation;
+    module.create = function create() {
+      const newStation = new Station(module.newId());
+      module.active = newStation;
       mapper.addCoordinates(newStation, (station) => {
-        items[station.id] = station;
+        module.items[station.id] = station;
         render();
-        setActive(station.id);
+        module.setActive(station.id);
       });
-    }
+    };
 
-    function remove() {
-      if (active === undefined) { return; }
+    module.remove = function remove() {
+      if (module.active === undefined) { return; }
 
-      active.lines.forEach(lineId => lines.get(lineId).deleteStation(active.id));
-      items[active.id] = undefined;
-      setActive(undefined);
+      module.active.lines.forEach(lineId => lines.get(lineId).deleteStation(module.active.id));
+      module.items[module.active.id] = undefined;
+      module.setActive(undefined);
       render();
-    }
+    };
 
-    function update(station, property, value) {
+    module.update = function update(station, property, value) {
       const stationCopy = new Station(station);
       stationCopy[property] = value;
       if (Station.isValid(stationCopy)) {
-        items[station.id] = stationCopy;
-        active = stationCopy;
+        module.items[station.id] = stationCopy;
+        module.active = stationCopy;
       }
 
-      ui.update(undefined, active);
-    }
-
-    return {
-      add,
-      clear,
-      create,
-      generateId,
-      get,
-      getAll,
-      remove,
-      setActive,
-      update,
+      ui.update(undefined, module.active);
     };
+
+    return module;
   }());
 
   const transfers = (function Transfers() {
-    let active;
-    const items = [];
+    const module = new Common();
 
-    function clear() {
-      active = undefined;
-      while (items.length > 1) {
-        items.pop();
-      }
-    }
-
-    function get(transferId) {
-      return items[transferId];
-    }
-
-    function getAll() {
-      return items.filter(transfer => transfer !== undefined);
-    }
-
-    function setActive(transferId) {
-      active = get(transferId);
-      ui.setActiveStation(active);
-      mapper.setActiveStation(active);
-    }
-
-    function generateId() {
-    }
-
-    return {
-      clear,
-      generateId,
-      get,
-      getAll,
-      setActive,
+    module.setActive = function setActive(transferId) {
+      module.active = module.get(transferId);
+      ui.setActiveStation(module.active);
+      mapper.setActiveStation(module.active);
     };
+
+    return module;
   }());
 
   return {
