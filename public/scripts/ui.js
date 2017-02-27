@@ -1,7 +1,7 @@
 /* eslint-env browser */
 /* globals core */
 
-const ui = (function ui() { // eslint-disable-line no-unused-vars
+const ui = (() => { // eslint-disable-line no-unused-vars
   function getMap() {
     return document.getElementById('map');
   }
@@ -275,4 +275,4 @@ const ui = (function ui() { // eslint-disable-line no-unused-vars
     uploadGame,
     createStationPopupContent,
   };
-}());
+})();

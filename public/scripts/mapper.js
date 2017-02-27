@@ -1,7 +1,7 @@
 /* eslint-env browser */
 /* globals core, L */
 
-const mapper = (function mapper() { // eslint-disable-line no-unused-vars
+const mapper = (() => { // eslint-disable-line no-unused-vars
   let map;
   const LATLNG_NYC = L.latLng(40.7128, -74.0061); // City Hall, New York City
   const markers = {
@@ -124,4 +124,4 @@ const mapper = (function mapper() { // eslint-disable-line no-unused-vars
     setActiveTransfer,
     addCoordinates,
   };
-}());
+})();

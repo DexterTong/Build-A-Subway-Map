@@ -2,7 +2,7 @@
 /* globals mapper, files, Line, Station, ui */
 /* eslint-disable no-use-before-define */
 
-const core = (function core() { // eslint-disable-line no-unused-vars
+const core = (() => { // eslint-disable-line no-unused-vars
   let state = createNewState();
 
   function initialize() {
@@ -224,4 +224,4 @@ const core = (function core() { // eslint-disable-line no-unused-vars
     stations,
     transfers,
   };
-}());
+})();
