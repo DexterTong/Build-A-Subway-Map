@@ -2,7 +2,7 @@
 /* globals mapper, files, Line, Station, ui */
 /* eslint-disable no-use-before-define */
 
-const core = (() => { // eslint-disable-line no-unused-vars
+const app = (() => { // eslint-disable-line no-unused-vars
   function initialize() {
     ui.initialize();
     mapper.initialize(ui.getMap());

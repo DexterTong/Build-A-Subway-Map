@@ -36,9 +36,9 @@ const mapper = (() => { // eslint-disable-line no-unused-vars
 
   function update() {
     deleteAllMarkers();
-    core.lines.getAll().forEach(drawLine);
-    core.stations.getAll().forEach(drawStation);
-    core.transfers.getAll().forEach(drawTransfer);
+    app.lines.getAll().forEach(drawLine);
+    app.stations.getAll().forEach(drawStation);
+    app.transfers.getAll().forEach(drawTransfer);
   }
 
   function deleteAllMarkers() {
@@ -65,7 +65,7 @@ const mapper = (() => { // eslint-disable-line no-unused-vars
   }
 
   function drawLine(line) {
-    const pointsToDraw = line.stations.map(stationId => core.stations.get(stationId).latLng);
+    const pointsToDraw = line.stations.map(stationId => app.stations.get(stationId).latLng);
     const linePoly = L.polyline(pointsToDraw, { color: line.color });
     markers.lines[line.id] = linePoly;
     linePoly.addTo(map);
@@ -80,7 +80,7 @@ const mapper = (() => { // eslint-disable-line no-unused-vars
     */
     const stationMarker = L.marker(station.latLng, { icon: stationLocalIcon }).addTo(map);
     markers.stations[station.id] = stationMarker;
-    stationMarker.addEventListener('click', core.stations.setActive.bind(null, station.id));
+    stationMarker.addEventListener('click', app.stations.setActive.bind(null, station.id));
   }
 
   function drawTransfer(transfer) {   // eslint-disable-line no-unused-vars

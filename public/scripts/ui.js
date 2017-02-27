@@ -6,7 +6,7 @@ const ui = (() => { // eslint-disable-line no-unused-vars
     return document.getElementById('map');
   }
 
-  document.addEventListener('DOMContentLoaded', core.initialize);
+  document.addEventListener('DOMContentLoaded', app.initialize);
 
   function initialize() {
     const tabContents = document.getElementsByClassName('tab-content');
@@ -14,11 +14,11 @@ const ui = (() => { // eslint-disable-line no-unused-vars
       tabContents[i].classList.add('hide');
     }
 
-    document.getElementById('button-save').onclick = core.saveGame;
-    document.getElementById('button-load').onclick = core.loadGame;
-    document.getElementById('button-station-add').onclick = core.stations.create;
-    document.getElementById('button-station-delete').onclick = core.stations.remove;
-    document.getElementById('button-line-delete').onclick = core.lines.remove;
+    document.getElementById('button-save').onclick = app.saveGame;
+    document.getElementById('button-load').onclick = app.loadGame;
+    document.getElementById('button-station-add').onclick = app.stations.create;
+    document.getElementById('button-station-delete').onclick = app.stations.remove;
+    document.getElementById('button-line-delete').onclick = app.lines.remove;
 
     addMenuSwitchers();
   }
@@ -56,7 +56,7 @@ const ui = (() => { // eslint-disable-line no-unused-vars
   }
 
   function update(activeLine, activeStation, activeTransfer) { // eslint-disable-line no-unused-vars
-    const lineGroupsObject = core.lines.getAll().reduce((groups, line) => {
+    const lineGroupsObject = app.lines.getAll().reduce((groups, line) => {
       if (groups[line.color]) {
         groups[line.color].push(line);
       } else {
@@ -83,7 +83,7 @@ const ui = (() => { // eslint-disable-line no-unused-vars
       lineGroups.map(lineGroup => createLineGroupElement(lineGroup)));
 
     replaceList(document.getElementById('station-list'),
-      core.stations.getAll()
+      app.stations.getAll()
         .sort((A, B) => A.name.localeCompare(B.name))
         .map(station => createStationElement(station)));
 
@@ -98,7 +98,7 @@ const ui = (() => { // eslint-disable-line no-unused-vars
     lineElement.classList.add('line', line.express ? 'express' : 'local');
     lineElement.appendChild(document.createTextNode(line.name));
     lineElement.style.backgroundColor = line.color;
-    lineElement.onclick = core.lines.setActive.bind(null, line.id);
+    lineElement.onclick = app.lines.setActive.bind(null, line.id);
     return lineElement;
   }
 
@@ -121,14 +121,14 @@ const ui = (() => { // eslint-disable-line no-unused-vars
     if (line !== undefined) {
       lineIcon = createLineElement(line);
       lineExpress = document.createTextNode(line.express ? 'Express' : '');
-      branch = makeEditable(document.createTextNode(line.branch), core.lines.update.bind(null, line, 'branch'));
+      branch = makeEditable(document.createTextNode(line.branch), app.lines.update.bind(null, line, 'branch'));
       if (line.stations.length > 0) {
-        terminalOne = document.createTextNode(core.stations.get(line.stations[0]).name);
-        terminalTwo = document.createTextNode(core.stations.get(line.stations[line.stations.length - 1]).name);
+        terminalOne = document.createTextNode(app.stations.get(line.stations[0]).name);
+        terminalTwo = document.createTextNode(app.stations.get(line.stations[line.stations.length - 1]).name);
       }
 
       stationCount = document.createTextNode(`${line.stations.length}`);
-      stationList = line.stations.map(stationId => createStationElement(core.stations.get(stationId)));
+      stationList = line.stations.map(stationId => createStationElement(app.stations.get(stationId)));
     }
 
     replaceChild(document.getElementById('line-element-container'), lineIcon);
@@ -148,8 +148,8 @@ const ui = (() => { // eslint-disable-line no-unused-vars
 
     if (station !== undefined) {
       stationName = makeEditable(document.createTextNode(station.name),
-        core.stations.update.bind(null, station, 'name'));
-      stationLines = station.lines.map(lineId => createLineElement(core.lines.get(lineId)));
+        app.stations.update.bind(null, station, 'name'));
+      stationLines = station.lines.map(lineId => createLineElement(app.lines.get(lineId)));
     }
 
     replaceChild(document.getElementById('station-name'), stationName);
@@ -192,12 +192,12 @@ const ui = (() => { // eslint-disable-line no-unused-vars
 
     const stationName = document.createElement('p');
     stationName.appendChild(document.createTextNode(station.name));
-    stationName.onclick = core.stations.setActive.bind(null, station.id);
+    stationName.onclick = app.stations.setActive.bind(null, station.id);
     stationElement.appendChild(stationName);
 
     const stationLines = document.createElement('ul');
     stationLines.classList.add('line-list');
-    replaceList(stationLines, station.lines.map(lineId => createLineElement(core.lines.get(lineId))));
+    replaceList(stationLines, station.lines.map(lineId => createLineElement(app.lines.get(lineId))));
     stationElement.appendChild(stationLines);
 
     return stationElement;
@@ -216,7 +216,7 @@ const ui = (() => { // eslint-disable-line no-unused-vars
   function uploadGame() {
     const loadForm = document.createElement('input');
     loadForm.setAttribute('type', 'file');
-    loadForm.onchange = core.loadHandler.bind(null, loadForm);
+    loadForm.onchange = app.loadHandler.bind(null, loadForm);
     loadForm.click();
   }
 
@@ -257,7 +257,7 @@ const ui = (() => { // eslint-disable-line no-unused-vars
     content.appendChild(idElement);
 
     const linesList = document.createElement('ul');
-    station.lines.map(lineId => createLineElement(core.lines.get(lineId)))
+    station.lines.map(lineId => createLineElement(app.lines.get(lineId)))
       .forEach(lineElement => linesList.appendChild(lineElement));
     content.appendChild(linesList);
 
