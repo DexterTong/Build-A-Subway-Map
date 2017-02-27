@@ -6,15 +6,15 @@ class Station { // eslint-disable-line no-unused-vars
     if (typeof id === 'object') {
       this.id = id.id;
       this.name = id.name;
-      this.latLng = id.latLng;
-      this.lines = id.lines;
-      this.transfers = id.transfers;
+      this.latLng = id.latLng.slice();
+      this.lines = id.lines.slice();
+      this.transfers = id.transfers.slice();
     } else {
       this.id = id;
       this.name = name !== undefined ? name : '*New Station';
-      this.latLng = latLng !== undefined ? latLng : [0, 0];
-      this.lines = lines !== undefined ? lines : [];
-      this.transfers = transfers !== undefined ? transfers : [];
+      this.latLng = latLng !== undefined ? latLng.slice() : [0, 0];
+      this.lines = lines !== undefined ? lines.slice() : [];
+      this.transfers = transfers !== undefined ? transfers.slice() : [];
     }
   }
 

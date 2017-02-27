@@ -10,7 +10,7 @@ class Line {  // eslint-disable-line no-unused-vars
       this.branch = id.branch;
       this.express = id.express;
       this.category = id.category;
-      this.stations = id.stations;
+      this.stations = id.stations.slice();
     } else {
       this.id = id;
       this.color = color;
@@ -18,7 +18,7 @@ class Line {  // eslint-disable-line no-unused-vars
       this.branch = branch;
       this.express = express;
       this.category = category;
-      this.stations = stations;
+      this.stations = stations.slice();
     }
   }
 

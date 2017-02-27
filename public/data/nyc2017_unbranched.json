@@ -191,7 +191,7 @@
     {
       "id": 4,
       "color": "#00933c",
-      "name": "5N",
+      "name": "50",
       "branch": "Nereid Av",
       "express": false,
       "category": "subway",
@@ -241,7 +241,7 @@
     {
       "id": 5,
       "color": "#00933c",
-      "name": "5E",
+      "name": "51",
       "branch": "Eastchester",
       "express": false,
       "category": "subway",
