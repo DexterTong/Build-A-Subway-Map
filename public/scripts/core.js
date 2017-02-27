@@ -63,6 +63,23 @@ const core = (() => { // eslint-disable-line no-unused-vars
     });
   }
 
+  function Common() {
+    this.active = undefined;
+    this.items = [1, 2, 3];
+  }
+
+  Common.prototype.get = function get(id) {
+    return this.items[id];
+  };
+
+  Common.prototype.getAll = function getAll() {
+    return this.items.filter(item => item !== undefined);
+  };
+
+  Common.prototype.newId = function newId() {
+    return this.items.length;
+  };
+
   const lines = (function lines() {
     let active;
 
@@ -223,5 +240,6 @@ const core = (() => { // eslint-disable-line no-unused-vars
     lines,
     stations,
     transfers,
+    Common,
   };
 })();
