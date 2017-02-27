@@ -7,10 +7,10 @@ describe('line.js', () => {
     id: 29,
     color: '#808183',
     name: 'S',
-    branch: 'Franklin Av',
+    branch: 'Fakelin Av',
     express: false,
     category: 'subway',
-    stations: [254, 449, 448, 201],
+    stations: [254, 449, 448, 254, 201],
   };
 
   describe('constructor', () => {
@@ -126,6 +126,28 @@ describe('line.js', () => {
       const invalidLine = lineObject;
       invalidLine.id = 'foo';
       checkValid(invalidLine);
+    });
+  });
+
+  describe('deleteStation()', () => {
+    let line;
+    beforeEach(() => {
+      line = new Line(lineObject);
+    });
+
+    it('Should delete only the given station id from the line', () => {
+      line.deleteStation(448);
+      line.stations.should.eql([254, 449, 254, 201]);
+    });
+
+    it('Should delete all occurrences of a particular station from the line', () => {
+      line.deleteStation(254);
+      line.stations.should.eql([449, 448, 201]);
+    });
+
+    it('Should not alter the stations array if the given id is not found', () => {
+      line.deleteStation(1);
+      line.stations.should.eql([254, 449, 448, 254, 201]);
     });
   });
 });
