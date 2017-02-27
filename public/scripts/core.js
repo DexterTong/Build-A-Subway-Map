@@ -3,8 +3,6 @@
 /* eslint-disable no-use-before-define */
 
 const core = (() => { // eslint-disable-line no-unused-vars
-  let state = createNewState();
-
   function initialize() {
     ui.initialize();
     mapper.initialize(ui.getMap());
@@ -13,26 +11,12 @@ const core = (() => { // eslint-disable-line no-unused-vars
       .then(() => render());
   }
 
-  function createNewState() {
-    return {
-      lines: [],
-      stations: [],
-      transfers: [],
-    };
-  }
-
   function createGameState(data) {
-    state = createNewState();
-    data.lines.forEach((line) => {
-      if (line !== null && Line.isValid(line)) {
-        state.lines[line.id] = new Line(line);
-      }
-    });
-    data.stations.forEach((station) => {
-      if (station !== null && Station.isValid(station)) {
-        state.stations[station.id] = new Station(station);
-      }
-    });
+    lines.clear();
+    stations.clear();
+    transfers.clear();
+    data.lines.forEach(line => lines.add(new Line(line)));
+    data.stations.forEach(station => stations.add(new Station(station)));
   }
 
   function render() {
@@ -41,7 +25,11 @@ const core = (() => { // eslint-disable-line no-unused-vars
   }
 
   function saveGame() {
-    ui.downloadGame(files.generateSave(state));
+    ui.downloadGame(files.generateSave({
+      lines: lines.getAll(),
+      stations: stations.getAll(),
+      transfers: transfers.getAll(),
+    }));
   }
 
   function loadGame() {
@@ -82,13 +70,25 @@ const core = (() => { // eslint-disable-line no-unused-vars
 
   const lines = (function lines() {
     let active;
+    const items = [];
+
+    function add(item) {
+      if (item && Line.isValid(item)) { items[item.id] = item; }
+    }
+
+    function clear() {
+      active = undefined;
+      while (items.length > 1) {
+        items.pop();
+      }
+    }
 
     function get(lineId) {
-      return state.lines[lineId];
+      return items[lineId];
     }
 
     function getAll() {
-      return state.lines.filter(line => line !== undefined);
+      return items.filter(line => line !== undefined);
     }
 
     function setActive(lineId) {
@@ -101,7 +101,7 @@ const core = (() => { // eslint-disable-line no-unused-vars
       const lineCopy = new Line(line);
       lineCopy[property] = value;
       if (Line.isValid(lineCopy)) {
-        state.lines[line.id] = lineCopy;
+        items[line.id] = lineCopy;
         active = lineCopy;
       }
 
@@ -115,7 +115,7 @@ const core = (() => { // eslint-disable-line no-unused-vars
       if (active === undefined) { return; }
 
       active.stations.forEach(stationId => stations.get(stationId).deleteLine(active.id));
-      state.lines[active.id] = undefined;
+      items[active.id] = undefined;
       setActive(undefined);
       render();
     }
@@ -124,6 +124,8 @@ const core = (() => { // eslint-disable-line no-unused-vars
     }
 
     return {
+      add,
+      clear,
       create,
       generateId,
       get,
@@ -136,13 +138,25 @@ const core = (() => { // eslint-disable-line no-unused-vars
 
   const stations = (function Stations() {
     let active;
+    const items = [];
+
+    function add(item) {
+      if (item && Station.isValid(item)) { items[item.id] = item; }
+    }
+
+    function clear() {
+      active = undefined;
+      while (items.length > 1) {
+        items.pop();
+      }
+    }
 
     function get(stationId) {
-      return state.stations[stationId];
+      return items[stationId];
     }
 
     function getAll() {
-      return state.stations.filter(station => station !== undefined);
+      return items.filter(station => station !== undefined);
     }
 
     function setActive(stationId) {
@@ -155,8 +169,8 @@ const core = (() => { // eslint-disable-line no-unused-vars
     // TODO: move array 'hole filling' to save step?
     function generateId() {
       let i = 0;
-      for (; i < state.stations.length; i++) {
-        if (state.stations[i] === undefined) { break; }
+      for (; i < items.length; i++) {
+        if (items[i] === undefined) { break; }
       }
 
       return i;
@@ -166,7 +180,7 @@ const core = (() => { // eslint-disable-line no-unused-vars
       const newStation = new Station(generateId());
       active = newStation;
       mapper.addCoordinates(newStation, (station) => {
-        state.stations[station.id] = station;
+        items[station.id] = station;
         render();
         setActive(station.id);
       });
@@ -175,8 +189,8 @@ const core = (() => { // eslint-disable-line no-unused-vars
     function remove() {
       if (active === undefined) { return; }
 
-      active.lines.forEach(lineId => state.lines[lineId].deleteStation(active.id));
-      state.stations[active.id] = undefined;
+      active.lines.forEach(lineId => lines.get(lineId).deleteStation(active.id));
+      items[active.id] = undefined;
       setActive(undefined);
       render();
     }
@@ -185,7 +199,7 @@ const core = (() => { // eslint-disable-line no-unused-vars
       const stationCopy = new Station(station);
       stationCopy[property] = value;
       if (Station.isValid(stationCopy)) {
-        state.stations[station.id] = stationCopy;
+        items[station.id] = stationCopy;
         active = stationCopy;
       }
 
@@ -193,6 +207,8 @@ const core = (() => { // eslint-disable-line no-unused-vars
     }
 
     return {
+      add,
+      clear,
       create,
       generateId,
       get,
@@ -205,13 +221,21 @@ const core = (() => { // eslint-disable-line no-unused-vars
 
   const transfers = (function Transfers() {
     let active;
+    const items = [];
+
+    function clear() {
+      active = undefined;
+      while (items.length > 1) {
+        items.pop();
+      }
+    }
 
     function get(transferId) {
-      return state.transfers[transferId];
+      return items[transferId];
     }
 
     function getAll() {
-      return state.transfers.filter(transfer => transfer !== undefined);
+      return items.filter(transfer => transfer !== undefined);
     }
 
     function setActive(transferId) {
@@ -224,6 +248,7 @@ const core = (() => { // eslint-disable-line no-unused-vars
     }
 
     return {
+      clear,
       generateId,
       get,
       getAll,
