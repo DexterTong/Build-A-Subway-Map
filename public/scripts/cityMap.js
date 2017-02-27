@@ -1,7 +1,7 @@
 /* eslint-env browser */
-/* globals Core, L */
+/* globals core, L */
 
-const CityMap = (function CityMap() { // eslint-disable-line no-unused-vars
+const mapper = (function mapper() { // eslint-disable-line no-unused-vars
   let map;
   const LATLNG_NYC = L.latLng(40.7128, -74.0061); // City Hall, New York City
   const markers = {
@@ -36,9 +36,9 @@ const CityMap = (function CityMap() { // eslint-disable-line no-unused-vars
 
   function update() {
     deleteAllMarkers();
-    Core.Lines.getAll().forEach(drawLine);
-    Core.Stations.getAll().forEach(drawStation);
-    Core.Transfers.getAll().forEach(drawTransfer);
+    core.lines.getAll().forEach(drawLine);
+    core.stations.getAll().forEach(drawStation);
+    core.transfers.getAll().forEach(drawTransfer);
   }
 
   function deleteAllMarkers() {
@@ -65,7 +65,7 @@ const CityMap = (function CityMap() { // eslint-disable-line no-unused-vars
   }
 
   function drawLine(line) {
-    const pointsToDraw = line.stations.map(stationId => Core.Stations.get(stationId).latLng);
+    const pointsToDraw = line.stations.map(stationId => core.stations.get(stationId).latLng);
     const linePoly = L.polyline(pointsToDraw, { color: line.color });
     markers.lines[line.id] = linePoly;
     linePoly.addTo(map);
@@ -80,7 +80,7 @@ const CityMap = (function CityMap() { // eslint-disable-line no-unused-vars
     */
     const stationMarker = L.marker(station.latLng, { icon: stationLocalIcon }).addTo(map);
     markers.stations[station.id] = stationMarker;
-    stationMarker.addEventListener('click', Core.Stations.setActive.bind(null, station.id));
+    stationMarker.addEventListener('click', core.stations.setActive.bind(null, station.id));
   }
 
   function drawTransfer(transfer) {   // eslint-disable-line no-unused-vars

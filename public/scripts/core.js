@@ -1,14 +1,14 @@
 /* eslint-env browser */
-/* globals CityMap, Files, Line, Station, UI, Core */
+/* globals mapper, files, Line, Station, ui */
 /* eslint-disable no-use-before-define */
 
-const Core = (function Core() { // eslint-disable-line no-unused-vars
+const core = (function core() { // eslint-disable-line no-unused-vars
   let state = createNewState();
 
   function initialize() {
-    UI.initialize();
-    CityMap.initialize(UI.getMap());
-    Files.loadFromServer('nyc2017_unbranched')
+    ui.initialize();
+    mapper.initialize(ui.getMap());
+    files.loadFromServer('nyc2017_unbranched')
       .then(data => createGameState(data))
       .then(() => render());
   }
@@ -36,34 +36,34 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
   }
 
   function render() {
-    CityMap.update();
-    UI.update();
+    mapper.update();
+    ui.update();
   }
 
   function saveGame() {
-    UI.downloadGame(Files.generateSave(state));
+    ui.downloadGame(files.generateSave(state));
   }
 
   function loadGame() {
-    UI.setCurrentAction('Load save file');
-    UI.uploadGame();
+    ui.setCurrentAction('Load save file');
+    ui.uploadGame();
   }
 
   function loadHandler(loadForm) {
-    Files.loadFromLocal(loadForm).then((data) => {
+    files.loadFromLocal(loadForm).then((data) => {
       if (data.error !== undefined) {
         // console.log(data.error);
-        UI.setCurrentAction('');
+        ui.setCurrentAction('');
         return;
       }
 
-      UI.setCurrentAction('');
+      ui.setCurrentAction('');
       createGameState(data);
       render();
     });
   }
 
-  const Lines = (function Lines() {
+  const lines = (function lines() {
     let active;
 
     function get(lineId) {
@@ -76,8 +76,8 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
 
     function setActive(lineId) {
       active = get(lineId);
-      UI.setActiveLine(active);
-      CityMap.setActiveLine(active);
+      ui.setActiveLine(active);
+      mapper.setActiveLine(active);
     }
 
     function update(line, property, value) {
@@ -88,7 +88,7 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
         active = lineCopy;
       }
 
-      UI.update(active);
+      ui.update(active);
     }
 
     function create() {
@@ -97,7 +97,7 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
     function remove() {
       if (active === undefined) { return; }
 
-      active.stations.forEach(stationId => Stations.get(stationId).deleteLine(active.id));
+      active.stations.forEach(stationId => stations.get(stationId).deleteLine(active.id));
       state.lines[active.id] = undefined;
       setActive(undefined);
       render();
@@ -117,7 +117,7 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
     };
   }());
 
-  const Stations = (function Stations() {
+  const stations = (function Stations() {
     let active;
 
     function get(stationId) {
@@ -130,9 +130,9 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
 
     function setActive(stationId) {
       active = get(stationId);
-      UI.setActiveStation(active);
-      CityMap.setActiveStation(active, active !== undefined ?
-        UI.createStationPopupContent(active) : undefined);
+      ui.setActiveStation(active);
+      mapper.setActiveStation(active, active !== undefined ?
+        ui.createStationPopupContent(active) : undefined);
     }
 
     // TODO: move array 'hole filling' to save step?
@@ -148,7 +148,7 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
     function create() {
       const newStation = new Station(generateId());
       active = newStation;
-      CityMap.addCoordinates(newStation, (station) => {
+      mapper.addCoordinates(newStation, (station) => {
         state.stations[station.id] = station;
         render();
         setActive(station.id);
@@ -172,7 +172,7 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
         active = stationCopy;
       }
 
-      UI.update(undefined, active);
+      ui.update(undefined, active);
     }
 
     return {
@@ -186,7 +186,7 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
     };
   }());
 
-  const Transfers = (function Transfers() {
+  const transfers = (function Transfers() {
     let active;
 
     function get(transferId) {
@@ -199,8 +199,8 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
 
     function setActive(transferId) {
       active = get(transferId);
-      UI.setActiveStation(active);
-      CityMap.setActiveStation(active);
+      ui.setActiveStation(active);
+      mapper.setActiveStation(active);
     }
 
     function generateId() {
@@ -220,8 +220,8 @@ const Core = (function Core() { // eslint-disable-line no-unused-vars
     loadGame,
     loadHandler,
     saveGame,
-    Lines,
-    Stations,
-    Transfers,
+    lines,
+    stations,
+    transfers,
   };
 }());

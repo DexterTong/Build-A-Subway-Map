@@ -1,6 +1,6 @@
 /* eslint-env browser, mocha */
 /* eslint no-unused-expressions: ['off'] */
-/* globals Files */
+/* globals files */
 
 describe('files.js', () => {
   const state = {
@@ -27,7 +27,7 @@ describe('files.js', () => {
     transfers: [],
   };
   describe('generateSave()', () => {
-    const save = Files.generateSave(state);
+    const save = files.generateSave(state);
     it('Should generate an object with a name and data', () => {
       save.should.have.keys('name', 'data');
     });
