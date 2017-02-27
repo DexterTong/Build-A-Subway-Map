@@ -53,8 +53,15 @@ const core = (() => { // eslint-disable-line no-unused-vars
 
   function Common() {
     this.active = undefined;
-    this.items = [1, 2, 3];
+    this.items = [];
   }
+
+  Common.prototype.clear = function clear() {
+    this.active = undefined;
+    while (this.items.length > 1) {
+      this.items.pop();
+    }
+  };
 
   Common.prototype.get = function get(id) {
     return this.items[id];
@@ -64,76 +71,47 @@ const core = (() => { // eslint-disable-line no-unused-vars
     return this.items.filter(item => item !== undefined);
   };
 
-  Common.prototype.newId = function newId() {
+  Common.prototype.generateId = function newId() {
     return this.items.length;
   };
 
   const lines = (function lines() {
-    let active;
-    const items = [];
+    const module = new Common();
 
-    function add(item) {
-      if (item && Line.isValid(item)) { items[item.id] = item; }
-    }
+    module.add = function add(item) {
+      if (item && Line.isValid(item)) { this.items[item.id] = item; }
+    };
 
-    function clear() {
-      active = undefined;
-      while (items.length > 1) {
-        items.pop();
-      }
-    }
+    module.setActive = function setActive(lineId) {
+      module.active = module.get(lineId);
+      ui.setActiveLine(module.active);
+      mapper.setActiveLine(module.active);
+    };
 
-    function get(lineId) {
-      return items[lineId];
-    }
-
-    function getAll() {
-      return items.filter(line => line !== undefined);
-    }
-
-    function setActive(lineId) {
-      active = get(lineId);
-      ui.setActiveLine(active);
-      mapper.setActiveLine(active);
-    }
-
-    function update(line, property, value) {
+    module.update = function update(line, property, value) {
       const lineCopy = new Line(line);
       lineCopy[property] = value;
       if (Line.isValid(lineCopy)) {
-        items[line.id] = lineCopy;
-        active = lineCopy;
+        module.items[line.id] = lineCopy;
+        module.active = lineCopy;
       }
 
-      ui.update(active);
-    }
-
-    function create() {
-    }
-
-    function remove() {
-      if (active === undefined) { return; }
-
-      active.stations.forEach(stationId => stations.get(stationId).deleteLine(active.id));
-      items[active.id] = undefined;
-      setActive(undefined);
-      render();
-    }
-
-    function generateId() {
-    }
-
-    return {
-      add,
-      clear,
-      create,
-      generateId,
-      get,
-      getAll,
-      remove,
-      setActive,
-      update,
+      ui.update(module.active);
     };
+
+    module.create = function create() {
+    };
+
+    module.remove = function remove() {
+      if (module.active === undefined) { return; }
+
+      module.active.stations.forEach(stationId => stations.get(stationId).deleteLine(module.active.id));
+      module.items[module.active.id] = undefined;
+      module.setActive(undefined);
+      render();
+    };
+
+    return module;
   }());
 
   const stations = (function Stations() {
@@ -265,6 +243,5 @@ const core = (() => { // eslint-disable-line no-unused-vars
     lines,
     stations,
     transfers,
-    Common,
   };
 })();
