@@ -40,7 +40,7 @@ describe('Routes', () => {
   });
 
   describe('Scripts', () => {
-    const scripts = ['mapper.js', 'core.js', 'files.js', 'line.js', 'station.js', 'ui.js', 'utils.js'];
+    const scripts = ['mapper.js', 'app.js', 'files.js', 'line.js', 'station.js', 'ui.js', 'utils.js'];
     for (let i = 0; i < scripts.length; i++) {
       it(`Client-side script "${scripts[i]}" is accessible`, (done) => {
         chai.request(server).get(`/scripts/${scripts[i]}`).end(shouldBeFileType.bind(null, done, 'js'));

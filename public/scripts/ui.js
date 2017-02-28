@@ -1,5 +1,5 @@
 /* eslint-env browser */
-/* globals core */
+/* globals app */
 
 const ui = (() => { // eslint-disable-line no-unused-vars
   function getMap() {

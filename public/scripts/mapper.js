@@ -1,5 +1,5 @@
 /* eslint-env browser */
-/* globals core, L */
+/* globals app, L */
 
 const mapper = (() => { // eslint-disable-line no-unused-vars
   let map;
