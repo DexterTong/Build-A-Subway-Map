@@ -3,6 +3,8 @@
 /* eslint-disable no-use-before-define */
 
 const app = (() => { // eslint-disable-line no-unused-vars
+  let action;
+
   function initialize() {
     ui.initialize();
     mapper.initialize(ui.getMap());
@@ -24,6 +26,16 @@ const app = (() => { // eslint-disable-line no-unused-vars
     ui.update();
   }
 
+  function setAction(current) {
+    action = current;
+    ui.setCurrentAction(current);
+  }
+
+  function clearAction() {
+    action = undefined;
+    ui.setCurrentAction();
+  }
+
   function saveGame() {
     ui.downloadGame(files.generateSave({
       lines: lines.getAll(),
@@ -33,19 +45,14 @@ const app = (() => { // eslint-disable-line no-unused-vars
   }
 
   function loadGame() {
-    ui.setCurrentAction('Load save file');
+    setAction('loadGame');
     ui.uploadGame();
   }
 
   function loadHandler(loadForm) {
     files.loadFromLocal(loadForm).then((data) => {
-      if (data.error !== undefined) {
-        // console.log(data.error);
-        ui.setCurrentAction('');
-        return;
-      }
-
-      ui.setCurrentAction('');
+      clearAction();
+      if (data.error !== undefined) { return; }
       createGameState(data);
       render();
     });
@@ -86,6 +93,17 @@ const app = (() => { // eslint-disable-line no-unused-vars
       if (item && Line.isValid(item)) { this.items[item.id] = item; }
     };
 
+    module.addStation = function addStation(stationId) {
+      if (module.active) {
+        module.active.addStation(stationId);
+        render();
+      }
+    };
+
+    module.appendStation = function appendStation() {
+      setAction('appendStation');
+    };
+
     module.setActive = function setActive(lineId) {
       module.active = module.get(lineId);
       ui.setActiveLine(module.active);
@@ -123,6 +141,17 @@ const app = (() => { // eslint-disable-line no-unused-vars
 
     module.add = function add(item) {
       if (item && Station.isValid(item)) { module.items[item.id] = item; }
+    };
+
+    module.clickController = function clickController(stationId) {
+      switch (action) {
+        case 'appendStation':
+          lines.addStation(stationId);
+          break;
+        default:
+          module.setActive(stationId);
+      }
+      clearAction();
     };
 
     module.setActive = function setActive(stationId) {

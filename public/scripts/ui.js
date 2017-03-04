@@ -19,6 +19,7 @@ const ui = (() => { // eslint-disable-line no-unused-vars
     document.getElementById('button-station-add').onclick = app.stations.create;
     document.getElementById('button-station-delete').onclick = app.stations.remove;
     document.getElementById('button-line-delete').onclick = app.lines.remove;
+    document.getElementById('button-line-station-add').onclick = app.lines.appendStation;
 
     addMenuSwitchers();
   }
@@ -192,7 +193,7 @@ const ui = (() => { // eslint-disable-line no-unused-vars
 
     const stationName = document.createElement('p');
     stationName.appendChild(document.createTextNode(station.name));
-    stationName.onclick = app.stations.setActive.bind(null, station.id);
+    stationName.onclick = app.stations.clickController.bind(null, station.id);
     stationElement.appendChild(stationName);
 
     const stationLines = document.createElement('ul');
@@ -220,8 +221,8 @@ const ui = (() => { // eslint-disable-line no-unused-vars
     loadForm.click();
   }
 
-  function setCurrentAction(message) {
-    replaceChild(document.getElementById('current-action'), document.createTextNode(message));
+  function setCurrentAction(action) {
+    replaceChild(document.getElementById('current-action'), document.createTextNode(action));
   }
 
   function makeEditable(textNode, callback) {

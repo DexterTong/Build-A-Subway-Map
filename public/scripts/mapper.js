@@ -80,7 +80,7 @@ const mapper = (() => { // eslint-disable-line no-unused-vars
     */
     const stationMarker = L.marker(station.latLng, { icon: stationLocalIcon }).addTo(map);
     markers.stations[station.id] = stationMarker;
-    stationMarker.addEventListener('click', app.stations.setActive.bind(null, station.id));
+    stationMarker.addEventListener('click', app.stations.clickController.bind(null, station.id));
   }
 
   function drawTransfer(transfer) {   // eslint-disable-line no-unused-vars

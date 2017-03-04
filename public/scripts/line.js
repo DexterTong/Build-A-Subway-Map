@@ -22,6 +22,10 @@ class Line {  // eslint-disable-line no-unused-vars
     }
   }
 
+  addStation(stationId) {
+    this.stations.push(stationId);
+  }
+
   deleteStation(stationId) {
     for (let i = 0; i < this.stations.length; i++) {
       if (this.stations[i] === stationId) {
