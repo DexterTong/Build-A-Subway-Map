@@ -28,12 +28,25 @@ const app = (() => { // eslint-disable-line no-unused-vars
 
   function setAction(current) {
     action = current;
-    ui.setCurrentAction(current);
+    let message;
+    switch (current) {
+      case 'addStationToLine':
+        message = 'Add Station to Line';
+        break;
+      case 'removeStationFromLine':
+        message = 'Remove Station From Line';
+        break;
+      case 'loadGame':
+        message = 'load';
+        break;
+      default:
+        message = '';
+    }
+    ui.setCurrentAction(message);
   }
 
   function clearAction() {
-    action = undefined;
-    ui.setCurrentAction();
+    setAction();
   }
 
   function addStationToLine() {
