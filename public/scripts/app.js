@@ -36,6 +36,14 @@ const app = (() => { // eslint-disable-line no-unused-vars
     ui.setCurrentAction();
   }
 
+  function addStationToLine() {
+    setAction('addStationToLine');
+  }
+
+  function removeStationFromLine() {
+    setAction('removeStationFromLine');
+  }
+
   function saveGame() {
     ui.downloadGame(files.generateSave({
       lines: lines.getAll(),
@@ -100,8 +108,11 @@ const app = (() => { // eslint-disable-line no-unused-vars
       }
     };
 
-    module.appendStation = function appendStation() {
-      setAction('appendStation');
+    module.removeStation = function removeStation(stationId) {
+      if (module.active) {
+        module.active.deleteStation(stationId);
+        render();
+      }
     };
 
     module.setActive = function setActive(lineId) {
@@ -145,8 +156,11 @@ const app = (() => { // eslint-disable-line no-unused-vars
 
     module.clickController = function clickController(stationId) {
       switch (action) {
-        case 'appendStation':
+        case 'addStationToLine':
           lines.addStation(stationId);
+          break;
+        case 'removeStationFromLine':
+          lines.removeStation(stationId);
           break;
         default:
           module.setActive(stationId);
@@ -207,10 +221,12 @@ const app = (() => { // eslint-disable-line no-unused-vars
   }());
 
   return {
+    addStationToLine,
     createGameState,
     initialize,
     loadGame,
     loadHandler,
+    removeStationFromLine,
     saveGame,
     lines,
     stations,

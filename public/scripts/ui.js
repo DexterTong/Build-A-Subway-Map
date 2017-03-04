@@ -19,7 +19,8 @@ const ui = (() => { // eslint-disable-line no-unused-vars
     document.getElementById('button-station-add').onclick = app.stations.create;
     document.getElementById('button-station-delete').onclick = app.stations.remove;
     document.getElementById('button-line-delete').onclick = app.lines.remove;
-    document.getElementById('button-line-station-add').onclick = app.lines.appendStation;
+    document.getElementById('button-line-station-add').onclick = app.addStationToLine;
+    document.getElementById('button-line-station-delete').onclick = app.removeStationFromLine;
 
     addMenuSwitchers();
   }
